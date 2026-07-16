@@ -120,8 +120,10 @@ main{position:relative;z-index:1}
 .fv-video{ /* FV動画を固定背景として配置。スクロールしても背景で再生され続ける */
   position:fixed;inset:0;z-index:0;overflow:hidden;
   transition:opacity .5s ease;
-  /* 独立した合成レイヤーに載せ、スクロールのたびに再描画されないようにする（スマホのカクつき対策） */
-  will-change:opacity;transform:translateZ(0);backface-visibility:hidden;
+  /* 独立した合成レイヤーに載せ、スクロールのたびに再描画されないようにする（スマホのカクつき対策）。
+     translateX(-50%) は中央カラムへの位置合わせ。消すと動画が右にずれるので必ず残すこと */
+  transform:translateX(-50%) translateZ(0);
+  will-change:opacity;backface-visibility:hidden;
 }
 .fv-video.is-hidden{opacity:0;pointer-events:none} /* 下部⑧では非表示にして固定スライドショーを見せる */
 .hero-video{ /* 動画本体：LP幅の枠内を全面カバー。ループ・自動再生（無音） */
