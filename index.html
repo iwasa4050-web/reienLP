@@ -1,0 +1,1575 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ペットと一緒に眠れるお墓｜あの子を、ひとりぼっちにさせない霊園</title>
+<meta name="description" content="愛犬・愛猫と、亡くなったあとも同じお墓で眠れる霊園。合祀されず、ずっと個別のまま。永代供養・バリアフリー対応。資料請求・見学のご予約を受付中。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Zen+Old+Mincho:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="preload" as="image" href="assets/fv-01.jpg">
+<style>
+:root{
+  --sky:#4a97d2;          /* メイン：蒼空ブルー */
+  --sky-deep:#1e5f96;     /* 濃青：見出し・強調 */
+  --sky-light:#eaf5fc;    /* 淡青：背景 */
+  --sky-pale:#f6fbff;     /* ごく淡い青 */
+  --sun:#d59456;          /* CVボタン：落ち着いたあたたかい琥珀色 */
+  --sun-deep:#c17f3d;
+  --ink:#33414d;          /* 本文 */
+  --ink-soft:#5c6b77;
+  --white:#ffffff;
+  --serif:"Zen Old Mincho","Hiragino Mincho ProN",serif;
+  --sans:"Noto Sans JP","Hiragino Kaku Gothic ProN",sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:80px;background:#c9d6e2}
+/* ===== スマホ幅固定シェル（PCでも中央にスマホ幅で表示） ===== */
+:root{--app-w:440px}
+body{
+  font-family:var(--sans);
+  color:var(--ink);
+  font-size:16px;
+  line-height:1.9;
+  background:var(--white);
+  -webkit-font-smoothing:antialiased;
+  max-width:var(--app-w);
+  margin:0 auto;
+  position:relative;
+  overflow-x:hidden;
+  box-shadow:0 0 50px rgba(20,50,80,.18);
+  min-height:100vh;
+}
+/* 固定オーバーレイをスマホ幅の中央カラムに合わせる */
+.header,.fv-fixed,.fv-video,.sticky-cta{
+  left:50%!important;right:auto!important;
+  transform:translateX(-50%);
+  width:100%;max-width:var(--app-w);
+}
+img{max-width:100%;height:auto;display:block}
+a{color:inherit;text-decoration:none}
+.inner{max-width:1080px;margin:0 auto;padding:0 24px;position:relative;z-index:2}
+
+/* ===== ヘッダー ===== */
+.header{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  background:rgba(255,255,255,.92);
+  backdrop-filter:blur(8px);
+  border-bottom:1px solid rgba(74,151,210,.15);
+}
+.header-inner{
+  max-width:1160px;margin:0 auto;padding:10px 24px;
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+}
+.header-logo{
+  font-family:var(--serif);font-weight:700;font-size:1.05rem;color:var(--sky-deep);
+  display:flex;align-items:center;gap:8px;line-height:1.4;white-space:nowrap;
+}
+@media(max-width:100000px){.header-logo span{display:none}}
+.header-logo svg{flex-shrink:0}
+.header-cta{display:flex;gap:10px}
+.header-cta a{
+  display:inline-flex;align-items:center;justify-content:center;
+  min-height:44px;padding:8px 20px;border-radius:999px;
+  font-weight:700;font-size:.88rem;transition:opacity .2s,transform .2s;
+  cursor:pointer;white-space:nowrap;
+}
+.header-cta a:hover{opacity:.85;transform:translateY(-1px)}
+.btn-outline{border:2px solid var(--sky);color:var(--sky-deep);background:var(--white)}
+.btn-fill{background:var(--sun);color:var(--white);box-shadow:0 2px 8px rgba(40,55,75,.14)}
+@media(max-width:100000px){
+  .header-logo{font-size:.85rem}
+  .header-inner{padding:8px 12px;gap:8px}
+  .header-cta .btn-outline{display:none}
+  .header-cta a{padding:6px 14px;font-size:.78rem;min-height:40px}
+}
+
+/* ===== セクション共通 ===== */
+section{position:relative;padding:90px 0}
+.sec-title{
+  text-align:center;font-family:var(--serif);font-weight:700;
+  font-size:clamp(1.5rem,3.4vw,1.5rem);color:var(--sky-deep);
+  line-height:1.7;letter-spacing:.06em;margin-bottom:20px;
+}
+.sec-title-bar{
+  width:52px;height:3px;background:var(--sky);margin:0 auto 48px;border-radius:2px;
+}
+.replace-note{
+  text-align:center;font-size:.78rem;color:var(--ink-soft);margin-top:20px;
+}
+
+/* ===== ① FV：写真スライドショー（ズームイン＋クロスディゾルブ） =====
+   背景は固定レイヤーにして、次のブロックへスクロールしても同じ背景が続く */
+main{position:relative;z-index:1}
+.fv-fixed{
+  position:fixed;inset:0;z-index:0;
+  overflow:hidden; /* ズームインした画像をLP幅の枠内でクリップ（左右の見切れ防止） */
+  background:linear-gradient(165deg,#aedcf5 0%,#7cbfe8 38%,#4a97d2 100%);
+}
+.hero{
+  position:relative;
+  margin-top:0;
+  min-height:100vh;
+  min-height:100svh;
+  display:flex;align-items:center;
+  background:transparent;
+  padding:0;
+  overflow:hidden;
+}
+.fv-video{ /* FV動画を固定背景として配置。スクロールしても背景で再生され続ける */
+  position:fixed;inset:0;z-index:0;overflow:hidden;
+  transition:opacity .5s ease;
+}
+.fv-video.is-hidden{opacity:0;pointer-events:none} /* 下部⑧では非表示にして固定スライドショーを見せる */
+.hero-video{ /* 動画本体：LP幅の枠内を全面カバー。ループ・自動再生（無音） */
+  position:absolute;inset:0;
+  width:100%;height:100%;object-fit:cover;object-position:center;
+}
+.hero-video-veil{ /* 動画を半透明のマットで覆い、白文字の可読性を確保 */
+  position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(21,52,82,.42) 0%,rgba(21,52,82,.48) 55%,rgba(21,52,82,.64) 100%);
+}
+.hero-bg{position:absolute;inset:0}
+.hero-slide{
+  position:absolute;inset:0;
+  background-size:cover;background-position:center;
+  opacity:0;transform:scale(1);
+  /* フェードはease、ズームはlinear（等速）に分離。
+     ズームが減速せず流れたままクロスディゾルブする */
+  animation:kbFade 28s ease infinite, kbZoom 28s linear infinite;
+  will-change:opacity,transform;
+}
+.hero-slide:nth-child(1){animation-delay:0s}
+.hero-slide:nth-child(2){animation-delay:7s}
+.hero-slide:nth-child(3){animation-delay:14s}
+.hero-slide:nth-child(4){animation-delay:21s}
+@keyframes kbFade{
+  0%{opacity:0}
+  9%{opacity:1}
+  25%{opacity:1}
+  34%{opacity:0}
+  100%{opacity:0}
+}
+@keyframes kbZoom{
+  0%{transform:scale(1)}
+  34%{transform:scale(1.18)}
+  34.01%,100%{transform:scale(1)}
+}
+.hero-veil{ /* 文字の視認性を上げる半透明カラーマット */
+  position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(21,52,82,.38) 0%,rgba(21,52,82,.44) 55%,rgba(21,52,82,.58) 100%);
+}
+.hero::after{ /* 直線＋グラデーションで次ブロックの色へ徐々に変わる */
+  content:"";position:absolute;left:0;right:0;bottom:0;height:200px;z-index:2;pointer-events:none;
+  background:linear-gradient(180deg,
+    rgba(233,244,229,0) 0%,
+    rgba(233,244,229,.45) 55%,
+    rgba(233,244,229,.85) 100%);
+}
+@media(max-width:100000px){.hero::after{height:140px}}
+@media(prefers-reduced-motion:reduce){
+  .hero-slide{animation:none}
+  .hero-slide:nth-child(1){opacity:1}
+}
+.cloud{position:absolute;fill:rgba(255,255,255,.85);animation:drift 60s linear infinite}
+.cloud.c2{animation-duration:80s;animation-delay:-30s;opacity:.6}
+.cloud.c3{animation-duration:100s;animation-delay:-55s;opacity:.45}
+@keyframes drift{
+  from{transform:translateX(-20vw)}
+  to{transform:translateX(110vw)}
+}
+@media(prefers-reduced-motion:reduce){
+  .cloud{animation:none}
+}
+.hero-inner{
+  position:relative;z-index:2;
+  max-width:1080px;margin:0 auto;padding:90px 24px 150px;
+  color:var(--white);text-align:center;width:100%;
+}
+.hero-lead{
+  font-family:var(--serif);font-weight:600;
+  font-size:clamp(1.12rem,4.9vw,1.32rem);
+  line-height:1.6;letter-spacing:.08em;
+  text-shadow:0 1px 10px rgba(30,95,150,.5);
+  margin-top:-40px;
+  margin-bottom:34px;
+}
+.hero-catch{
+  font-family:var(--serif);font-weight:700;
+  font-size:clamp(1.82rem,7vw,1.96rem);
+  line-height:1.5;letter-spacing:.03em;white-space:nowrap;
+  text-shadow:0 2px 14px rgba(30,95,150,.45);
+  margin-bottom:26px;
+}
+.hero-subhead{
+  font-family:var(--serif);font-weight:600;
+  font-size:clamp(1.05rem,4.6vw,1.27rem);
+  line-height:1.85;letter-spacing:.06em;
+  text-shadow:0 1px 8px rgba(30,95,150,.5);
+  margin-top:26px;
+  margin-bottom:44px;
+}
+.hero-cta{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+.cta-btn{
+  display:inline-flex;flex-direction:column;align-items:center;justify-content:center;
+  min-width:270px;min-height:64px;padding:14px 36px;border-radius:999px;
+  font-weight:700;font-size:1.08rem;letter-spacing:.05em;
+  transition:transform .2s,box-shadow .2s;cursor:pointer;
+}
+.cta-btn small{font-size:.72rem;font-weight:500;letter-spacing:.08em;opacity:.92}
+.cta-btn:hover{transform:translateY(-2px)}
+.cta-primary{
+  background:var(--sun);
+  color:var(--white);box-shadow:0 3px 10px rgba(40,55,75,.15);
+}
+.cta-primary:hover{background:var(--sun-deep);box-shadow:0 5px 14px rgba(40,55,75,.2)}
+.cta-secondary{
+  background:rgba(255,255,255,.95);color:var(--sky-deep);
+  box-shadow:0 6px 18px rgba(30,95,150,.3);
+}
+.paw{position:absolute;z-index:1;opacity:.25;fill:#fff}
+
+/* ===== ② 共感（痛み）：丘の緑から淡い空色へ ===== */
+.worry{ /* カラーマットを半透明にして固定背景を透かす。下端で不透明に戻して次へつなぐ */
+  background:linear-gradient(180deg,
+    rgba(233,244,229,.85) 0%,
+    rgba(242,249,244,.85) 16%,
+    rgba(246,251,255,.88) 42%,
+    #eaf5fc 100%);
+}
+.worry-lead{
+  max-width:660px;margin:-24px auto 44px;text-align:center;
+  font-size:clamp(.93rem,1.7vw,1rem);line-height:2.15;letter-spacing:.02em;color:var(--ink);
+}
+/* 2行で収める見出し：狭い幅でも各行が折り返さないよう字間と級数を詰める */
+.worry .sec-title{
+  font-size:clamp(1.3rem,5.5vw,1.5rem);
+  letter-spacing:.03em;white-space:nowrap;
+}
+.worry-video{
+  max-width:640px;margin:0 auto;position:relative;width:100%;aspect-ratio:16/9;
+  border-radius:20px;overflow:hidden;box-shadow:0 12px 36px rgba(20,60,95,.28);
+  background:#000;
+}
+.worry-video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.worry-list{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:24px;
+}
+@media(max-width:100000px){.worry-list{grid-template-columns:1fr;max-width:520px;margin-left:auto;margin-right:auto}}
+.worry-item{
+  background:var(--white);border-radius:16px;padding:32px 26px;
+  box-shadow:0 4px 20px rgba(74,151,210,.1);
+  text-align:center;position:relative;
+}
+.worry-item::before{
+  content:"";position:absolute;top:0;left:26px;right:26px;height:4px;
+  background:linear-gradient(90deg,#aedcf5,var(--sky));border-radius:0 0 4px 4px;
+}
+.worry-item .icon{
+  width:64px;height:64px;margin:0 auto 18px;border-radius:50%;
+  background:var(--sky-light);display:flex;align-items:center;justify-content:center;
+}
+.worry-item .icon svg{width:32px;height:32px;stroke:var(--sky-deep)}
+.worry-item p{font-size:.98rem;line-height:1.9}
+.worry-item p strong{color:var(--sky-deep)}
+
+/* ===== ③ 諦めの否定：暗めのブロック＋煙のお墓写真を透過背景に ===== */
+.denial{
+  position:relative;overflow:hidden;
+  background:linear-gradient(175deg,#182633 0%,#20364a 55%,#294863 100%);
+  color:var(--white);text-align:center;
+  padding-top:0;padding-bottom:0; /* オファー文を画像内に移したため下の余白は不要 */
+}
+.denial::before{ /* 前ブロック（明るい）から暗ブロックへグラデーションで切り替え */
+  content:"";position:absolute;top:0;left:0;right:0;height:170px;z-index:1;pointer-events:none;
+  background:linear-gradient(180deg,#eaf5fc 0%,rgba(234,245,252,.55) 26%,rgba(24,38,51,0) 100%);
+}
+.denial::after{ /* 写真を最後まで見せ、下端だけ次の明ブロック（④）へ溶かす */
+  content:"";position:absolute;left:0;right:0;bottom:0;height:150px;z-index:1;pointer-events:none;
+  background:linear-gradient(180deg,rgba(246,251,255,0) 0%,rgba(246,251,255,.55) 62%,#f6fbff 100%);
+}
+.denial-top{ /* ブロック全体にお墓写真を背景として敷く。文章下の余白は最小限に */
+  position:relative;overflow:hidden;padding-top:170px;padding-bottom:clamp(48px,14vh,120px);
+}
+.denial-bg{ /* 背景写真。ブロック全面に配置 */
+  position:absolute;inset:0;z-index:0;
+  background:url('assets/denial-bg.jpg') center 40%/cover no-repeat;
+  opacity:.62;
+}
+.denial-bg::after{ /* 全体を均一に暗く落として、写真を透かしつつ白文字を読ませる */
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(18,32,45,.5) 0%,rgba(18,32,45,.52) 100%);
+}
+.denial-top .inner{position:relative;z-index:2}
+.denial .inner{position:relative;z-index:2}
+/* テキストリビール：文字は動かさず、左→右へマスクが開いて現れる（clip-pathワイプ） */
+.reveal{
+  clip-path:inset(-0.35em 100% -0.35em 0); /* 右を100%クリップ＝非表示（上下は影用に少し外側） */
+  transition:clip-path 1.05s cubic-bezier(.22,.61,.36,1);
+  will-change:clip-path;
+}
+.reveal.is-in{clip-path:inset(-0.35em 0% -0.35em 0)} /* 右のクリップが0%まで開いて全表示（右は％同士で補間可能） */
+/* 優しいフェードイン：下からすっと浮かび上がって表示 */
+.reveal-soft{
+  opacity:0;transform:translateY(20px);
+  transition:opacity 1.2s ease,transform 1.2s cubic-bezier(.22,1,.36,1);
+  will-change:opacity,transform;
+}
+.reveal-soft.is-in{opacity:1;transform:none}
+/* 「——そんな気がする…」は、上の一文に続いて時間差で現れる */
+.story-talk .talk-line ~ p.reveal-soft{transition-delay:.45s}
+@media(prefers-reduced-motion:reduce){
+  .reveal,.reveal.is-in{clip-path:none;transition:none}
+  .reveal-soft,.reveal-soft.is-in{opacity:1;transform:none;transition:none}
+}
+.denial-q{
+  font-family:var(--serif);font-weight:700;
+  font-size:clamp(1.45rem,6.4vw,1.76rem);line-height:1.75;letter-spacing:.01em;
+  margin-bottom:34px;color:#fff;text-shadow:0 2px 14px rgba(120,200,255,.4);
+}
+.denial-mid{
+  font-size:clamp(.92rem,1.7vw,1.02rem);line-height:2.2;
+  color:rgba(255,255,255,.85);margin:0 auto 24px;max-width:660px;text-align:left;
+  text-shadow:0 1px 8px rgba(8,16,28,.75);
+}
+.denial-mid:last-of-type{margin-bottom:0}
+/* ===== 問いかけ：本文を読み進めた所でポップアップ表示。答えると閉じて下のブロックが開く ===== */
+.quiz-trigger{position:relative;height:1px} /* スクロール発火の目印（見えない） */
+.quiz-screen{ /* 画面全体を覆うオーバーレイ。背後のページを暗く落とす */
+  position:fixed;inset:0;z-index:90;
+  display:flex;align-items:center;justify-content:center;padding:24px;
+  background:rgba(9,16,26,.62);
+  opacity:0;visibility:hidden;
+  transition:opacity .45s ease,visibility .45s ease;
+}
+.quiz-screen.is-open{opacity:1;visibility:visible}
+.quiz-card{ /* 画面の大半を占めるポップアップ本体 */
+  position:relative;overflow:hidden;
+  width:min(560px,92vw);height:min(80vh,80dvh);
+  display:flex;align-items:center;justify-content:center;
+  padding:44px 26px;border-radius:26px;
+  background:linear-gradient(180deg,#1b2b3c 0%,#24405a 100%); /* 動画が読めない時の下地 */
+  box-shadow:0 26px 70px rgba(6,14,24,.55);
+  transform:translateY(26px) scale(.95);opacity:.3;
+  transition:transform .55s cubic-bezier(.22,1,.36,1),opacity .5s ease;
+}
+.quiz-screen.is-open .quiz-card{transform:none;opacity:1}
+@media(prefers-reduced-motion:reduce){
+  .quiz-screen,.quiz-card{transition:none}
+}
+/* 背景動画：2本を重ねてクロスフェード。半透明の暗幕越しに透けて見せる */
+.quiz-bg{position:absolute;inset:0;z-index:0}
+.quiz-video{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  opacity:0;transition:opacity 1.6s ease;
+}
+.quiz-video.is-active{opacity:1}
+.quiz-veil{
+  position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(18,32,47,.58) 0%,rgba(18,32,47,.68) 100%);
+}
+.quiz-inner{position:relative;z-index:1;width:100%;max-width:640px;text-align:center}
+.quiz-lead{ /* 飼い主の心の声。カード幅で1行に収まる範囲で大きく出す */
+  font-family:var(--serif);font-weight:700;color:#fff;white-space:nowrap;
+  font-size:clamp(1.4rem,5.6vw,1.78rem);line-height:1.6;letter-spacing:.03em;
+  margin-bottom:24px;text-shadow:0 2px 14px rgba(8,18,30,.9);
+}
+.quiz-q{
+  font-family:var(--serif);font-weight:600;color:rgba(255,255,255,.95);
+  font-size:clamp(1.05rem,4.2vw,1.28rem);line-height:1.95;letter-spacing:.05em;
+  margin-bottom:44px;text-shadow:0 2px 12px rgba(8,18,30,.9);
+}
+.quiz-q .quiz-em{ /* “ずっと一緒に眠れるお墓” を一段強調 */
+  display:inline-block;margin-top:6px;font-weight:700;
+  font-size:1.12em;color:#fff;
+}
+.quiz-q .quiz-found{ /* 「見つけた」を圏点（文字の上の点）で強調 */
+  white-space:nowrap;font-weight:700;color:#fff;font-size:1.12em;
+  -webkit-text-emphasis:filled dot;text-emphasis:filled dot;
+  -webkit-text-emphasis-position:over;text-emphasis-position:over;
+  -webkit-text-emphasis-color:rgba(255,255,255,.95);text-emphasis-color:rgba(255,255,255,.95);
+}
+.quiz-btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+.quiz-btn{
+  min-width:150px;padding:16px 26px;border-radius:999px;cursor:pointer;white-space:nowrap;
+  font-family:inherit;font-size:clamp(.95rem,3.6vw,1.05rem);font-weight:700;letter-spacing:.04em;
+  color:#fff;background:rgba(255,255,255,.06);
+  border:2px solid rgba(255,255,255,.75);
+  transition:background .25s,color .25s,transform .15s,border-color .25s;
+}
+.quiz-btn:hover{background:rgba(255,255,255,.18)}
+.quiz-btn:active{transform:scale(.97)}
+.quiz-btn[aria-pressed="true"]{ /* 選択中：白で塗って現在の回答を示す */
+  background:#fff;color:var(--sky-deep);border-color:#fff;
+}
+.quiz-btn-cta{ /* 単一のCTAボタン：半透明の白で、背景の動画をほんのり透かす */
+  background:rgba(255,255,255,.82);color:var(--sky-deep);
+  border-color:rgba(255,255,255,.6);
+  -webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px);
+  padding:17px 34px;box-shadow:0 8px 24px rgba(6,14,24,.3);
+}
+.quiz-btn-cta:hover{background:rgba(255,255,255,.92)}
+.quiz-reply{
+  margin-top:36px;color:rgba(255,255,255,.92);
+  font-size:.95rem;line-height:2;letter-spacing:.02em;
+  text-shadow:0 1px 8px rgba(8,18,30,.8);
+  animation:quizReplyIn .6s ease both;
+}
+.quiz-reply[hidden]{display:none}
+@keyframes quizReplyIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+/* 未回答のあいだは「下へ」と促す。答えたら消す */
+.quiz-hint{
+  margin-top:34px;font-size:.82rem;letter-spacing:.08em;
+  color:rgba(255,255,255,.55);
+}
+.wish-open .quiz-hint{display:none}
+/* 回答後に開くブロック：たたまれた状態からすっと開く */
+.wish-reveal[hidden]{display:none}
+.wish-reveal{
+  position:relative;z-index:2; /* .denial::after（暗→明の帯）を覆い、白ブロックを地色にする */
+  animation:wishOpen 1s cubic-bezier(.22,1,.36,1) both;
+}
+@keyframes wishOpen{
+  from{opacity:0;transform:translateY(24px)}
+  to{opacity:1;transform:none}
+}
+@media(prefers-reduced-motion:reduce){
+  .wish-reveal{animation:none}
+}
+/* 写真は廃し、白地に見出しだけを置く */
+.wish-hero{
+  position:relative;margin:0 -24px 0;
+  background:#fff;padding:56px 24px 8px;
+}
+.wish-hero .denial-wish{
+  margin:0;text-align:center;
+  color:var(--sky-deep);text-shadow:none;
+}
+/* 写真の下に続く白ブロック：オファー文を濃紺の文字で置く。
+   下端は次セクション（.story-know）の上端と同じ色になるようグラデーションで着地させ、境目の線を消す。
+   放射グラデーションの中心を境界線に重ねているので、接する行の色が両者でぴたりと一致する。 */
+.wish-offer-band{
+  position:relative;z-index:2;
+  padding:8px 0 72px;
+  background:
+    radial-gradient(ellipse 62% 46% at 50% 100%,rgba(255,243,220,.85) 0%,rgba(255,243,220,0) 70%),
+    linear-gradient(180deg,#ffffff 0%,#ffffff 38%,#f6fbff 100%);
+}
+.wish-offer{
+  max-width:660px;margin:0 auto;text-align:center;
+  font-weight:700;color:var(--ink);
+  font-size:clamp(.95rem,3.4vw,1.05rem);line-height:2.1;letter-spacing:.02em;
+}
+.wish-offer .em-wish{
+  color:var(--sky-deep);font-weight:700;
+  background:linear-gradient(transparent 58%,#ffe08a 58%);padding:0 3px;
+}
+.denial-wish{
+  font-family:var(--serif);font-weight:600;
+  font-size:clamp(1.05rem,5.2vw,1.35rem);line-height:1.7;letter-spacing:0;
+  color:#fff;margin:44px 0 34px;text-shadow:0 2px 16px rgba(8,18,30,.95);
+}
+.denial-a{
+  font-family:var(--serif);font-weight:700;
+  font-size:clamp(1.4rem,3.2vw,1.4rem);line-height:1.85;letter-spacing:.06em;
+  text-shadow:0 2px 16px rgba(120,200,255,.45);
+}
+.denial-a .light{
+  background:linear-gradient(transparent 68%,rgba(243,155,59,.55) 68%);
+  padding:0 2px;
+}
+@media(max-width:100000px){.denial-mid{text-align:left}}
+
+/* ===== ④ 物語ブロック（知ってほしいこと／話せている気がする） ===== */
+.story{position:relative;overflow:hidden;padding:84px 0}
+.story-know{
+  background:
+    radial-gradient(ellipse 62% 46% at 50% 0%,rgba(255,243,220,.85) 0%,rgba(255,243,220,0) 70%),
+    linear-gradient(180deg,#f6fbff 0%,#ffffff 70%);
+}
+/* 写真が開いた状態では、直前が白ブロック（.wish-offer-band）になるため
+   暗→明の切り替え帯は不要。閉じている時は .denial::after が境目を処理する。 */
+.story-know .inner{position:relative;z-index:2}
+.story-label{
+  text-align:center;color:var(--sky);font-weight:700;
+  letter-spacing:.16em;font-size:.78rem;margin-bottom:12px;
+}
+.story h2{
+  font-family:var(--serif);font-weight:700;color:var(--sky-deep);
+  font-size:clamp(1.35rem,4.6vw,1.35rem);line-height:1.7;letter-spacing:.04em;
+  text-align:center;margin-bottom:14px;
+}
+.story .bar{width:52px;height:3px;background:var(--sky);margin:0 auto 34px;border-radius:2px}
+.story p{
+  max-width:660px;margin:0 auto 20px;text-align:left;
+  font-size:clamp(.93rem,1.7vw,1rem);line-height:2.15;color:var(--ink);
+}
+.story p:last-child{margin-bottom:0}
+.story b{color:var(--sky-deep)}
+.story .em{background:linear-gradient(transparent 60%,#ffe6a8 60%);font-weight:700;padding:0 2px}
+/* 注記：埋もれない程度に見出しだけ立て、本文と地続きに置く */
+.story-note{
+  max-width:660px;margin:-4px auto 24px;
+  padding:0 2px;font-size:.88rem;line-height:1.95;color:var(--ink-soft);
+}
+.story-note strong{color:var(--sky-deep);font-weight:700}
+/* 2つの声を小見出しとして強調（2行） */
+.story-know .story-voices{
+  max-width:660px;margin:0 auto 20px;text-align:center;
+  font-family:var(--serif);font-weight:700;color:var(--sky-deep);
+  font-size:clamp(.88rem,3.8vw,1.14rem);line-height:2;letter-spacing:0;
+  white-space:nowrap; /* 各文を1行に収め、必ず2行構成にする */
+}
+/* 個別納骨→合祀の図解 */
+.goshi-fig{
+  max-width:660px;margin:6px auto 26px;
+}
+.goshi-fig img{
+  width:100%;height:auto;display:block;
+}
+/* ブロック内で最も強調したい一文：マーカーを厚く・文字も一段大きく */
+.story-know .em{
+  background:linear-gradient(transparent 52%,#ffe08a 52%);
+  font-weight:700;font-size:1.06em;color:var(--ink);
+  padding:0 3px;
+}
+/* 話せている気がする：薔薇の写真を淡く敷く */
+/* ピン留めトラック：この高さ分だけ「固定したまま」スクロールでアニメーションが進む。
+   body に overflow-x:hidden があり position:sticky が効かないため、JSで fixed に切り替えて固定する */
+.story-talk{position:relative;height:265vh;background:#000;--veil:0}
+.talk-pin{ /* 通常はトラック上端に置く舞台 */
+  position:absolute;top:0;left:0;width:100%;height:100vh;height:100dvh;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+}
+.talk-pin.is-fixed{ /* ピン中：画面に固定（中央カラムに合わせる） */
+  position:fixed;top:0;left:50%;transform:translateX(-50%);
+  width:100%;max-width:var(--app-w);
+}
+.talk-pin.is-bottom{ /* ピン解除後：トラック下端に置いて一緒にスクロールで抜ける */
+  position:absolute;top:auto;bottom:0;left:0;transform:none;
+}
+.story-talk .rosebg{ /* 背景動画（お参り背景） */
+  position:absolute;inset:0;z-index:0;overflow:hidden;
+}
+.story-talk .talk-video{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+}
+.story-talk .rosebg::after{ /* 白いベール。スクロールに連動して薄→濃（動画→白ベース） */
+  content:"";position:absolute;inset:0;z-index:1;
+  background:linear-gradient(180deg,rgba(255,255,255,.9) 0%,rgba(255,255,255,.95) 100%);
+  opacity:var(--veil);
+}
+.story-talk .inner{position:relative;z-index:2;padding:0 24px}
+/* 文字は白ベースが現れてからフェードイン（下からふわっと、行ごとに時間差） */
+.story-talk .inner > *{
+  opacity:0;transform:translateY(16px);
+  transition:opacity .8s ease,transform .8s cubic-bezier(.22,1,.36,1);
+}
+.story-talk.text-in .inner > *{opacity:1;transform:none}
+.story-talk.text-in .inner > :nth-child(2){transition-delay:.08s}
+.story-talk.text-in .inner > :nth-child(3){transition-delay:.16s}
+.story-talk.text-in .inner > :nth-child(4){transition-delay:.28s}
+.story-talk.text-in .inner > :nth-child(5){transition-delay:.4s}
+@media(prefers-reduced-motion:reduce){
+  .story-talk{height:auto;--veil:.88}
+  .talk-pin{position:relative;height:auto;padding:120px 0}
+  .story-talk .inner > *{opacity:1;transform:none;transition:none}
+}
+.story-talk h2{font-size:clamp(1.5rem,5vw,1.5rem)}
+.story-talk .talk-line{ /* 独立させて余韻を持たせる一文 */
+  font-family:var(--serif);font-weight:700;color:var(--sky-deep);
+  font-size:clamp(1.12rem,4.4vw,1.24rem);line-height:1.9;letter-spacing:.04em;
+  text-align:center;margin:44px auto;
+}
+
+/* ===== ⑤ 施設理念＋動画：青空の帯 ===== */
+.philosophy{
+  overflow:hidden;
+  background: /* 上部に光を差した青空 → 下へ向かって深い青へ */
+    radial-gradient(ellipse 90% 55% at 50% 0%,rgba(255,255,255,.26) 0%,rgba(255,255,255,0) 62%),
+    linear-gradient(180deg,#7cbde8 0%,#4f9bd4 45%,#2f74b0 100%);
+  color:var(--white);text-align:center;
+}
+.philosophy .paw{opacity:.12}
+.philosophy-inner{position:relative;z-index:2;max-width:820px;margin:0 auto;padding:0 24px}
+.philosophy .sec-title{color:var(--white);text-shadow:0 2px 10px rgba(30,95,150,.4)}
+.philosophy .sec-title-bar{background:rgba(255,255,255,.8)}
+.philosophy-text{
+  font-size:clamp(.95rem,1.8vw,1.05rem);line-height:2.3;letter-spacing:.05em;
+  text-shadow:0 1px 6px rgba(30,95,150,.45);margin:0 auto 44px;
+  max-width:660px;text-align:left;
+}
+.philosophy-text b{color:#fff;font-weight:700}
+.philosophy-lead{ /* 動画への導入文：中央・少し大きめ */
+  text-align:center;font-weight:700;
+  font-size:clamp(1.1rem,2.4vw,1.25rem);line-height:1.9;letter-spacing:.06em;
+  text-shadow:0 1px 6px rgba(30,95,150,.45);margin:0 auto 8px;max-width:660px;
+}
+/* 動画へ誘導する下向きアイコン：ふわっと上下に動く */
+.scroll-cue{display:flex;justify-content:center;margin:0 auto 18px;color:#fff}
+.scroll-cue svg{width:34px;height:34px;filter:drop-shadow(0 1px 4px rgba(30,95,150,.5));animation:cueBounce 1.6s ease-in-out infinite}
+@keyframes cueBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(7px)}}
+@media(prefers-reduced-motion:reduce){.scroll-cue svg{animation:none}}
+.video-frame{
+  position:relative;width:100%;aspect-ratio:16/9;border-radius:20px;overflow:hidden;
+  background:linear-gradient(150deg,#2c4a63,#1e5f96);
+  box-shadow:0 12px 36px rgba(20,60,95,.4);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;
+}
+.video-frame .play{
+  width:84px;height:84px;border-radius:50%;
+  background:rgba(255,255,255,.92);
+  display:flex;align-items:center;justify-content:center;
+}
+.video-frame .play svg{width:30px;height:30px;fill:var(--sky-deep);margin-left:5px}
+.video-frame p{font-size:.88rem;color:rgba(255,255,255,.85);letter-spacing:.06em}
+.video-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+
+/* ===== ⑥ 3つのサービス → ⑦ 声：ひと続きの明るい帯 ===== */
+.benefit{
+  position:relative;overflow:hidden;
+  background:linear-gradient(180deg,#eaf5fc 0%,#f6fbff 55%,#ffffff 100%);
+  padding-bottom:50px;
+}
+.benefit .inner{position:relative;z-index:2}
+/* 足跡の散歩道：ブロック上部から下部までS字を描いて歩く。
+   写真の上も通るため、コンテンツより前面に薄く重ね、白いにじみで下地を問わず見えるようにする */
+.benefit .paw{
+  z-index:3;fill:var(--sky);opacity:.28;
+  filter:drop-shadow(0 1px 2px rgba(255,255,255,.85));
+  pointer-events:none;
+}
+/* 3つのサービス：カードをやめ「文章 → 写真」の縦積み構成 */
+.svc-list{display:flex;flex-direction:column;gap:56px;max-width:600px;margin:0 auto}
+.svc-item{position:relative}
+.svc-head{display:flex;align-items:baseline;gap:12px;margin-bottom:12px}
+.svc-num{
+  font-family:var(--serif);font-weight:700;font-style:italic;
+  font-size:2.1rem;line-height:1;color:var(--sky);flex-shrink:0;
+}
+.svc-item h3{
+  font-family:var(--serif);color:var(--sky-deep);
+  font-size:1.16rem;line-height:1.55;
+}
+.svc-item p{font-size:.93rem;line-height:2;color:var(--ink);margin-bottom:20px}
+.svc-item .note{display:block;margin-top:8px;font-size:.76rem;color:#9aa6b0}
+.svc-photo{
+  width:100%;aspect-ratio:16/10;object-fit:cover;
+  border-radius:16px;box-shadow:0 8px 24px rgba(30,95,150,.18);display:block;
+}
+
+.voice{background:var(--white);padding-top:50px}
+.voice.push{
+  background:linear-gradient(180deg,#eaf5fc 0%,#f6fbff 100%);
+  padding-top:220px;padding-bottom:40px; /* 境目にまたがるギャラリー（-130px）と重ならないよう確保 */
+}
+.voice-list{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+.voice-list.single{grid-template-columns:1fr;max-width:640px;margin:0 auto}
+@media(max-width:100000px){.voice-list{grid-template-columns:1fr;max-width:560px;margin:0 auto}}
+.voice-item{
+  background:var(--white);border-radius:16px;padding:30px 28px;
+  box-shadow:0 4px 20px rgba(74,151,210,.12);
+  border:1px solid rgba(74,151,210,.12);
+}
+.voice-head{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.voice-avatar{
+  width:48px;height:48px;border-radius:50%;flex-shrink:0;
+  background:var(--sky-light);display:flex;align-items:center;justify-content:center;
+}
+.voice-avatar svg{width:26px;height:26px;fill:var(--sky)}
+.voice-meta{font-size:.85rem;color:var(--ink-soft);line-height:1.5}
+.voice-meta b{color:var(--sky-deep);font-size:.95rem}
+.voice-item p{font-size:.93rem;line-height:2}
+
+/* ===== ⑧ CV① → ⑨ 情景：ひと続きの青の帯 ===== */
+.cta-section{
+  text-align:center;color:var(--white);overflow:hidden;
+}
+.cta-section .cloud{fill:rgba(255,255,255,.3)}
+.cta-section.first{
+  /* 背景はFVの固定スライドショーを透過表示（半透明の青ベールで白文字の可読性を確保） */
+  background:linear-gradient(178deg,rgba(120,190,232,.70) 0%,rgba(61,134,194,.82) 100%);
+  padding-bottom:60px;
+}
+.cta-section.second{
+  /* 縦グラデーション。下端を次ブロックと同じ色(#eef7fc)まで、広い幅でゆるやかに薄めて境目を消す */
+  background:linear-gradient(180deg,#9fd4f2 0%,#5aa5da 26%,#5aa5da 44%,#8fc4e8 66%,#c3e0f2 84%,#eef7fc 100%);
+}
+.cta-title{
+  font-family:var(--serif);font-weight:700;
+  font-size:clamp(1.5rem,3.4vw,1.5rem);line-height:1.8;letter-spacing:.07em;
+  margin-bottom:18px;text-shadow:0 2px 10px rgba(30,95,150,.4);
+}
+.cta-lead{
+  font-size:clamp(.93rem,1.7vw,1.03rem);line-height:2.2;margin-bottom:42px;
+  text-shadow:0 1px 6px rgba(30,95,150,.45);
+}
+.cta-box{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:22px;max-width:820px;margin:0 auto;
+}
+@media(max-width:100000px){.cta-box{grid-template-columns:1fr;max-width:420px}}
+.cta-card{
+  background:rgba(255,255,255,.97);border-radius:20px;padding:36px 28px;
+  color:var(--ink);box-shadow:0 8px 30px rgba(30,95,150,.28);
+}
+.cta-card h3{
+  font-family:var(--serif);color:var(--sky-deep);font-size:1.2rem;margin-bottom:8px;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+}
+.cta-card h3 svg{flex-shrink:0}
+.cta-card p{font-size:.88rem;color:var(--ink-soft);line-height:1.9;margin-bottom:22px}
+.cta-card .cta-btn{width:100%;min-width:0}
+
+.scene{
+  position:relative;overflow:visible; /* ギャラリーを次セクションへまたがせるため clip しない */
+  background:var(--white);
+  color:var(--ink);text-align:center;
+  padding-top:50px;padding-bottom:0;
+}
+.scene .paw{opacity:.12;fill:var(--sky)}
+.scene-inner{position:relative;z-index:2;max-width:760px;margin:0 auto;padding:0 24px}
+.scene-title{
+  font-family:var(--serif);font-weight:700;color:var(--sky-deep);
+  font-size:clamp(1.5rem,3.6vw,1.6rem);line-height:1.9;letter-spacing:.08em;
+  margin-bottom:28px;
+}
+.scene-text{
+  font-size:clamp(.95rem,1.8vw,1.05rem);line-height:2.3;letter-spacing:.05em;
+  color:var(--ink);
+}
+/* 園内風景ギャラリー：横スワイプ（scroll-snap）カルーセル */
+/* セクションの境目にまたがせる：下に引き下げ、次セクション側で同量の余白を確保 */
+.scene-gallery{position:relative;z-index:3;margin-top:40px;margin-bottom:-130px}
+.gallery-track{
+  display:flex;gap:14px;
+  overflow-x:auto;scroll-snap-type:x mandatory;
+  padding:6px 24px 8px;                 /* 左右余白：先頭/末尾も中央寄せ＆隣を少し覗かせる */
+  -webkit-overflow-scrolling:touch;scrollbar-width:none;
+}
+.gallery-track::-webkit-scrollbar{display:none}
+.gallery-slide{flex:0 0 86%;margin:0;scroll-snap-align:center}
+.gallery-slide img{
+  width:100%;aspect-ratio:4/3;object-fit:cover;display:block;
+  border-radius:16px;box-shadow:0 12px 28px rgba(20,50,80,.30);
+}
+.gallery-dots{display:flex;gap:9px;justify-content:center;margin-top:16px}
+.gallery-dots .dot{
+  width:8px;height:8px;padding:0;border:0;border-radius:50%;cursor:pointer;
+  background:rgba(74,151,210,.35);transition:background .2s,transform .2s;
+}
+.gallery-dots .dot.active{background:var(--sky-deep);transform:scale(1.3)}
+@media(min-width:441px){
+  .gallery-slide{flex:0 0 78%}           /* PC幅では少し狭めて隣の覗きを増やす */
+}
+
+/* ===== ⑩ 声 → ⑪ 価格 → ⑫ オファー：ひと続きの淡い帯 ===== */
+.price{background:var(--sky-pale);padding-top:40px;padding-bottom:50px}
+.price-card{
+  max-width:640px;margin:0 auto;background:var(--white);border-radius:20px;
+  padding:46px 40px;box-shadow:0 8px 28px rgba(74,151,210,.15);text-align:center;
+}
+@media(max-width:100000px){.price-card{padding:36px 22px}}
+.price-label{
+  display:inline-block;background:var(--sky-light);color:var(--sky-deep);
+  font-weight:700;font-size:.82rem;letter-spacing:.12em;
+  padding:5px 18px;border-radius:999px;margin-bottom:18px;
+}
+.price-main{
+  font-family:var(--serif);color:var(--sky-deep);line-height:1.3;margin-bottom:8px;
+}
+.price-main .num{font-size:clamp(2.6rem,6vw,2.6rem);font-weight:700}
+.price-main .unit{font-size:clamp(1.1rem,2.4vw,1.1rem);font-weight:700}
+.price-sub{font-size:.85rem;color:var(--ink-soft);margin-bottom:30px}
+.price-table{
+  width:100%;border-collapse:collapse;text-align:left;margin-bottom:18px;
+}
+.price-table th,.price-table td{
+  padding:14px 8px;border-bottom:1px solid var(--sky-light);
+  font-size:.93rem;vertical-align:top;
+}
+.price-table th{font-weight:700;color:var(--sky-deep);white-space:nowrap;width:11em}
+.price-table td{text-align:right;font-variant-numeric:tabular-nums;color:var(--ink)}
+.price-table td small{display:block;color:var(--ink-soft);font-size:.78rem;text-align:right}
+.price-note{font-size:.78rem;color:var(--ink-soft);text-align:left;line-height:1.8}
+
+.offer{
+  background:linear-gradient(180deg,#f6fbff 0%,#ffffff 100%);
+  padding-top:50px;
+}
+.offer-list{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+@media(max-width:100000px){.offer-list{grid-template-columns:1fr;max-width:480px;margin:0 auto}}
+.offer-item{
+  background:var(--sky-pale);border:1px solid rgba(74,151,210,.18);
+  border-radius:16px;padding:34px 26px;text-align:center;
+}
+.offer-item .icon{
+  width:64px;height:64px;margin:0 auto 16px;border-radius:50%;
+  background:var(--white);display:flex;align-items:center;justify-content:center;
+  box-shadow:0 3px 12px rgba(74,151,210,.15);
+}
+.offer-item .icon svg{width:30px;height:30px;stroke:var(--sky-deep);fill:none}
+.offer-item h3{
+  font-family:var(--serif);color:var(--sky-deep);font-size:1.1rem;margin-bottom:10px;line-height:1.7;
+}
+.offer-item p{font-size:.9rem;color:var(--ink-soft);line-height:1.9}
+
+/* ===== ⑬ 追伸 ===== */
+.ps{
+  background:linear-gradient(180deg,#eef7fc 0%,#dceff9 100%);
+}
+.ps-card{
+  max-width:600px;margin:0 auto;position:relative;
+}
+.ps-letter{ /* 便箋（手書きの追伸）画像 */
+  width:100%;display:block;border-radius:10px;
+  box-shadow:0 12px 32px rgba(30,60,90,.2);
+  margin-bottom:28px;
+}
+.ps-card .cta-btn{width:100%;min-width:0}
+/* 追伸：封筒から便箋をそっと引き出すスクロール演出 */
+.ps-stage{position:relative;margin-bottom:28px}
+.ps-letter{margin-bottom:0}                       /* 上の基本ルールのmarginを打ち消し（ステージ側で余白を持つ） */
+.ps-stage .ps-letter{position:relative;z-index:2}
+/* 初期状態はJSが .ps-anim を付与したときのみ（無効時・reduced-motion時は通常表示） */
+.ps.ps-anim .ps-letter{opacity:0;transform:translateY(48px) scale(.97) rotate(-1deg);transform-origin:center bottom;will-change:transform,opacity}
+.ps.ps-anim .ps-cta{opacity:0;will-change:opacity}
+/* 画面内に入ったら1回だけ実行 */
+.ps.ps-anim.is-inview .ps-letter{animation:psLetter 1.4s cubic-bezier(.22,1,.36,1) .3s both}
+.ps.ps-anim.is-inview .ps-cta{animation:psCta .5s ease 1.9s both}
+@keyframes psLetter{
+  0%{opacity:0;transform:translateY(48px) scale(.97) rotate(-1deg);box-shadow:0 3px 10px rgba(20,45,75,.06)}
+  55%{opacity:1}
+  82%{transform:translateY(-6px) scale(1) rotate(0deg);box-shadow:0 26px 54px rgba(20,45,75,.30)}  /* 少し行き過ぎて浮き上がる */
+  100%{opacity:1;transform:translateY(0) scale(1) rotate(0deg);box-shadow:0 18px 42px rgba(20,45,75,.22)}  /* そっと置かれる */
+}
+@keyframes psCta{
+  from{opacity:0;transform:translateY(8px)}
+  to{opacity:1;transform:translateY(0)}
+}
+@media(prefers-reduced-motion:reduce){
+  .ps.ps-anim .ps-letter,.ps.ps-anim .ps-cta{opacity:1!important;transform:none!important;animation:none!important}
+}
+
+/* ===== フッター ===== */
+.footer{
+  position:relative;z-index:1;overflow:hidden;
+  background:var(--sky-deep);color:rgba(255,255,255,.85);
+  padding:56px 0 32px;text-align:center;font-size:.85rem;
+}
+.footer::before{ /* 背景写真＋濃紺の半透明ベール（写真を透過させつつ白文字の可読性を確保） */
+  content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
+  background:
+    linear-gradient(rgba(26,78,124,.82) 0%,rgba(18,58,98,.9) 100%),
+    url('assets/footer-bg.jpg') center/cover no-repeat;
+}
+.footer .inner{position:relative;z-index:2}
+.footer-logo{
+  font-family:var(--serif);font-weight:700;font-size:1.1rem;color:var(--white);
+  margin-bottom:14px;
+}
+.footer-copy{font-size:.78rem;color:rgba(255,255,255,.6)}
+/* ===== アクセス（地図＋所在地） ===== */
+.access{position:relative;z-index:1;background:var(--white);padding:28px 0 0} /* section基本の90px上下余白を打ち消す。上余白はpaddingで持たせ、マージン相殺（背景動画の映り込み）を防止 */
+.access-map{
+  margin:0 20px;aspect-ratio:4/3;line-height:0;
+  border-radius:16px;overflow:hidden;box-shadow:0 8px 22px rgba(20,50,80,.14);
+}
+.access-map iframe{width:100%;height:100%;border:0;display:block}
+.access-info{
+  text-align:center;color:var(--ink);
+  padding:26px 24px 30px;font-size:.9rem;line-height:2.1;
+}
+.access-info .access-addr{font-weight:700;font-size:.98rem;margin-bottom:6px}
+
+/* ===== 追従CTA（モバイル） ===== */
+.sticky-cta{
+  display:none;position:fixed;left:0;right:0;bottom:0;z-index:99;
+  background:rgba(255,255,255,.97);box-shadow:0 -4px 16px rgba(30,95,150,.18);
+  padding:10px 12px calc(10px + env(safe-area-inset-bottom));
+  gap:10px;
+  transition:opacity .45s ease, transform .45s ease;
+}
+.sticky-cta.cta-hidden{opacity:0;transform:translateX(-50%) translateY(100%);pointer-events:none} /* ⑧オファー以降はフェードアウト（中央寄せは維持） */
+.sticky-cta a{
+  flex:1;display:flex;align-items:center;justify-content:center;
+  min-height:48px;border-radius:12px;font-weight:700;font-size:.9rem;
+}
+@media(max-width:100000px){
+  .sticky-cta{display:flex}
+  /* 追従バーは⑧以降フェードアウトするため、フッターに逃げ余白は不要（コンパクトに） */
+  .footer{padding-bottom:calc(32px + env(safe-area-inset-bottom))}
+}
+
+/* ===== トップへ戻る ===== */
+.to-top{
+  margin:0 auto 28px;
+  width:52px;height:52px;border-radius:50%;border:none;cursor:pointer;
+  background:rgba(255,255,255,.95);
+  border:2px solid var(--sky);
+  box-shadow:0 4px 14px rgba(30,95,150,.25);
+  display:flex;align-items:center;justify-content:center;
+  transition:transform .3s,box-shadow .3s;
+}
+.to-top:hover{transform:translateY(-3px);box-shadow:0 7px 18px rgba(30,95,150,.35)}
+.to-top svg{width:22px;height:22px;stroke:var(--sky-deep);fill:none}
+@media(prefers-reduced-motion:reduce){
+  .to-top{transition:box-shadow .3s}
+  .to-top:hover{transform:none}
+}
+</style>
+</head>
+<body>
+
+<main>
+<!-- ① FV／HL ※コピーは要A/Bテスト（B案：「小さな我が子と、これからも、ずっと一緒に。」） -->
+<div class="fv-fixed" aria-hidden="true">
+  <div class="hero-bg">
+    <div class="hero-slide" style="background-image:url('assets/fv-01.jpg')"></div>
+    <div class="hero-slide" style="background-image:url('assets/fv-02.jpg')"></div>
+    <div class="hero-slide" style="background-image:url('assets/fv-03.jpg')"></div>
+    <div class="hero-slide" style="background-image:url('assets/fv-04.jpg')"></div>
+  </div>
+  <div class="hero-veil"></div>
+</div>
+
+<!-- FV動画：固定背景として再生（スクロールしても背景で再生され続ける）。下部⑧に来たら非表示にしてスライドショーへ戻す -->
+<div class="fv-video" id="fvVideo" aria-hidden="true">
+  <video class="hero-video" autoplay muted loop playsinline preload="auto" poster="assets/fv-01.jpg">
+    <source src="FV-540.mp4" type="video/mp4">
+  </video>
+  <div class="hero-video-veil"></div>
+</div>
+
+<section class="hero">
+  <div class="hero-inner">
+    <p class="hero-lead">ペットと一緒に眠れるお墓</p>
+    <h1 class="hero-catch">大切な小さな家族を<br>ひとりぼっちにさせない</h1>
+    <p class="hero-subhead">最後までずっと一緒に眠れる<br>供養のカタチ</p>
+  </div>
+</section>
+
+<!-- ② 共感（痛み） ※文言は一次データ（お客様アンケート等）に基づき差し替え予定 -->
+<section class="worry">
+  <div class="inner">
+    <h2 class="sec-title">あなたはペットと話したい<br>と思ったことはありませんか？</h2>
+    <div class="sec-title-bar"></div>
+    <p class="worry-lead">「あの子と少しでも話せたら、、、」<br>叶わないような願いと感じるかもしれません。<br>けど、心のより処があるだけで、もしかすると、、、</p>
+    <div class="worry-video">
+      <iframe src="https://www.youtube-nocookie.com/embed/aRGpXIfROuA" title="ペットと話したいと思ったことはありますか？" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    </div>
+  </div>
+</section>
+
+<!-- ④-2 「話せているような気がする」 -->
+<!-- ④-2 「話せているような気がする」：ピン留め＋スクロール連動（動画→白ベース→文字） -->
+<section class="story story-talk">
+  <div class="talk-pin">
+    <div class="rosebg" aria-hidden="true">
+      <video class="talk-video" autoplay muted loop playsinline preload="auto" poster="assets/fv-03.jpg">
+        <source src="assets/omairi-bg.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div class="inner">
+      <h2>「話せているような気がする」</h2>
+      <div class="bar"></div>
+      <p>薔薇が咲き誇る霊園を抜けて、我が子のお墓の前に立つ。手を合わせると、一緒に過ごした思い出が溢れ出してきます。</p>
+      <p class="talk-line">気づけば、あの子に話しかけている</p>
+      <p>——そんな気がするという方が、たくさんおられます。ひとりぼっちにさせたくないというご家族の想いを、私たちも同じ気持ちでお預かりしています。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ③ 諦めの否定 -->
+<section class="denial">
+  <div class="denial-top">
+    <div class="denial-bg" aria-hidden="true"></div>
+    <div class="inner">
+      <p class="denial-q">「動物と一緒に<br>お墓に入るなんて、、、」</p>
+      <p class="denial-mid">
+        かつてはこのように考えられる方は少なくありませんでした。これは「動物と一緒にお墓に入るということは良くない」というものが一般的だったからです。
+      </p>
+      <p class="denial-mid">
+        宗教観や墓地運営の慣習による影響が大きいとされ、実際にペットとの納骨を断っている霊園は今でも多く存在しています。
+      </p>
+      <p class="denial-mid">
+        しかし最近では、ペットは大切な家族の一員と考えられる方も増え、一緒に眠りたいと思っている人も多くなってきています。
+      </p>
+    </div>
+  </div>
+
+  <!-- 上の本文を読み進めた所で、この地点がトリガーになり問いかけがポップアップする -->
+  <div class="quiz-trigger" id="wishQuizTrigger" aria-hidden="true"></div>
+
+  <!-- 問いかけ：画面の大半を覆うポップアップ。答えるまで閉じない -->
+  <div class="quiz-screen" id="wishQuiz" role="dialog" aria-modal="true" aria-labelledby="wishQuizLabel">
+    <div class="quiz-card">
+      <div class="quiz-bg" aria-hidden="true"><!-- 背景動画。2本をクロスフェードで交互に見せる -->
+        <video class="quiz-video is-active" muted loop playsinline preload="auto">
+          <source src="2.mp4" type="video/mp4">
+        </video>
+        <video class="quiz-video" muted loop playsinline preload="auto">
+          <source src="3.mp4" type="video/mp4">
+        </video>
+        <div class="quiz-veil"></div><!-- 半透明の暗幕：動画を透かしつつ白文字を読ませる -->
+      </div>
+      <div class="quiz-inner" id="wishQuizLabel">
+        <p class="quiz-lead">「ペットと離れたくない」</p>
+        <p class="quiz-q">——そう願った飼い主たちが<span class="quiz-found">見つけた</span><br><span class="quiz-em">“ずっと一緒に眠れるお墓”</span></p>
+        <div class="quiz-btns" role="group" aria-labelledby="wishQuizLabel">
+          <button type="button" class="quiz-btn quiz-btn-cta" data-answer="see" aria-pressed="false">一緒に入れるお墓を見てみる</button>
+        </div>
+        <p class="quiz-reply" id="wishQuizReply" role="status" hidden></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ④-1 ペットのお墓で必ず知ってほしい1つのこと -->
+<section class="story story-know">
+  <div class="inner">
+    <h2>ペットのお墓で<br>必ず知ってほしい1つのこと</h2>
+    <div class="bar"></div>
+    <p>当霊園では、ペットのお墓として個別納骨の樹木葬をご用意しております。</p>
+    <p>実は、樹木葬の場合は13回忌や17回忌といった期限後に合祀されるものが多いのです。</p>
+    <p class="story-note"><strong>※合祀とは</strong>／故人のご遺骨を骨壺から取り出し、一つの場所にまとめて一緒に埋葬・供養する方法です。</p>
+    <figure class="goshi-fig">
+      <img src="assets/goshi.jpg" alt="個別納骨は一柱ずつお納めするが、13回忌・17回忌などの期限後は一つの場所にまとめて供養する合祀になる、という図解" loading="lazy">
+    </figure>
+    <p class="story-voices">「他の子の遺骨と混ざることに抵抗がある」<br>「家族だったから、ずっと一緒に眠り続けたい」</p>
+    <p>——そう思い、後悔のない供養を考える方に当霊園は選ばれています。当霊園の樹木葬は、<span class="em">埋葬期限を設けていないので、ずっと一緒に眠ることができます。</span></p>
+  </div>
+</section>
+
+<!-- ⑤ 施設理念＋動画（＝実在します） -->
+<section class="philosophy">
+  <svg class="paw" style="top:16%;left:7%;transform:rotate(-12deg)" width="42" height="42" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="7" cy="7.5" rx="2" ry="2.6"/><ellipse cx="12" cy="5.8" rx="2" ry="2.6"/><ellipse cx="17" cy="7.5" rx="2" ry="2.6"/><path d="M12 10c-3.2 0-6 2.6-6 5.4 0 1.9 1.5 3.1 3.3 3.1 1 0 1.8-.4 2.7-.4s1.7.4 2.7.4c1.8 0 3.3-1.2 3.3-3.1 0-2.8-2.8-5.4-6-5.4z"/></svg>
+  <svg class="paw" style="bottom:10%;right:8%;transform:rotate(18deg)" width="52" height="52" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="7" cy="7.5" rx="2" ry="2.6"/><ellipse cx="12" cy="5.8" rx="2" ry="2.6"/><ellipse cx="17" cy="7.5" rx="2" ry="2.6"/><path d="M12 10c-3.2 0-6 2.6-6 5.4 0 1.9 1.5 3.1 3.3 3.1 1 0 1.8-.4 2.7-.4s1.7.4 2.7.4c1.8 0 3.3-1.2 3.3-3.1 0-2.8-2.8-5.4-6-5.4z"/></svg>
+  <div class="philosophy-inner">
+    <h2 class="sec-title">ご家族さまの想いに応える<br>霊園でありたい</h2>
+    <div class="sec-title-bar"></div>
+    <p class="philosophy-text">
+      私たち<b>美原東ロイヤルメモリアルパーク</b>は、単なるお墓を建てることをお客様に提供しているわけではありません。故人やご先祖様のお墓参りを、家族みんなで楽しめる墓地にしたいと考えています。
+    </p>
+    <p class="philosophy-lead">園内の紹介動画をご覧ください。</p>
+    <div class="scroll-cue" aria-hidden="true"><!-- 動画へ視線を誘導する下向きアイコン -->
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+    <!-- 施設紹介動画 -->
+    <div class="video-frame">
+      <iframe src="https://www.youtube-nocookie.com/embed/sFhog5THu0A" title="施設紹介動画" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    </div>
+  </div>
+</section>
+
+<!-- ⑥ 心から明るく手を合わせられるための3つのサービス -->
+<section class="benefit">
+  <!-- 足跡の散歩道：二本足で上から下へ、緩やかなS字を描いて歩く（指のある側が進行方向。左右の足を交互に振る） -->
+  <svg class="paw" style="top:5%;left:17%;transform:rotate(163deg) scaleX(-1)" width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="7" cy="7.5" rx="2" ry="2.6"/><ellipse cx="12" cy="5.8" rx="2" ry="2.6"/><ellipse cx="17" cy="7.5" rx="2" ry="2.6"/><path d="M12 10c-3.2 0-6 2.6-6 5.4 0 1.9 1.5 3.1 3.3 3.1 1 0 1.8-.4 2.7-.4s1.7.4 2.7.4c1.8 0 3.3-1.2 3.3-3.1 0-2.8-2.8-5.4-6-5.4z"/></svg>
+  <svg class="paw" style="top:12%;left:29%;transform:rotate(148deg)" width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="7" cy="7.5" rx="2" ry="2.6"/><ellipse cx="12" cy="5.8" rx="2" ry="2.6"/><ellipse cx="17" cy="7.5" rx="2" ry="2.6"/><path d="M12 10c-3.2 0-6 2.6-6 5.4 0 1.9 1.5 3.1 3.3 3.1 1 0 1.8-.4 2.7-.4s1.7.4 2.7.4c1.8 0 3.3-1.2 3.3-3.1 0-2.8-2.8-5.4-6-5.4z"/></svg>
+  <svg class="paw" style="top:19%;left:35%;transform:rotate(144deg) scaleX(-1)" width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="7" cy="7.5" rx="2" ry="2.6"/><ellipse cx="12" cy="5.8" rx="2" ry="2.6"/><ellipse cx="17" cy="7.5" rx="2" ry="2.6"/><path d="M12 10c-3.2 0-6 2.6-6 5.4 0 1.9 1.5 3.1 3.3 3.1 1 0 1.8-.4 2.7-.4s1.7.4 2.7.4c1.8 0 3.3-1.2 3.3-3.1 0-2.8-2.8-5.4-6-5.4z"/></svg>
+  <svg class="paw" style="top:26%;left:55%;transform:rotate(150deg)" width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="7" cy="7.5" rx="2" ry="2.6"/><ellipse cx="12" cy="5.8" rx="2" ry="2.6"/><ellipse cx="17" cy="7.5" rx="2" ry="2.6"/><path d="M12 10c-3.2 0-6 2.6-6 5.4 0 1.9 1.5 3.1 3.3 3.1 1 0 1.8-.4 2.7-.4s1.7.4 2.7.4c1.8 0 3.3-1.2 3.3-3.1 0-2.8-2.8-5.4-6-5.4z"/></svg>
+  <svg class="paw" style="top:33%;left:60%;transform:rotate(163deg) scaleX(-1)" width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="7" cy="7.5" rx="2" ry="2.6"/><ellipse cx="12" cy="5.8" rx="2" ry="2.6"/><ellipse cx="17" cy="7.5" rx="2" ry="2.6"/><path d="M12 10c-3.2 0-6 2.6-6 5.4 0 1.9 1.5 3.1 3.3 3.1 1 0 1.8-.4 2.7-.4s1.7.4 2.7.4c1.8 0 3.3-1.2 3.3-3.1 0-2.8-2.8-5.4-6-5.4z"/></svg>
+  <svg class="paw" style="top:40%;left:72%;transform:rotate(177deg)" width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="7" cy="7.5" rx="2" ry="2.6"/><ellipse cx="12" cy="5.8" rx="2" ry="2.6"/><ellipse cx="17" cy="7.5" rx="2" ry="2.6"/><path d="M12 10c-3.2 0-6 2.6-6 5.4 0 1.9 1.5 3.1 3.3 3.1 1 0 1.8-.4 2.7-.4s1.7.4 2.7.4c1.8 0 3.3-1.2 3.3-3.1 0-2.8-2.8-5.4-6-5.4z"/></svg>
+  <svg class="paw" style="top:47%;left:67%;transform:rotate(195deg) scaleX(-1)" width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="7" cy="7.5" rx="2" ry="2.6"/><ellipse cx="12" cy="5.8" rx="2" ry="2.6"/><ellipse cx="17" cy="7.5" rx="2" ry="2.6"/><path d="M12 10c-3.2 0-6 2.6-6 5.4 0 1.9 1.5 3.1 3.3 3.1 1 0 1.8-.4 2.7-.4s1.7.4 2.7.4c1.8 0 3.3-1.2 3.3-3.1 0-2.8-2.8-5.4-6-5.4z"/></svg>
+  <svg class="paw" style="top:54%;left:68%;transform:rotate(208deg)" width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="7" cy="7.5" rx="2" ry="2.6"/><ellipse cx="12" cy="5.8" rx="2" ry="2.6"/><ellipse cx="17" cy="7.5" rx="2" ry="2.6"/><path d="M12 10c-3.2 0-6 2.6-6 5.4 0 1.9 1.5 3.1 3.3 3.1 1 0 1.8-.4 2.7-.4s1.7.4 2.7.4c1.8 0 3.3-1.2 3.3-3.1 0-2.8-2.8-5.4-6-5.4z"/></svg>
+  <svg class="paw" style="top:61%;left:52%;transform:rotate(212deg) scaleX(-1)" width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="7" cy="7.5" rx="2" ry="2.6"/><ellipse cx="12" cy="5.8" rx="2" ry="2.6"/><ellipse cx="17" cy="7.5" rx="2" ry="2.6"/><path d="M12 10c-3.2 0-6 2.6-6 5.4 0 1.9 1.5 3.1 3.3 3.1 1 0 1.8-.4 2.7-.4s1.7.4 2.7.4c1.8 0 3.3-1.2 3.3-3.1 0-2.8-2.8-5.4-6-5.4z"/></svg>
+  <svg class="paw" style="top:68%;left:46%;transform:rotate(210deg)" width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="7" cy="7.5" rx="2" ry="2.6"/><ellipse cx="12" cy="5.8" rx="2" ry="2.6"/><ellipse cx="17" cy="7.5" rx="2" ry="2.6"/><path d="M12 10c-3.2 0-6 2.6-6 5.4 0 1.9 1.5 3.1 3.3 3.1 1 0 1.8-.4 2.7-.4s1.7.4 2.7.4c1.8 0 3.3-1.2 3.3-3.1 0-2.8-2.8-5.4-6-5.4z"/></svg>
+  <svg class="paw" style="top:75%;left:29%;transform:rotate(197deg) scaleX(-1)" width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="7" cy="7.5" rx="2" ry="2.6"/><ellipse cx="12" cy="5.8" rx="2" ry="2.6"/><ellipse cx="17" cy="7.5" rx="2" ry="2.6"/><path d="M12 10c-3.2 0-6 2.6-6 5.4 0 1.9 1.5 3.1 3.3 3.1 1 0 1.8-.4 2.7-.4s1.7.4 2.7.4c1.8 0 3.3-1.2 3.3-3.1 0-2.8-2.8-5.4-6-5.4z"/></svg>
+  <svg class="paw" style="top:82%;left:29%;transform:rotate(183deg)" width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="7" cy="7.5" rx="2" ry="2.6"/><ellipse cx="12" cy="5.8" rx="2" ry="2.6"/><ellipse cx="17" cy="7.5" rx="2" ry="2.6"/><path d="M12 10c-3.2 0-6 2.6-6 5.4 0 1.9 1.5 3.1 3.3 3.1 1 0 1.8-.4 2.7-.4s1.7.4 2.7.4c1.8 0 3.3-1.2 3.3-3.1 0-2.8-2.8-5.4-6-5.4z"/></svg>
+  <svg class="paw" style="top:89%;left:22%;transform:rotate(166deg) scaleX(-1)" width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="7" cy="7.5" rx="2" ry="2.6"/><ellipse cx="12" cy="5.8" rx="2" ry="2.6"/><ellipse cx="17" cy="7.5" rx="2" ry="2.6"/><path d="M12 10c-3.2 0-6 2.6-6 5.4 0 1.9 1.5 3.1 3.3 3.1 1 0 1.8-.4 2.7-.4s1.7.4 2.7.4c1.8 0 3.3-1.2 3.3-3.1 0-2.8-2.8-5.4-6-5.4z"/></svg>
+  <svg class="paw" style="top:95%;left:32%;transform:rotate(166deg)" width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="7" cy="7.5" rx="2" ry="2.6"/><ellipse cx="12" cy="5.8" rx="2" ry="2.6"/><ellipse cx="17" cy="7.5" rx="2" ry="2.6"/><path d="M12 10c-3.2 0-6 2.6-6 5.4 0 1.9 1.5 3.1 3.3 3.1 1 0 1.8-.4 2.7-.4s1.7.4 2.7.4c1.8 0 3.3-1.2 3.3-3.1 0-2.8-2.8-5.4-6-5.4z"/></svg>
+  <div class="inner">
+    <h2 class="sec-title">心から明るく手を合わせられる<br>ための3つのサービス</h2>
+    <div class="sec-title-bar"></div>
+    <div class="svc-list">
+      <div class="svc-item">
+        <div class="svc-head"><span class="svc-num">01</span><h3>花や緑が溢れる<br>四季折々の庭園空間</h3></div>
+        <p>「霊園」と聞くと気が重くなる方もいます。ここは花と緑が咲き誇り、四季で表情を変える場所。季節の自然に癒されながら、明るい気持ちでお参りいただけます。</p>
+        <img class="svc-photo" src="assets/svc-01-sakura.jpg" alt="桜が咲き誇る春の園内" loading="lazy">
+      </div>
+      <div class="svc-item">
+        <div class="svc-head"><span class="svc-num">02</span><h3>毎日の行き届いた清掃</h3></div>
+        <p>墓石を探し、枯葉の掃除から始める——そんな負担はありません。園内は毎日徹底して清掃。いつ来ても、あの子をきれいな場所でお迎えします。</p>
+        <img class="svc-photo" src="assets/svc-02.jpg" alt="スタッフによる園内の清掃" loading="lazy">
+      </div>
+      <div class="svc-item">
+        <div class="svc-head"><span class="svc-num">03</span><h3>無料送迎・バリアフリー対応</h3></div>
+        <p>何歳になっても通えるよう、駅からの無料送迎とバリアフリーを整えています。足腰が弱っても、家族に負担をかけずご自身で会いに行けます。<span class="note">※無料送迎は指定駅から・要予約</span></p>
+        <img class="svc-photo" src="assets/svc-03.jpg" alt="段差の少ない園内の通路" loading="lazy">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ⑦ お客様の声①② ※実際の声に差し替え予定 -->
+<section class="voice">
+  <div class="inner">
+    <h2 class="sec-title">ペットを見送ったご家族の声</h2>
+    <div class="sec-title-bar"></div>
+    <div class="voice-list">
+      <div class="voice-item">
+        <div class="voice-head">
+          <div class="voice-avatar">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="7" cy="7.5" rx="2" ry="2.6"/><ellipse cx="12" cy="5.8" rx="2" ry="2.6"/><ellipse cx="17" cy="7.5" rx="2" ry="2.6"/><path d="M12 10c-3.2 0-6 2.6-6 5.4 0 1.9 1.5 3.1 3.3 3.1 1 0 1.8-.4 2.7-.4s1.7.4 2.7.4c1.8 0 3.3-1.2 3.3-3.1 0-2.8-2.8-5.4-6-5.4z"/></svg>
+          </div>
+          <div class="voice-meta"><b>60代・ご夫婦</b><br>愛犬を見送られて</div>
+        </div>
+        <p>16年連れ添った子を見送ったあと、「この子だけ別の場所」がどうしても受け入れられませんでした。一緒に眠れるお墓があると知ったとき、夫婦で涙が出ました。今は「先に行って待っててね」と声をかけられます。</p>
+      </div>
+      <div class="voice-item">
+        <div class="voice-head">
+          <div class="voice-avatar">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="7" cy="7.5" rx="2" ry="2.6"/><ellipse cx="12" cy="5.8" rx="2" ry="2.6"/><ellipse cx="17" cy="7.5" rx="2" ry="2.6"/><path d="M12 10c-3.2 0-6 2.6-6 5.4 0 1.9 1.5 3.1 3.3 3.1 1 0 1.8-.4 2.7-.4s1.7.4 2.7.4c1.8 0 3.3-1.2 3.3-3.1 0-2.8-2.8-5.4-6-5.4z"/></svg>
+          </div>
+          <div class="voice-meta"><b>50代・女性</b><br>愛猫と入れる区画をご契約</div>
+        </div>
+        <p>ペット霊園と人のお墓の二か所にお参りするのは体力的にも心にも負担でした。ここなら一度にみんなに会える。園内が明るくてお参りというより「会いに行く」感覚です。</p>
+      </div>
+    </div>
+    <p class="replace-note">※掲載内容はイメージです。実際のお客様の声の取得後に差し替えてください。</p>
+  </div>
+</section>
+
+<!-- ⑧ CV① -->
+<section class="cta-section first">
+  <div class="inner">
+    <h2 class="cta-title">あの子と眠れる区画を<br>まずは資料でご覧ください。</h2>
+    <p class="cta-lead">区画の写真・料金・園内の雰囲気がわかる資料を無料でお届けします。</p>
+    <div class="cta-box">
+      <div class="cta-card">
+        <h3><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#4a97d2" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>資料請求（無料）</h3>
+        <p>区画・料金・園内写真を掲載したパンフレットをお届けします。3分のかんたん入力。</p>
+        <a href="https://e-mihara.jp/form_siryou/" class="cta-btn cta-primary">無料で資料請求する</a>
+      </div>
+      <div class="cta-card">
+        <h3><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#4a97d2" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 8.6 8.6 0 0 1-3.5-.8L3 20l1-4.3a8.4 8.4 0 1 1 17-4.2z"/></svg>見学予約・お問合せ</h3>
+        <p>気になることは何でもどうぞ。見学のご予約もこちらから承ります。</p>
+        <a href="https://e-mihara.jp/form_yoyaku/" class="cta-btn cta-secondary" style="border:2px solid var(--sky)">見学・お問合せはこちら</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ⑨ 3Dベネフィット（情景）：CV①から続く青の帯 -->
+<section class="scene">
+  <svg class="paw" style="top:14%;left:8%;transform:rotate(-12deg)" width="42" height="42" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="7" cy="7.5" rx="2" ry="2.6"/><ellipse cx="12" cy="5.8" rx="2" ry="2.6"/><ellipse cx="17" cy="7.5" rx="2" ry="2.6"/><path d="M12 10c-3.2 0-6 2.6-6 5.4 0 1.9 1.5 3.1 3.3 3.1 1 0 1.8-.4 2.7-.4s1.7.4 2.7.4c1.8 0 3.3-1.2 3.3-3.1 0-2.8-2.8-5.4-6-5.4z"/></svg>
+  <svg class="paw" style="bottom:16%;right:9%;transform:rotate(18deg)" width="52" height="52" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="7" cy="7.5" rx="2" ry="2.6"/><ellipse cx="12" cy="5.8" rx="2" ry="2.6"/><ellipse cx="17" cy="7.5" rx="2" ry="2.6"/><path d="M12 10c-3.2 0-6 2.6-6 5.4 0 1.9 1.5 3.1 3.3 3.1 1 0 1.8-.4 2.7-.4s1.7.4 2.7.4c1.8 0 3.3-1.2 3.3-3.1 0-2.8-2.8-5.4-6-5.4z"/></svg>
+  <div class="scene-inner">
+    <h2 class="scene-title">お参りに行けば<br>あの子がそこにいる。</h2>
+    <p class="scene-text">
+      晴れた日に花を持って霊園へ。<br>
+      墓前に手を合わせれば目の前に大切なあの子がいる。<br>
+      「元気にしてた？」「みんな一緒だよ」<br><br>
+      いつかご自身がその時を迎えたあとも家族全員が同じ場所に揃い続ける。それは遺されるご家族へのいちばんやさしい贈りものになります。
+    </p>
+  </div>
+
+  <!-- 園内風景ギャラリー（横スワイプ／スライドフリップ・4枚） -->
+  <div class="scene-gallery" role="group" aria-label="園内の風景写真">
+    <div class="gallery-track" id="sceneGallery">
+      <figure class="gallery-slide"><img src="assets/gallery-1.jpg" alt="園内の風景" loading="lazy"></figure>
+      <figure class="gallery-slide"><img src="assets/gallery-2.jpg" alt="園内の風景" loading="lazy"></figure>
+      <figure class="gallery-slide"><img src="assets/gallery-3.jpg" alt="園内の風景" loading="lazy"></figure>
+      <figure class="gallery-slide"><img src="assets/gallery-4.jpg" alt="園内の風景" loading="lazy"></figure>
+    </div>
+    <div class="gallery-dots">
+      <button class="dot active" type="button" aria-label="1枚目へ"></button>
+      <button class="dot" type="button" aria-label="2枚目へ"></button>
+      <button class="dot" type="button" aria-label="3枚目へ"></button>
+      <button class="dot" type="button" aria-label="4枚目へ"></button>
+    </div>
+  </div>
+</section>
+
+<!-- ⑩ お客様の声③（決断の後押し） ※実際の声に差し替え予定 -->
+<section class="voice push">
+  <div class="inner">
+    <h2 class="sec-title">一歩を踏み出した方の声</h2>
+    <div class="sec-title-bar"></div>
+    <div class="voice-list single">
+      <div class="voice-item">
+        <div class="voice-head">
+          <div class="voice-avatar">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="7" cy="7.5" rx="2" ry="2.6"/><ellipse cx="12" cy="5.8" rx="2" ry="2.6"/><ellipse cx="17" cy="7.5" rx="2" ry="2.6"/><path d="M12 10c-3.2 0-6 2.6-6 5.4 0 1.9 1.5 3.1 3.3 3.1 1 0 1.8-.4 2.7-.4s1.7.4 2.7.4c1.8 0 3.3-1.2 3.3-3.1 0-2.8-2.8-5.4-6-5.4z"/></svg>
+          </div>
+          <div class="voice-meta"><b>70代・女性</b><br>資料請求から2週間でご契約</div>
+        </div>
+        <p>「まだ早いかな」と迷いましたが、資料を見て見学して「ここならあの子と一緒にいられる」と思えたら心がすっと軽くなりました。決めたことで、いま元気に隣にいるこの子との毎日をもっと大切にできるようになった気がします。もっと早く知りたかったです。</p>
+      </div>
+    </div>
+    <p class="replace-note">※掲載内容はイメージです。実際のお客様の声の取得後に差し替えてください。</p>
+  </div>
+</section>
+
+<!-- ⑫ オファー＋リスクリバーサル → CV② -->
+<section class="offer">
+  <div class="inner">
+    <h2 class="sec-title">安心してご検討いただくための<br>3つのお約束</h2>
+    <div class="sec-title-bar"></div>
+    <div class="offer-list">
+      <div class="offer-item">
+        <div class="icon">
+          <svg viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 11.5 3.5 15a2.1 2.1 0 0 0 3 3l3.5-3.5"/><path d="m13 5.5 5.5 5.5"/><path d="M9.5 9 15 3.5a2.1 2.1 0 0 1 3 3L12.5 12"/><path d="m5 19 7-7"/></svg>
+        </div>
+        <h3>無理な営業は一切しません</h3>
+        <p>資料請求後・ご見学後にしつこいお電話や訪問営業をすることはありません。</p>
+      </div>
+      <div class="offer-item">
+        <div class="icon">
+          <svg viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="5" width="16" height="16" rx="2"/><path d="M8 3v4M16 3v4M4 11h16"/></svg>
+        </div>
+        <h3>その場でのご契約は不要です</h3>
+        <p>ご見学いただいたその日に決める必要はありません。ご家族とゆっくりご検討ください。</p>
+      </div>
+      <div class="offer-item">
+        <div class="icon">
+          <svg viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9 12.5l2 2 4-4.5"/></svg>
+        </div>
+        <h3>フォームは最小限の項目だけ</h3>
+        <p>資料請求は3分で完了。お名前とお届け先など必要最小限のご入力だけです。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-section second">
+  <div class="inner">
+    <h2 class="cta-title">「ずっと一緒だよ」の約束を<br>ここから。</h2>
+    <p class="cta-lead">
+      資料請求・ご見学は無料です。<br>
+      大切な家族との「これから」を安心して考えられるお手伝いをいたします。
+    </p>
+    <div class="cta-box">
+      <div class="cta-card">
+        <h3><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#4a97d2" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>資料請求（無料）</h3>
+        <p>区画・料金・園内写真を掲載したパンフレットをお届けします。3分のかんたん入力。</p>
+        <a href="https://e-mihara.jp/form_siryou/" class="cta-btn cta-primary">無料で資料請求する</a>
+      </div>
+      <div class="cta-card">
+        <h3><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#4a97d2" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 8.6 8.6 0 0 1-3.5-.8L3 20l1-4.3a8.4 8.4 0 1 1 17-4.2z"/></svg>見学予約・お問合せ</h3>
+        <p>気になることは何でもどうぞ。見学のご予約もこちらから承ります。</p>
+        <a href="https://e-mihara.jp/form_yoyaku/" class="cta-btn cta-secondary" style="border:2px solid var(--sky)">見学・お問合せはこちら</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ⑬ 追伸 -->
+<section class="ps">
+  <div class="inner">
+    <div class="ps-card">
+      <div class="ps-stage">
+        <img class="ps-letter" src="assets/letter.jpg" loading="lazy"
+          alt="追伸。あの子は言葉が話せないぶん、いつも全身で寄り添ってくれました。帰り道を急いだ日も疲れて帰った夜も、玄関でしっぽを振って待っていてくれた。だからこそ、最期のその先までひとりぼっちにはさせたくない。「ずっと一緒だよ」の約束は、これから先も守ることができます。まずは資料をご覧いただき、あの子と眠れる場所を確かめてください。それが、いま隣にいるあの子との毎日をもっと安心して過ごす第一歩になるはずです。">
+      </div>
+      <a href="https://e-mihara.jp/form_siryou/" class="cta-btn cta-primary ps-cta">
+        無料で資料請求する
+        <small>― 3分でかんたん入力 ―</small>
+      </a>
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- フッター -->
+<footer class="footer">
+  <div class="inner">
+    <button type="button" class="to-top" id="toTop" aria-label="ページ上部へ戻る">
+      <svg viewBox="0 0 24 24" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5"/><path d="m5 12 7-7 7 7"/></svg>
+    </button>
+    <p class="footer-logo">美原東ロイヤルメモリアルパーク</p>
+    <p class="footer-copy">&copy; 2026 Sato no Nukumori. All Rights Reserved.</p>
+  </div>
+</footer>
+
+<!-- モバイル追従CTA -->
+<div class="sticky-cta">
+  <a href="https://e-mihara.jp/form_yoyaku/" class="btn-outline">見学・お問い合わせ</a>
+  <a href="https://e-mihara.jp/form_siryou/" class="btn-fill">無料で資料請求</a>
+</div>
+
+<script>
+(function(){
+  var btn = document.getElementById('toTop');
+  btn.addEventListener('click', function(){
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    window.scrollTo({top:0, behavior: reduce ? 'auto' : 'smooth'});
+  });
+})();
+
+
+/* ④-2 お参り背景動画：属性autoplayがブロックされる環境向けの再生フォールバック（ループ・無音） */
+(function(){
+  var v = document.querySelector('.talk-video');
+  if(!v) return;
+  v.muted = true; v.setAttribute('muted',''); v.playsInline = true;
+  function tryPlay(){ var p = v.play(); if(p && p.catch) p.catch(function(){}); }
+  tryPlay();
+  v.addEventListener('loadeddata', tryPlay);
+  v.addEventListener('canplay', tryPlay);
+  ['touchstart','pointerdown','click','scroll','keydown'].forEach(function(ev){
+    window.addEventListener(ev, function(){ tryPlay(); }, {once:true, passive:true, capture:true});
+  });
+  document.addEventListener('visibilitychange', function(){ if(!document.hidden) tryPlay(); });
+})();
+
+/* ⑧「あの子と眠れる区画を…」以降は下部の追従バーをフェードアウト（上に戻ると再表示） */
+(function(){
+  var bar = document.querySelector('.sticky-cta');
+  var offer = document.querySelector('.cta-section.first');
+  if(!bar || !offer) return;
+  function update(){
+    var r = offer.getBoundingClientRect();
+    var reached = r.top < window.innerHeight * 0.8; // ⑧の上端が画面上部80%まで入ったら以降とみなす
+    bar.classList.toggle('cta-hidden', reached);
+  }
+  window.addEventListener('scroll', update, true); // capture:true で body 由来の scroll を直接判定
+  window.addEventListener('resize', update);
+  update();
+})();
+
+/* 追伸：封筒から便箋を引き出す演出を、画面内に入ったら1回だけ実行 */
+(function(){
+  var ps = document.querySelector('.ps');
+  if(!ps) return;
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){ ps.classList.add('ps-anim'); return; } // 動きなしで通常表示
+  ps.classList.add('ps-anim'); // 初期状態（非表示）を適用
+  var done = false;
+  function check(){
+    if(done) return;
+    var r = ps.getBoundingClientRect();
+    if(r.top < window.innerHeight * 0.8 && r.bottom > 0){
+      done = true;
+      ps.classList.add('is-inview');
+      window.removeEventListener('scroll', check, true);
+      window.removeEventListener('resize', check);
+    }
+  }
+  window.addEventListener('scroll', check, true);
+  window.addEventListener('resize', check);
+  check();
+})();
+
+/* 園内風景ギャラリー：現在位置に応じてドットを更新／ドットクリックで移動 */
+(function(){
+  var track = document.getElementById('sceneGallery');
+  if(!track) return;
+  var slides = track.querySelectorAll('.gallery-slide');
+  var dots = track.parentNode.querySelectorAll('.gallery-dots .dot');
+  if(!slides.length || !dots.length) return;
+  function current(){
+    var center = track.scrollLeft + track.clientWidth / 2;
+    var idx = 0, best = Infinity;
+    slides.forEach(function(s, i){
+      var c = s.offsetLeft + s.offsetWidth / 2;
+      var d = Math.abs(c - center);
+      if(d < best){ best = d; idx = i; }
+    });
+    return idx;
+  }
+  function sync(){
+    var idx = current();
+    dots.forEach(function(dot, i){ dot.classList.toggle('active', i === idx); });
+  }
+  track.addEventListener('scroll', sync, {passive:true});
+  dots.forEach(function(dot, i){
+    dot.addEventListener('click', function(){
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      track.scrollTo({ left: slides[i].offsetLeft - (track.clientWidth - slides[i].offsetWidth) / 2, behavior: reduce ? 'auto' : 'smooth' });
+    });
+  });
+  sync();
+})();
+
+/* 問いかけの背景動画：2本を交互にクロスフェード。モーダルが開いている間だけ再生する */
+window.__quizVideo = (function(){
+  var vids = [].slice.call(document.querySelectorAll('.quiz-video'));
+  if(vids.length < 2) return { start:function(){}, stop:function(){} };
+  var SWAP_MS = 8000;
+  var cur = 0, timer = null;
+
+  function play(v){ var p = v.play(); if(p && p.catch) p.catch(function(){}); }
+
+  function swap(){
+    var prev = vids[cur];
+    prev.classList.remove('is-active');
+    cur = (cur + 1) % vids.length;
+    var next = vids[cur];
+    next.currentTime = 0;
+    play(next);
+    next.classList.add('is-active');
+    // フェードが終わってから裏の動画を止める（見えている間は動かしたままにする）
+    setTimeout(function(){ if(!prev.classList.contains('is-active')) prev.pause(); }, 1700);
+  }
+
+  function start(){
+    if(timer) return;
+    play(vids[cur]);
+    timer = setInterval(swap, SWAP_MS);
+  }
+  function stop(){
+    if(!timer) return;
+    clearInterval(timer); timer = null;
+    vids.forEach(function(v){ v.pause(); });
+  }
+  return { start:start, stop:stop };
+})();
+
+/* 問いかけ：上の本文を読み進めた所でポップアップ表示。答えると閉じて次のセクションへ進む */
+(function(){
+  var modal   = document.getElementById('wishQuiz');
+  var trigger = document.getElementById('wishQuizTrigger');
+  var next    = document.querySelector('.story-know'); // 答えたあとに進む先
+  var reply   = document.getElementById('wishQuizReply');
+  if(!modal || !reply) return;
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var btns = [].slice.call(modal.querySelectorAll('.quiz-btn'));
+  var video = window.__quizVideo || { start:function(){}, stop:function(){} };
+  var shown = false, answered = false;
+
+  // ボタンを押したときに添える一言
+  var REPLIES = {
+    see: 'その“お墓”を、これからご紹介します。'
+  };
+
+  /* 開いている間はページのスクロールをロックする（位置はそのまま保持） */
+  function lockScroll(){
+    document.documentElement.style.overflow = 'hidden';
+    document.body.style.overflow = 'hidden';
+  }
+  function unlockScroll(){
+    document.documentElement.style.overflow = '';
+    document.body.style.overflow = '';
+  }
+
+  function openModal(){
+    if(shown) return;
+    shown = true;
+    lockScroll();
+    modal.classList.add('is-open');
+    video.start();
+  }
+  function closeModal(){
+    modal.classList.remove('is-open');
+    unlockScroll();
+    // フェードアウトが終わってから動画を止める
+    setTimeout(function(){ video.stop(); }, 500);
+  }
+
+  // 上の本文を読み進め、トリガー地点が画面の上寄り(40%)まで来たら開く（余白を減らした分、発火を遅らせる）
+  if('IntersectionObserver' in window && trigger){
+    new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ if(e.isIntersecting) openModal(); });
+    }, { rootMargin: '0px 0px -60% 0px' }).observe(trigger);
+  } else {
+    // 観測できない環境では、その位置までスクロールしたら開く
+    window.addEventListener('scroll', function(){
+      if(trigger && trigger.getBoundingClientRect().top < window.innerHeight * 0.40) openModal();
+    }, { passive:true });
+  }
+
+  btns.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var answer = btn.dataset.answer;
+      // 選び直せるように、押すたびに現在の回答を入れ替える
+      btns.forEach(function(b){ b.setAttribute('aria-pressed', String(b === btn)); });
+
+      reply.innerHTML = REPLIES[answer];
+      reply.hidden = false;
+
+      if(!answered){
+        answered = true;
+        // 少し余韻をもってモーダルを閉じ、次のセクション先頭へ静かに運ぶ。
+        // レイアウト確定後に位置を再計算し、instant で一度だけ移動（smooth＋割り込みの行き過ぎを防ぐ）
+        var afterClose = function(){
+          closeModal();
+          requestAnimationFrame(function(){
+            if(!next) return;
+            var top = next.getBoundingClientRect().top + window.scrollY - 8;
+            window.scrollTo({ top: Math.max(0, top), behavior: 'instant' });
+          });
+        };
+        reduce ? afterClose() : setTimeout(afterClose, 700);
+      }
+    });
+  });
+})();
+
+/* 「話せているような気がする」ブロック：セクションをピン留めしたまま、
+   トラック内のスクロール進捗に連動して 動画 → 白ベース透過 → 文字フェードイン */
+(function(){
+  var block = document.querySelector('.story-talk');
+  if(!block) return;
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){ block.classList.add('text-in'); return; }
+
+  var pin = block.querySelector('.talk-pin');
+  function clamp(v){ return v < 0 ? 0 : v > 1 ? 1 : v; }
+  function update(){
+    var rect = block.getBoundingClientRect();
+    var vh = window.innerHeight;
+    // ピンの状態：トラックが画面に掛かっている間は fixed で固定、抜けたら下端へ
+    if(rect.top <= 0 && rect.bottom >= vh){
+      pin.classList.add('is-fixed'); pin.classList.remove('is-bottom');
+    } else if(rect.bottom < vh){
+      pin.classList.remove('is-fixed'); pin.classList.add('is-bottom');
+    } else {
+      pin.classList.remove('is-fixed'); pin.classList.remove('is-bottom');
+    }
+    // ピン中の進捗：トラック上端が0を過ぎてから (トラック高 - 画面高) 分で 0→1
+    var scrollable = block.offsetHeight - vh;
+    var p = scrollable > 0 ? clamp(-rect.top / scrollable) : 0;
+    // 前半(0→0.5)で白ベールを 0→1、0.45で文字フェードイン。
+    // 以降(〜1.0)は白ベース＋文字のまま固定を保ち、読む余韻をつくってからピン解除
+    block.style.setProperty('--veil', clamp(p / 0.5).toFixed(3));
+    block.classList.toggle('text-in', p >= 0.45);
+  }
+  window.addEventListener('scroll', update, { passive:true });
+  window.addEventListener('resize', update);
+  update();
+})();
+
+/* FV動画の自動再生を確実にする（属性autoplayがブロックされる環境向けのフォールバック） */
+(function(){
+  var v = document.querySelector('.hero-video');
+  if(!v) return;
+  v.muted = true; v.setAttribute('muted',''); v.playsInline = true;
+  function tryPlay(){ var p = v.play(); if(p && p.catch) p.catch(function(){}); }
+  tryPlay();
+  v.addEventListener('loadeddata', tryPlay);
+  v.addEventListener('canplay', tryPlay);
+  // 自動再生がブロックされた場合、最初のユーザー操作で再生開始
+  ['touchstart','pointerdown','click','scroll','keydown'].forEach(function(ev){
+    window.addEventListener(ev, function h(){ tryPlay(); }, {once:true, passive:true, capture:true});
+  });
+  // タブ復帰時に再開
+  document.addEventListener('visibilitychange', function(){ if(!document.hidden) tryPlay(); });
+  window.__fvPlay = tryPlay;
+})();
+
+/* 下部⑧CV①が画面に入っている間はFV動画を隠し、固定スライドショーを見せる。
+   body に overflow-x:hidden があり body 自体がスクロールコンテナのため、
+   IntersectionObserver ではなく capture フェーズの scroll + getBoundingClientRect で判定 */
+(function(){
+  var video = document.getElementById('fvVideo');
+  /* ⑧CV①では固定スライドショーを見せたいので、表示中は動画を隠す */
+  var slideSections = [document.querySelector('.cta-section.first')].filter(Boolean);
+  if(!video || !slideSections.length) return;
+  function update(){
+    var visible = slideSections.some(function(el){
+      var r = el.getBoundingClientRect();
+      return r.top < window.innerHeight && r.bottom > 0;
+    });
+    video.classList.toggle('is-hidden', visible);
+    if(!visible && window.__fvPlay) window.__fvPlay(); // FVに戻ったら再生を維持
+  }
+  // rAFに依存せず scroll イベントで直接判定（bodyがスクローラーのため capture:true）
+  window.addEventListener('scroll', update, true);
+  window.addEventListener('resize', update);
+  document.addEventListener('visibilitychange', update);
+  update();
+})();
+</script>
+
+</body>
+</html>
