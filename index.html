@@ -120,6 +120,8 @@ main{position:relative;z-index:1}
 .fv-video{ /* FV動画を固定背景として配置。スクロールしても背景で再生され続ける */
   position:fixed;inset:0;z-index:0;overflow:hidden;
   transition:opacity .5s ease;
+  /* 独立した合成レイヤーに載せ、スクロールのたびに再描画されないようにする（スマホのカクつき対策） */
+  will-change:opacity;transform:translateZ(0);backface-visibility:hidden;
 }
 .fv-video.is-hidden{opacity:0;pointer-events:none} /* 下部⑧では非表示にして固定スライドショーを見せる */
 .hero-video{ /* 動画本体：LP幅の枠内を全面カバー。ループ・自動再生（無音） */
@@ -191,7 +193,10 @@ main{position:relative;z-index:1}
   font-family:var(--serif);font-weight:600;
   font-size:clamp(1.12rem,4.9vw,1.32rem);
   line-height:1.6;letter-spacing:.08em;
-  text-shadow:0 1px 10px rgba(30,95,150,.5);
+  /* 白い建物・空など明るい映像でも沈まないよう、輪郭＋落ち影＋広い影を重ねる */
+  text-shadow:
+    0 0 3px rgba(6,18,32,.9), 0 0 8px rgba(6,18,32,.7),
+    0 2px 4px rgba(6,18,32,.85), 0 4px 18px rgba(6,18,32,.6);
   margin-top:-40px;
   margin-bottom:34px;
 }
@@ -199,14 +204,19 @@ main{position:relative;z-index:1}
   font-family:var(--serif);font-weight:700;
   font-size:clamp(1.82rem,7vw,1.96rem);
   line-height:1.5;letter-spacing:.03em;white-space:nowrap;
-  text-shadow:0 2px 14px rgba(30,95,150,.45);
+  /* メインコピーは最も強く：輪郭を締めてから落ち影と広がりを重ねる */
+  text-shadow:
+    0 0 4px rgba(6,18,32,.95), 0 0 10px rgba(6,18,32,.8),
+    0 2px 5px rgba(6,18,32,.9), 0 6px 28px rgba(6,18,32,.65);
   margin-bottom:26px;
 }
 .hero-subhead{
   font-family:var(--serif);font-weight:600;
   font-size:clamp(1.05rem,4.6vw,1.27rem);
   line-height:1.85;letter-spacing:.06em;
-  text-shadow:0 1px 8px rgba(30,95,150,.5);
+  text-shadow:
+    0 0 3px rgba(6,18,32,.9), 0 0 8px rgba(6,18,32,.7),
+    0 2px 4px rgba(6,18,32,.85), 0 4px 18px rgba(6,18,32,.6);
   margin-top:26px;
   margin-bottom:44px;
 }
@@ -281,16 +291,12 @@ main{position:relative;z-index:1}
   color:var(--white);text-align:center;
   padding-top:0;padding-bottom:0; /* オファー文を画像内に移したため下の余白は不要 */
 }
-.denial::before{ /* 前ブロック（明るい）から暗ブロックへグラデーションで切り替え */
-  content:"";position:absolute;top:0;left:0;right:0;height:170px;z-index:1;pointer-events:none;
-  background:linear-gradient(180deg,#eaf5fc 0%,rgba(234,245,252,.55) 26%,rgba(24,38,51,0) 100%);
-}
 .denial::after{ /* 写真を最後まで見せ、下端だけ次の明ブロック（④）へ溶かす */
   content:"";position:absolute;left:0;right:0;bottom:0;height:150px;z-index:1;pointer-events:none;
   background:linear-gradient(180deg,rgba(246,251,255,0) 0%,rgba(246,251,255,.55) 62%,#f6fbff 100%);
 }
 .denial-top{ /* ブロック全体にお墓写真を背景として敷く。文章下の余白は最小限に */
-  position:relative;overflow:hidden;padding-top:170px;padding-bottom:clamp(48px,14vh,120px);
+  position:relative;overflow:hidden;padding-top:90px;padding-bottom:clamp(48px,14vh,120px);
 }
 .denial-bg{ /* 背景写真。ブロック全面に配置 */
   position:absolute;inset:0;z-index:0;
@@ -341,9 +347,11 @@ main{position:relative;z-index:1}
   display:flex;align-items:center;justify-content:center;padding:24px;
   background:rgba(9,16,26,.62);
   opacity:0;visibility:hidden;
+  /* 閉じている間・閉じるアニメ中は、透明なオーバーレイが下のタップを奪わないようにする */
+  pointer-events:none;
   transition:opacity .45s ease,visibility .45s ease;
 }
-.quiz-screen.is-open{opacity:1;visibility:visible}
+.quiz-screen.is-open{opacity:1;visibility:visible;pointer-events:auto}
 .quiz-card{ /* 画面の大半を占めるポップアップ本体 */
   position:relative;overflow:hidden;
   width:min(560px,92vw);height:min(80vh,80dvh);
@@ -351,8 +359,10 @@ main{position:relative;z-index:1}
   padding:44px 26px;border-radius:26px;
   background:linear-gradient(180deg,#1b2b3c 0%,#24405a 100%); /* 動画が読めない時の下地 */
   box-shadow:0 26px 70px rgba(6,14,24,.55);
-  transform:translateY(26px) scale(.95);opacity:.3;
-  transition:transform .55s cubic-bezier(.22,1,.36,1),opacity .5s ease;
+  /* 動きを小さく短くして、開いた直後からボタンがほぼ最終位置に来るようにする
+     （大きく動くと、アニメ中のタップが的を外して「反応が悪い」原因になる） */
+  transform:translateY(10px) scale(.985);opacity:.3;
+  transition:transform .3s cubic-bezier(.22,1,.36,1),opacity .3s ease;
 }
 .quiz-screen.is-open .quiz-card{transform:none;opacity:1}
 @media(prefers-reduced-motion:reduce){
@@ -392,22 +402,25 @@ main{position:relative;z-index:1}
 }
 .quiz-btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
 .quiz-btn{
-  min-width:150px;padding:16px 26px;border-radius:999px;cursor:pointer;white-space:nowrap;
+  min-width:150px;padding:18px 26px;border-radius:999px;cursor:pointer;white-space:nowrap;
   font-family:inherit;font-size:clamp(.95rem,3.6vw,1.05rem);font-weight:700;letter-spacing:.04em;
   color:#fff;background:rgba(255,255,255,.06);
   border:2px solid rgba(255,255,255,.75);
+  /* タップ遅延（ダブルタップ判定の約300ms待ち）をなくし、押した瞬間に反応させる */
+  touch-action:manipulation;-webkit-tap-highlight-color:transparent;
   transition:background .25s,color .25s,transform .15s,border-color .25s;
 }
+.quiz-btn:focus-visible{outline:3px solid #fff;outline-offset:3px}
 .quiz-btn:hover{background:rgba(255,255,255,.18)}
 .quiz-btn:active{transform:scale(.97)}
 .quiz-btn[aria-pressed="true"]{ /* 選択中：白で塗って現在の回答を示す */
   background:#fff;color:var(--sky-deep);border-color:#fff;
 }
-.quiz-btn-cta{ /* 単一のCTAボタン：半透明の白で、背景の動画をほんのり透かす */
-  background:rgba(255,255,255,.82);color:var(--sky-deep);
+.quiz-btn-cta{ /* 単一のCTAボタン：半透明の白で、背景の動画をほんのり透かす。
+  backdrop-filter は iOS Safari でタップ判定が不安定になるため使わない */
+  background:rgba(255,255,255,.86);color:var(--sky-deep);
   border-color:rgba(255,255,255,.6);
-  -webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px);
-  padding:17px 34px;box-shadow:0 8px 24px rgba(6,14,24,.3);
+  padding:19px 34px;box-shadow:0 8px 24px rgba(6,14,24,.3);
 }
 .quiz-btn-cta:hover{background:rgba(255,255,255,.92)}
 .quiz-reply{
@@ -559,6 +572,7 @@ main{position:relative;z-index:1}
   content:"";position:absolute;inset:0;z-index:1;
   background:linear-gradient(180deg,rgba(255,255,255,.9) 0%,rgba(255,255,255,.95) 100%);
   opacity:var(--veil);
+  will-change:opacity; /* 透過が毎フレーム変わるためレイヤー化して再描画を避ける */
 }
 .story-talk .inner{position:relative;z-index:2;padding:0 24px}
 /* 文字は白ベースが現れてからフェードイン（下からふわっと、行ごとに時間差） */
@@ -1290,6 +1304,27 @@ main{position:relative;z-index:1}
 </div>
 
 <script>
+/* スクロール連動処理の共通スケジューラ。
+   各処理が個別に scroll を監視すると、1回のスクロールでレイアウト計算と再描画が何度も走り、
+   スマホでカクつく。ここに登録して「1フレームに1回だけ」まとめて実行する。 */
+window.__onScroll = (function(){
+  var jobs = [], ticking = false;
+  function run(){
+    ticking = false;
+    for(var i=0;i<jobs.length;i++){ try{ jobs[i](); }catch(e){} }
+  }
+  function schedule(){
+    if(ticking) return;
+    ticking = true;
+    requestAnimationFrame(run);
+  }
+  window.addEventListener('scroll', schedule, { passive:true });
+  window.addEventListener('resize', schedule, { passive:true });
+  // 非表示タブでは rAF が止まるため、復帰時に取りこぼしを解消する
+  document.addEventListener('visibilitychange', function(){ ticking = false; run(); });
+  return function add(fn){ jobs.push(fn); fn(); };
+})();
+
 (function(){
   var btn = document.getElementById('toTop');
   btn.addEventListener('click', function(){
@@ -1312,6 +1347,14 @@ main{position:relative;z-index:1}
     window.addEventListener(ev, function(){ tryPlay(); }, {once:true, passive:true, capture:true});
   });
   document.addEventListener('visibilitychange', function(){ if(!document.hidden) tryPlay(); });
+
+  /* 画面外では再生を止める。裏で動画を回し続けるとスクロールがカクつくため */
+  var block = document.querySelector('.story-talk');
+  if(block && 'IntersectionObserver' in window){
+    new IntersectionObserver(function(es){
+      es.forEach(function(e){ e.isIntersecting ? tryPlay() : v.pause(); });
+    }, { rootMargin:'100px' }).observe(block);
+  }
 })();
 
 /* ⑧「あの子と眠れる区画を…」以降は下部の追従バーをフェードアウト（上に戻ると再表示） */
@@ -1324,9 +1367,7 @@ main{position:relative;z-index:1}
     var reached = r.top < window.innerHeight * 0.8; // ⑧の上端が画面上部80%まで入ったら以降とみなす
     bar.classList.toggle('cta-hidden', reached);
   }
-  window.addEventListener('scroll', update, true); // capture:true で body 由来の scroll を直接判定
-  window.addEventListener('resize', update);
-  update();
+  window.__onScroll(update); // 共通スケジューラで1フレーム1回に間引く
 })();
 
 /* 追伸：封筒から便箋を引き出す演出を、画面内に入ったら1回だけ実行 */
@@ -1340,15 +1381,11 @@ main{position:relative;z-index:1}
     if(done) return;
     var r = ps.getBoundingClientRect();
     if(r.top < window.innerHeight * 0.8 && r.bottom > 0){
-      done = true;
+      done = true; // 以降は先頭のreturnで抜けるだけなので負荷はない
       ps.classList.add('is-inview');
-      window.removeEventListener('scroll', check, true);
-      window.removeEventListener('resize', check);
     }
   }
-  window.addEventListener('scroll', check, true);
-  window.addEventListener('resize', check);
-  check();
+  window.__onScroll(check);
 })();
 
 /* 園内風景ギャラリー：現在位置に応じてドットを更新／ドットクリックで移動 */
@@ -1457,17 +1494,15 @@ window.__quizVideo = (function(){
     setTimeout(function(){ video.stop(); }, 500);
   }
 
-  // 上の本文を読み進め、トリガー地点が画面の上寄り(40%)まで来たら開く（余白を減らした分、発火を遅らせる）
-  if('IntersectionObserver' in window && trigger){
-    new IntersectionObserver(function(entries){
-      entries.forEach(function(e){ if(e.isIntersecting) openModal(); });
-    }, { rootMargin: '0px 0px -60% 0px' }).observe(trigger);
-  } else {
-    // 観測できない環境では、その位置までスクロールしたら開く
-    window.addEventListener('scroll', function(){
-      if(trigger && trigger.getBoundingClientRect().top < window.innerHeight * 0.40) openModal();
-    }, { passive:true });
+  /* 上の本文を読み進め、トリガー地点が画面の上寄り(40%)を越えたら開く。
+     IntersectionObserver は「ゾーン内にいる瞬間」しか発火せず、素早くスクロールすると
+     1pxのトリガーを飛び越して二度と開かないため、通過後も成立する不等式で判定する。 */
+  function checkTrigger(){
+    if(shown || !trigger) return;
+    if(trigger.getBoundingClientRect().top < window.innerHeight * 0.40) openModal();
   }
+  // 共通スケジューラへ。通過後も成立する不等式なので、間引いても取りこぼさない
+  window.__onScroll(checkTrigger);
 
   btns.forEach(function(btn){
     btn.addEventListener('click', function(){
@@ -1504,29 +1539,34 @@ window.__quizVideo = (function(){
   if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){ block.classList.add('text-in'); return; }
 
   var pin = block.querySelector('.talk-pin');
+  var lastState = '', lastVeil = '';   // 同じ値の書き込みを避け、無駄な再描画を防ぐ
   function clamp(v){ return v < 0 ? 0 : v > 1 ? 1 : v; }
   function update(){
     var rect = block.getBoundingClientRect();
     var vh = window.innerHeight;
+    // 画面外なら何もしない（他セクションのスクロール中は完全に無処理にする）
+    if(rect.bottom < -vh || rect.top > vh * 2) return;
+
     // ピンの状態：トラックが画面に掛かっている間は fixed で固定、抜けたら下端へ
-    if(rect.top <= 0 && rect.bottom >= vh){
-      pin.classList.add('is-fixed'); pin.classList.remove('is-bottom');
-    } else if(rect.bottom < vh){
-      pin.classList.remove('is-fixed'); pin.classList.add('is-bottom');
-    } else {
-      pin.classList.remove('is-fixed'); pin.classList.remove('is-bottom');
+    var state = (rect.top <= 0 && rect.bottom >= vh) ? 'fixed' : (rect.bottom < vh ? 'bottom' : '');
+    if(state !== lastState){
+      pin.classList.toggle('is-fixed', state === 'fixed');
+      pin.classList.toggle('is-bottom', state === 'bottom');
+      lastState = state;
     }
     // ピン中の進捗：トラック上端が0を過ぎてから (トラック高 - 画面高) 分で 0→1
     var scrollable = block.offsetHeight - vh;
     var p = scrollable > 0 ? clamp(-rect.top / scrollable) : 0;
     // 前半(0→0.5)で白ベールを 0→1、0.45で文字フェードイン。
     // 以降(〜1.0)は白ベース＋文字のまま固定を保ち、読む余韻をつくってからピン解除
-    block.style.setProperty('--veil', clamp(p / 0.5).toFixed(3));
+    var veil = clamp(p / 0.5).toFixed(2);   // 小数2桁で十分。書き込み回数を減らす
+    if(veil !== lastVeil){
+      block.style.setProperty('--veil', veil);
+      lastVeil = veil;
+    }
     block.classList.toggle('text-in', p >= 0.45);
   }
-  window.addEventListener('scroll', update, { passive:true });
-  window.addEventListener('resize', update);
-  update();
+  window.__onScroll(update);
 })();
 
 /* FV動画の自動再生を確実にする（属性autoplayがブロックされる環境向けのフォールバック） */
@@ -1555,19 +1595,25 @@ window.__quizVideo = (function(){
   /* ⑧CV①では固定スライドショーを見せたいので、表示中は動画を隠す */
   var slideSections = [document.querySelector('.cta-section.first')].filter(Boolean);
   if(!video || !slideSections.length) return;
+  var hero = document.querySelector('.hero-video');
+  var lastHidden = null;
   function update(){
     var visible = slideSections.some(function(el){
       var r = el.getBoundingClientRect();
       return r.top < window.innerHeight && r.bottom > 0;
     });
-    video.classList.toggle('is-hidden', visible);
-    if(!visible && window.__fvPlay) window.__fvPlay(); // FVに戻ったら再生を維持
+    // クラスの付け外しと停止/再開は、状態が変わった時だけ行う（毎フレームのDOM操作を避ける）
+    if(visible !== lastHidden){
+      lastHidden = visible;
+      video.classList.toggle('is-hidden', visible);
+      if(visible && hero) hero.pause(); // 隠している間は再生も止める（見えない動画のデコードが重い）
+    }
+    // FVが見えていて止まっている時は再生を促す。
+    // 自動再生はブロックされることがあるため、状態が変わった時だけでなく毎回確認する
+    if(!visible && hero && hero.paused && window.__fvPlay) window.__fvPlay();
   }
-  // rAFに依存せず scroll イベントで直接判定（bodyがスクローラーのため capture:true）
-  window.addEventListener('scroll', update, true);
-  window.addEventListener('resize', update);
+  window.__onScroll(update);
   document.addEventListener('visibilitychange', update);
-  update();
 })();
 </script>
 
