@@ -3,6 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- 更新時に古いHTMLがキャッシュされ続けないようにする（CSS/JSはこのファイル内にあるため） -->
+<meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
 <title>ペットと一緒に眠れるお墓｜あの子を、ひとりぼっちにさせない霊園</title>
 <meta name="description" content="愛犬・愛猫と、亡くなったあとも同じお墓で眠れる霊園。合祀されず、ずっと個別のまま。永代供養・バリアフリー対応。資料請求・見学のご予約を受付中。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -117,13 +120,12 @@ main{position:relative;z-index:1}
   padding:0;
   overflow:hidden;
 }
+/* 位置合わせ（left:50% + translateX(-50%)）は45行目の共通ルールに任せる。
+   ここで transform / will-change / backface-visibility を足すと、
+   中央寄せを打ち消したり iOS で固定要素の描画位置がずれるため、あえて指定しない。 */
 .fv-video{ /* FV動画を固定背景として配置。スクロールしても背景で再生され続ける */
   position:fixed;inset:0;z-index:0;overflow:hidden;
   transition:opacity .5s ease;
-  /* 独立した合成レイヤーに載せ、スクロールのたびに再描画されないようにする（スマホのカクつき対策）。
-     translateX(-50%) は中央カラムへの位置合わせ。消すと動画が右にずれるので必ず残すこと */
-  transform:translateX(-50%) translateZ(0);
-  will-change:opacity;backface-visibility:hidden;
 }
 .fv-video.is-hidden{opacity:0;pointer-events:none} /* 下部⑧では非表示にして固定スライドショーを見せる */
 .hero-video{ /* 動画本体：LP幅の枠内を全面カバー。ループ・自動再生（無音） */
