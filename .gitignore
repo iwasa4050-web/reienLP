@@ -1,6 +1,12 @@
 # 元写真ライブラリ（474MB・LPの表示には不要。加工済みのものは assets/ に配置済み）
 霊園/
 
+# 差し替え前の未使用素材（LPからは参照なし。ディスクには残す）
+assets/svc-01.jpg
+assets/wish-bg.jpg
+assets/wish-dog.jpg
+assets/犬と女性.png
+
 # OS
 .DS_Store
 Thumbs.db
