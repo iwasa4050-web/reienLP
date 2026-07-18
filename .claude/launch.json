@@ -7,6 +7,12 @@
       "runtimeArgs": ["-y", "http-server", "-p", "8932", "-c-1"],
       "port": 8932,
       "autoPort": false
+    },
+    {
+      "name": "lp2-python",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "8933"],
+      "port": 8933
     }
   ]
 }

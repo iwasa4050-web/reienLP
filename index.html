@@ -132,9 +132,10 @@ main{position:relative;z-index:1}
   position:absolute;inset:0;
   width:100%;height:100%;object-fit:cover;object-position:center;
 }
-.hero-video-veil{ /* 動画を半透明のマットで覆い、白文字の可読性を確保 */
+.hero-video-veil{ /* 動画を黒のグラデーションで覆い、白文字の可読性を確保。
+  上端46%→中ほど(42%)で36%と最も明るく→下端44% */
   position:absolute;inset:0;
-  background:linear-gradient(180deg,rgba(21,52,82,.42) 0%,rgba(21,52,82,.48) 55%,rgba(21,52,82,.64) 100%);
+  background:linear-gradient(180deg,rgba(0,0,0,.46) 0%,rgba(0,0,0,.36) 42%,rgba(0,0,0,.44) 100%);
 }
 .hero-bg{position:absolute;inset:0}
 .hero-slide{
