@@ -27,13 +27,14 @@
   --sans:"Noto Sans JP","Hiragino Kaku Gothic ProN",sans-serif;
 }
 *{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth;scroll-padding-top:80px;background:#c9d6e2}
+/* 基準サイズを上げて全体の文字を大きく（rem/clamp指定が全体に効く）。100%=16px → 112.5%=18px */
+html{scroll-behavior:smooth;scroll-padding-top:80px;background:#c9d6e2;font-size:112.5%}
 /* ===== スマホ幅固定シェル（PCでも中央にスマホ幅で表示） ===== */
 :root{--app-w:440px}
 body{
   font-family:var(--sans);
   color:var(--ink);
-  font-size:16px;
+  font-size:1rem; /* rootに追従（=18px）。全体拡大は html の font-size で調整 */
   line-height:1.9;
   background:var(--white);
   -webkit-font-smoothing:antialiased;
@@ -45,7 +46,7 @@ body{
   min-height:100vh;
 }
 /* 固定オーバーレイをスマホ幅の中央カラムに合わせる */
-.header,.fv-fixed,.fv-video,.sticky-cta{
+.header,.fv-fixed,.fv-video{
   left:50%!important;right:auto!important;
   transform:translateX(-50%);
   width:100%;max-width:var(--app-w);
@@ -207,8 +208,8 @@ main{position:relative;z-index:1}
 }
 .hero-catch{
   font-family:var(--serif);font-weight:700;
-  font-size:clamp(1.82rem,7vw,1.96rem);
-  line-height:1.5;letter-spacing:.03em;white-space:nowrap;
+  font-size:clamp(1.6rem,6.4vw,1.72rem);
+  line-height:1.5;letter-spacing:.02em;white-space:nowrap;
   /* メインコピーは最も強く：輪郭を締めてから落ち影と広がりを重ねる */
   text-shadow:
     0 0 4px rgba(6,18,32,.95), 0 0 10px rgba(6,18,32,.8),
@@ -259,8 +260,8 @@ main{position:relative;z-index:1}
 }
 /* 2行で収める見出し：狭い幅でも各行が折り返さないよう字間と級数を詰める */
 .worry .sec-title{
-  font-size:clamp(1.3rem,5.5vw,1.5rem);
-  letter-spacing:.03em;white-space:nowrap;
+  font-size:clamp(1.15rem,5vw,1.32rem);
+  letter-spacing:.02em;white-space:nowrap;
 }
 .worry-video{
   max-width:640px;margin:0 auto;position:relative;width:100%;aspect-ratio:16/9;
@@ -345,103 +346,6 @@ main{position:relative;z-index:1}
   text-shadow:0 1px 8px rgba(8,16,28,.75);
 }
 .denial-mid:last-of-type{margin-bottom:0}
-/* ===== 問いかけ：本文を読み進めた所でポップアップ表示。答えると閉じて下のブロックが開く ===== */
-.quiz-trigger{position:relative;height:1px} /* スクロール発火の目印（見えない） */
-.quiz-screen{ /* 画面全体を覆うオーバーレイ。背後のページを暗く落とす */
-  position:fixed;inset:0;z-index:90;
-  display:flex;align-items:center;justify-content:center;padding:24px;
-  background:rgba(9,16,26,.62);
-  opacity:0;visibility:hidden;
-  /* 閉じている間・閉じるアニメ中は、透明なオーバーレイが下のタップを奪わないようにする */
-  pointer-events:none;
-  transition:opacity .45s ease,visibility .45s ease;
-}
-.quiz-screen.is-open{opacity:1;visibility:visible;pointer-events:auto}
-.quiz-card{ /* 画面の大半を占めるポップアップ本体 */
-  position:relative;overflow:hidden;
-  width:min(560px,92vw);height:min(80vh,80dvh);
-  display:flex;align-items:center;justify-content:center;
-  padding:44px 26px;border-radius:26px;
-  background:linear-gradient(180deg,#1b2b3c 0%,#24405a 100%); /* 動画が読めない時の下地 */
-  box-shadow:0 26px 70px rgba(6,14,24,.55);
-  /* 動きを小さく短くして、開いた直後からボタンがほぼ最終位置に来るようにする
-     （大きく動くと、アニメ中のタップが的を外して「反応が悪い」原因になる） */
-  transform:translateY(10px) scale(.985);opacity:.3;
-  transition:transform .3s cubic-bezier(.22,1,.36,1),opacity .3s ease;
-}
-.quiz-screen.is-open .quiz-card{transform:none;opacity:1}
-@media(prefers-reduced-motion:reduce){
-  .quiz-screen,.quiz-card{transition:none}
-}
-/* 背景動画：2本を重ねてクロスフェード。半透明の暗幕越しに透けて見せる */
-.quiz-bg{position:absolute;inset:0;z-index:0}
-.quiz-video{
-  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
-  opacity:0;transition:opacity 1.6s ease;
-}
-.quiz-video.is-active{opacity:1}
-.quiz-veil{
-  position:absolute;inset:0;
-  background:linear-gradient(180deg,rgba(18,32,47,.58) 0%,rgba(18,32,47,.68) 100%);
-}
-.quiz-inner{position:relative;z-index:1;width:100%;max-width:640px;text-align:center}
-.quiz-lead{ /* 飼い主の心の声。カード幅で1行に収まる範囲で大きく出す */
-  font-family:var(--serif);font-weight:700;color:#fff;white-space:nowrap;
-  font-size:clamp(1.4rem,5.6vw,1.78rem);line-height:1.6;letter-spacing:.03em;
-  margin-bottom:24px;text-shadow:0 2px 14px rgba(8,18,30,.9);
-}
-.quiz-q{
-  font-family:var(--serif);font-weight:600;color:rgba(255,255,255,.95);
-  font-size:clamp(1.05rem,4.2vw,1.28rem);line-height:1.95;letter-spacing:.05em;
-  margin-bottom:44px;text-shadow:0 2px 12px rgba(8,18,30,.9);
-}
-.quiz-q .quiz-em{ /* “ずっと一緒に眠れるお墓” を一段強調 */
-  display:inline-block;margin-top:6px;font-weight:700;
-  font-size:1.12em;color:#fff;
-}
-.quiz-q .quiz-found{ /* 「見つけた」を圏点（文字の上の点）で強調 */
-  white-space:nowrap;font-weight:700;color:#fff;font-size:1.12em;
-  -webkit-text-emphasis:filled dot;text-emphasis:filled dot;
-  -webkit-text-emphasis-position:over;text-emphasis-position:over;
-  -webkit-text-emphasis-color:rgba(255,255,255,.95);text-emphasis-color:rgba(255,255,255,.95);
-}
-.quiz-btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
-.quiz-btn{
-  min-width:150px;padding:18px 26px;border-radius:999px;cursor:pointer;white-space:nowrap;
-  font-family:inherit;font-size:clamp(.95rem,3.6vw,1.05rem);font-weight:700;letter-spacing:.04em;
-  color:#fff;background:rgba(255,255,255,.06);
-  border:2px solid rgba(255,255,255,.75);
-  /* タップ遅延（ダブルタップ判定の約300ms待ち）をなくし、押した瞬間に反応させる */
-  touch-action:manipulation;-webkit-tap-highlight-color:transparent;
-  transition:background .25s,color .25s,transform .15s,border-color .25s;
-}
-.quiz-btn:focus-visible{outline:3px solid #fff;outline-offset:3px}
-.quiz-btn:hover{background:rgba(255,255,255,.18)}
-.quiz-btn:active{transform:scale(.97)}
-.quiz-btn[aria-pressed="true"]{ /* 選択中：白で塗って現在の回答を示す */
-  background:#fff;color:var(--sky-deep);border-color:#fff;
-}
-.quiz-btn-cta{ /* 単一のCTAボタン：半透明の白で、背景の動画をほんのり透かす。
-  backdrop-filter は iOS Safari でタップ判定が不安定になるため使わない */
-  background:rgba(255,255,255,.86);color:var(--sky-deep);
-  border-color:rgba(255,255,255,.6);
-  padding:19px 34px;box-shadow:0 8px 24px rgba(6,14,24,.3);
-}
-.quiz-btn-cta:hover{background:rgba(255,255,255,.92)}
-.quiz-reply{
-  margin-top:36px;color:rgba(255,255,255,.92);
-  font-size:.95rem;line-height:2;letter-spacing:.02em;
-  text-shadow:0 1px 8px rgba(8,18,30,.8);
-  animation:quizReplyIn .6s ease both;
-}
-.quiz-reply[hidden]{display:none}
-@keyframes quizReplyIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-/* 未回答のあいだは「下へ」と促す。答えたら消す */
-.quiz-hint{
-  margin-top:34px;font-size:.82rem;letter-spacing:.08em;
-  color:rgba(255,255,255,.55);
-}
-.wish-open .quiz-hint{display:none}
 /* 回答後に開くブロック：たたまれた状態からすっと開く */
 .wish-reveal[hidden]{display:none}
 .wish-reveal{
@@ -536,7 +440,7 @@ main{position:relative;z-index:1}
 .story-know .story-voices{
   max-width:660px;margin:0 auto 20px;text-align:center;
   font-family:var(--serif);font-weight:700;color:var(--sky-deep);
-  font-size:clamp(.88rem,3.8vw,1.14rem);line-height:2;letter-spacing:0;
+  font-size:clamp(.78rem,3.3vw,.96rem);line-height:2;letter-spacing:0;
   white-space:nowrap; /* 各文を1行に収め、必ず2行構成にする */
 }
 /* 個別納骨→合祀の図解 */
@@ -552,20 +456,11 @@ main{position:relative;z-index:1}
   font-weight:700;font-size:1.06em;color:var(--ink);
   padding:0 3px;
 }
-/* 話せている気がする：薔薇の写真を淡く敷く */
-/* ピン留めトラック：この高さ分だけ「固定したまま」スクロールでアニメーションが進む。
-   body に overflow-x:hidden があり position:sticky が効かないため、JSで fixed に切り替えて固定する */
-.story-talk{position:relative;height:265vh;background:#000;--veil:0}
-.talk-pin{ /* 通常はトラック上端に置く舞台 */
-  position:absolute;top:0;left:0;width:100%;height:100vh;height:100dvh;overflow:hidden;
+/* 話せている気がする：薔薇の背景動画を白ベール越しに淡く敷く（動きなしの静止セクション） */
+.story-talk{position:relative;background:#fff}
+.talk-pin{
+  position:relative;overflow:hidden;padding:120px 0;
   display:flex;align-items:center;justify-content:center;
-}
-.talk-pin.is-fixed{ /* ピン中：画面に固定（中央カラムに合わせる） */
-  position:fixed;top:0;left:50%;transform:translateX(-50%);
-  width:100%;max-width:var(--app-w);
-}
-.talk-pin.is-bottom{ /* ピン解除後：トラック下端に置いて一緒にスクロールで抜ける */
-  position:absolute;top:auto;bottom:0;left:0;transform:none;
 }
 .story-talk .rosebg{ /* 背景動画（お参り背景） */
   position:absolute;inset:0;z-index:0;overflow:hidden;
@@ -573,28 +468,11 @@ main{position:relative;z-index:1}
 .story-talk .talk-video{
   position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
 }
-.story-talk .rosebg::after{ /* 白いベール。スクロールに連動して薄→濃（動画→白ベース） */
+.story-talk .rosebg::after{ /* 白い半透明ベールで動画を薄く透かし、文字の可読性を確保 */
   content:"";position:absolute;inset:0;z-index:1;
-  background:linear-gradient(180deg,rgba(255,255,255,.9) 0%,rgba(255,255,255,.95) 100%);
-  opacity:var(--veil);
-  will-change:opacity; /* 透過が毎フレーム変わるためレイヤー化して再描画を避ける */
+  background:linear-gradient(180deg,rgba(255,255,255,.86) 0%,rgba(255,255,255,.9) 100%);
 }
 .story-talk .inner{position:relative;z-index:2;padding:0 24px}
-/* 文字は白ベースが現れてからフェードイン（下からふわっと、行ごとに時間差） */
-.story-talk .inner > *{
-  opacity:0;transform:translateY(16px);
-  transition:opacity .8s ease,transform .8s cubic-bezier(.22,1,.36,1);
-}
-.story-talk.text-in .inner > *{opacity:1;transform:none}
-.story-talk.text-in .inner > :nth-child(2){transition-delay:.08s}
-.story-talk.text-in .inner > :nth-child(3){transition-delay:.16s}
-.story-talk.text-in .inner > :nth-child(4){transition-delay:.28s}
-.story-talk.text-in .inner > :nth-child(5){transition-delay:.4s}
-@media(prefers-reduced-motion:reduce){
-  .story-talk{height:auto;--veil:.88}
-  .talk-pin{position:relative;height:auto;padding:120px 0}
-  .story-talk .inner > *{opacity:1;transform:none;transition:none}
-}
 .story-talk h2{font-size:clamp(1.5rem,5vw,1.5rem)}
 .story-talk .talk-line{ /* 独立させて余韻を持たせる一文 */
   font-family:var(--serif);font-weight:700;color:var(--sky-deep);
@@ -812,27 +690,6 @@ main{position:relative;z-index:1}
 .price-table td small{display:block;color:var(--ink-soft);font-size:.78rem;text-align:right}
 .price-note{font-size:.78rem;color:var(--ink-soft);text-align:left;line-height:1.8}
 
-.offer{
-  background:linear-gradient(180deg,#f6fbff 0%,#ffffff 100%);
-  padding-top:50px;
-}
-.offer-list{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
-@media(max-width:100000px){.offer-list{grid-template-columns:1fr;max-width:480px;margin:0 auto}}
-.offer-item{
-  background:var(--sky-pale);border:1px solid rgba(74,151,210,.18);
-  border-radius:16px;padding:34px 26px;text-align:center;
-}
-.offer-item .icon{
-  width:64px;height:64px;margin:0 auto 16px;border-radius:50%;
-  background:var(--white);display:flex;align-items:center;justify-content:center;
-  box-shadow:0 3px 12px rgba(74,151,210,.15);
-}
-.offer-item .icon svg{width:30px;height:30px;stroke:var(--sky-deep);fill:none}
-.offer-item h3{
-  font-family:var(--serif);color:var(--sky-deep);font-size:1.1rem;margin-bottom:10px;line-height:1.7;
-}
-.offer-item p{font-size:.9rem;color:var(--ink-soft);line-height:1.9}
-
 /* ===== ⑬ 追伸 ===== */
 .ps{
   background:linear-gradient(180deg,#eef7fc 0%,#dceff9 100%);
@@ -902,23 +759,7 @@ main{position:relative;z-index:1}
 .access-info .access-addr{font-weight:700;font-size:.98rem;margin-bottom:6px}
 
 /* ===== 追従CTA（モバイル） ===== */
-.sticky-cta{
-  display:none;position:fixed;left:0;right:0;bottom:0;z-index:99;
-  background:rgba(255,255,255,.97);box-shadow:0 -4px 16px rgba(30,95,150,.18);
-  padding:10px 12px calc(10px + env(safe-area-inset-bottom));
-  gap:10px;
-  transition:opacity .45s ease, transform .45s ease;
-}
-.sticky-cta.cta-hidden{opacity:0;transform:translateX(-50%) translateY(100%);pointer-events:none} /* ⑧オファー以降はフェードアウト（中央寄せは維持） */
-.sticky-cta a{
-  flex:1;display:flex;align-items:center;justify-content:center;
-  min-height:48px;border-radius:12px;font-weight:700;font-size:.9rem;
-}
-@media(max-width:100000px){
-  .sticky-cta{display:flex}
-  /* 追従バーは⑧以降フェードアウトするため、フッターに逃げ余白は不要（コンパクトに） */
-  .footer{padding-bottom:calc(32px + env(safe-area-inset-bottom))}
-}
+.footer{padding-bottom:calc(32px + env(safe-area-inset-bottom))}
 
 /* ===== トップへ戻る ===== */
 .to-top{
@@ -1014,32 +855,6 @@ main{position:relative;z-index:1}
       <p class="denial-mid">
         しかし最近では、ペットは大切な家族の一員と考えられる方も増え、一緒に眠りたいと思っている人も多くなってきています。
       </p>
-    </div>
-  </div>
-
-  <!-- 上の本文を読み進めた所で、この地点がトリガーになり問いかけがポップアップする -->
-  <div class="quiz-trigger" id="wishQuizTrigger" aria-hidden="true"></div>
-
-  <!-- 問いかけ：画面の大半を覆うポップアップ。答えるまで閉じない -->
-  <div class="quiz-screen" id="wishQuiz" role="dialog" aria-modal="true" aria-labelledby="wishQuizLabel">
-    <div class="quiz-card">
-      <div class="quiz-bg" aria-hidden="true"><!-- 背景動画。2本をクロスフェードで交互に見せる -->
-        <video class="quiz-video is-active" muted loop playsinline preload="auto">
-          <source src="2.mp4" type="video/mp4">
-        </video>
-        <video class="quiz-video" muted loop playsinline preload="auto">
-          <source src="3.mp4" type="video/mp4">
-        </video>
-        <div class="quiz-veil"></div><!-- 半透明の暗幕：動画を透かしつつ白文字を読ませる -->
-      </div>
-      <div class="quiz-inner" id="wishQuizLabel">
-        <p class="quiz-lead">「ペットと離れたくない」</p>
-        <p class="quiz-q">——そう願った飼い主たちが<span class="quiz-found">見つけた</span><br><span class="quiz-em">“ずっと一緒に眠れるお墓”</span></p>
-        <div class="quiz-btns" role="group" aria-labelledby="wishQuizLabel">
-          <button type="button" class="quiz-btn quiz-btn-cta" data-answer="see" aria-pressed="false">一緒に入れるお墓を見てみる</button>
-        </div>
-        <p class="quiz-reply" id="wishQuizReply" role="status" hidden></p>
-      </div>
     </div>
   </div>
 </section>
@@ -1221,37 +1036,6 @@ main{position:relative;z-index:1}
   </div>
 </section>
 
-<!-- ⑫ オファー＋リスクリバーサル → CV② -->
-<section class="offer">
-  <div class="inner">
-    <h2 class="sec-title">安心してご検討いただくための<br>3つのお約束</h2>
-    <div class="sec-title-bar"></div>
-    <div class="offer-list">
-      <div class="offer-item">
-        <div class="icon">
-          <svg viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 11.5 3.5 15a2.1 2.1 0 0 0 3 3l3.5-3.5"/><path d="m13 5.5 5.5 5.5"/><path d="M9.5 9 15 3.5a2.1 2.1 0 0 1 3 3L12.5 12"/><path d="m5 19 7-7"/></svg>
-        </div>
-        <h3>無理な営業は一切しません</h3>
-        <p>資料請求後・ご見学後にしつこいお電話や訪問営業をすることはありません。</p>
-      </div>
-      <div class="offer-item">
-        <div class="icon">
-          <svg viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="5" width="16" height="16" rx="2"/><path d="M8 3v4M16 3v4M4 11h16"/></svg>
-        </div>
-        <h3>その場でのご契約は不要です</h3>
-        <p>ご見学いただいたその日に決める必要はありません。ご家族とゆっくりご検討ください。</p>
-      </div>
-      <div class="offer-item">
-        <div class="icon">
-          <svg viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9 12.5l2 2 4-4.5"/></svg>
-        </div>
-        <h3>フォームは最小限の項目だけ</h3>
-        <p>資料請求は3分で完了。お名前とお届け先など必要最小限のご入力だけです。</p>
-      </div>
-    </div>
-  </div>
-</section>
-
 <section class="cta-section second">
   <div class="inner">
     <h2 class="cta-title">「ずっと一緒だよ」の約束を<br>ここから。</h2>
@@ -1301,12 +1085,6 @@ main{position:relative;z-index:1}
     <p class="footer-copy">&copy; 2026 Sato no Nukumori. All Rights Reserved.</p>
   </div>
 </footer>
-
-<!-- モバイル追従CTA -->
-<div class="sticky-cta">
-  <a href="https://e-mihara.jp/form_yoyaku/" class="btn-outline">見学・お問い合わせ</a>
-  <a href="https://e-mihara.jp/form_siryou/" class="btn-fill">無料で資料請求</a>
-</div>
 
 <script>
 /* スクロール連動処理の共通スケジューラ。
@@ -1362,19 +1140,6 @@ window.__onScroll = (function(){
   }
 })();
 
-/* ⑧「あの子と眠れる区画を…」以降は下部の追従バーをフェードアウト（上に戻ると再表示） */
-(function(){
-  var bar = document.querySelector('.sticky-cta');
-  var offer = document.querySelector('.cta-section.first');
-  if(!bar || !offer) return;
-  function update(){
-    var r = offer.getBoundingClientRect();
-    var reached = r.top < window.innerHeight * 0.8; // ⑧の上端が画面上部80%まで入ったら以降とみなす
-    bar.classList.toggle('cta-hidden', reached);
-  }
-  window.__onScroll(update); // 共通スケジューラで1フレーム1回に間引く
-})();
-
 /* 追伸：封筒から便箋を引き出す演出を、画面内に入ったら1回だけ実行 */
 (function(){
   var ps = document.querySelector('.ps');
@@ -1415,163 +1180,45 @@ window.__onScroll = (function(){
     dots.forEach(function(dot, i){ dot.classList.toggle('active', i === idx); });
   }
   track.addEventListener('scroll', sync, {passive:true});
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function goTo(i, smooth){
+    track.scrollTo({ left: slides[i].offsetLeft - (track.clientWidth - slides[i].offsetWidth) / 2, behavior: (smooth && !reduce) ? 'smooth' : 'auto' });
+  }
   dots.forEach(function(dot, i){
-    dot.addEventListener('click', function(){
-      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      track.scrollTo({ left: slides[i].offsetLeft - (track.clientWidth - slides[i].offsetWidth) / 2, behavior: reduce ? 'auto' : 'smooth' });
-    });
+    dot.addEventListener('click', function(){ goTo(i, true); });
   });
   sync();
-})();
 
-/* 問いかけの背景動画：2本を交互にクロスフェード。モーダルが開いている間だけ再生する */
-window.__quizVideo = (function(){
-  var vids = [].slice.call(document.querySelectorAll('.quiz-video'));
-  if(vids.length < 2) return { start:function(){}, stop:function(){} };
-  var SWAP_MS = 8000;
-  var cur = 0, timer = null;
-
-  function play(v){ var p = v.play(); if(p && p.catch) p.catch(function(){}); }
-
-  function swap(){
-    var prev = vids[cur];
-    prev.classList.remove('is-active');
-    cur = (cur + 1) % vids.length;
-    var next = vids[cur];
-    next.currentTime = 0;
-    play(next);
-    next.classList.add('is-active');
-    // フェードが終わってから裏の動画を止める（見えている間は動かしたままにする）
-    setTimeout(function(){ if(!prev.classList.contains('is-active')) prev.pause(); }, 1700);
+  /* 自動スクロール：一定間隔で次の写真へ。最後まで行ったら先頭に戻る。
+     動きを減らす設定・画面外では止め、ユーザー操作中は一時停止する。 */
+  var AUTO_MS = 3500, timer = null, paused = false;
+  function next(){
+    if(paused) return;
+    var i = current();
+    goTo((i + 1) % slides.length, true);
   }
-
-  function start(){
-    if(timer) return;
-    play(vids[cur]);
-    timer = setInterval(swap, SWAP_MS);
+  function start(){ if(timer || reduce) return; timer = setInterval(next, AUTO_MS); }
+  function stop(){ if(timer){ clearInterval(timer); timer = null; } }
+  // 触っている間は止め、離れてしばらくしたら再開
+  var resumeT = null;
+  function pauseAwhile(){
+    paused = true; clearTimeout(resumeT);
+    resumeT = setTimeout(function(){ paused = false; }, 6000);
   }
-  function stop(){
-    if(!timer) return;
-    clearInterval(timer); timer = null;
-    vids.forEach(function(v){ v.pause(); });
-  }
-  return { start:start, stop:stop };
-})();
-
-/* 問いかけ：上の本文を読み進めた所でポップアップ表示。答えると閉じて次のセクションへ進む */
-(function(){
-  var modal   = document.getElementById('wishQuiz');
-  var trigger = document.getElementById('wishQuizTrigger');
-  var next    = document.querySelector('.story-know'); // 答えたあとに進む先
-  var reply   = document.getElementById('wishQuizReply');
-  if(!modal || !reply) return;
-  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var btns = [].slice.call(modal.querySelectorAll('.quiz-btn'));
-  var video = window.__quizVideo || { start:function(){}, stop:function(){} };
-  var shown = false, answered = false;
-
-  // ボタンを押したときに添える一言
-  var REPLIES = {
-    see: 'その“お墓”を、これからご紹介します。'
-  };
-
-  /* 開いている間はページのスクロールをロックする（位置はそのまま保持） */
-  function lockScroll(){
-    document.documentElement.style.overflow = 'hidden';
-    document.body.style.overflow = 'hidden';
-  }
-  function unlockScroll(){
-    document.documentElement.style.overflow = '';
-    document.body.style.overflow = '';
-  }
-
-  function openModal(){
-    if(shown) return;
-    shown = true;
-    lockScroll();
-    modal.classList.add('is-open');
-    video.start();
-  }
-  function closeModal(){
-    modal.classList.remove('is-open');
-    unlockScroll();
-    // フェードアウトが終わってから動画を止める
-    setTimeout(function(){ video.stop(); }, 500);
-  }
-
-  /* 上の本文を読み進め、トリガー地点が画面の上寄り(40%)を越えたら開く。
-     IntersectionObserver は「ゾーン内にいる瞬間」しか発火せず、素早くスクロールすると
-     1pxのトリガーを飛び越して二度と開かないため、通過後も成立する不等式で判定する。 */
-  function checkTrigger(){
-    if(shown || !trigger) return;
-    if(trigger.getBoundingClientRect().top < window.innerHeight * 0.40) openModal();
-  }
-  // 共通スケジューラへ。通過後も成立する不等式なので、間引いても取りこぼさない
-  window.__onScroll(checkTrigger);
-
-  btns.forEach(function(btn){
-    btn.addEventListener('click', function(){
-      var answer = btn.dataset.answer;
-      // 選び直せるように、押すたびに現在の回答を入れ替える
-      btns.forEach(function(b){ b.setAttribute('aria-pressed', String(b === btn)); });
-
-      reply.innerHTML = REPLIES[answer];
-      reply.hidden = false;
-
-      if(!answered){
-        answered = true;
-        // 少し余韻をもってモーダルを閉じ、次のセクション先頭へ静かに運ぶ。
-        // レイアウト確定後に位置を再計算し、instant で一度だけ移動（smooth＋割り込みの行き過ぎを防ぐ）
-        var afterClose = function(){
-          closeModal();
-          requestAnimationFrame(function(){
-            if(!next) return;
-            var top = next.getBoundingClientRect().top + window.scrollY - 8;
-            window.scrollTo({ top: Math.max(0, top), behavior: 'instant' });
-          });
-        };
-        reduce ? afterClose() : setTimeout(afterClose, 700);
-      }
-    });
+  ['pointerdown','touchstart','mousedown'].forEach(function(ev){
+    track.addEventListener(ev, pauseAwhile, {passive:true});
   });
-})();
+  dots.forEach(function(dot){ dot.addEventListener('click', pauseAwhile); });
 
-/* 「話せているような気がする」ブロック：セクションをピン留めしたまま、
-   トラック内のスクロール進捗に連動して 動画 → 白ベース透過 → 文字フェードイン */
-(function(){
-  var block = document.querySelector('.story-talk');
-  if(!block) return;
-  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){ block.classList.add('text-in'); return; }
-
-  var pin = block.querySelector('.talk-pin');
-  var lastState = '', lastVeil = '';   // 同じ値の書き込みを避け、無駄な再描画を防ぐ
-  function clamp(v){ return v < 0 ? 0 : v > 1 ? 1 : v; }
-  function update(){
-    var rect = block.getBoundingClientRect();
-    var vh = window.innerHeight;
-    // 画面外なら何もしない（他セクションのスクロール中は完全に無処理にする）
-    if(rect.bottom < -vh || rect.top > vh * 2) return;
-
-    // ピンの状態：トラックが画面に掛かっている間は fixed で固定、抜けたら下端へ
-    var state = (rect.top <= 0 && rect.bottom >= vh) ? 'fixed' : (rect.bottom < vh ? 'bottom' : '');
-    if(state !== lastState){
-      pin.classList.toggle('is-fixed', state === 'fixed');
-      pin.classList.toggle('is-bottom', state === 'bottom');
-      lastState = state;
-    }
-    // ピン中の進捗：トラック上端が0を過ぎてから (トラック高 - 画面高) 分で 0→1
-    var scrollable = block.offsetHeight - vh;
-    var p = scrollable > 0 ? clamp(-rect.top / scrollable) : 0;
-    // 前半(0→0.5)で白ベールを 0→1、0.45で文字フェードイン。
-    // 以降(〜1.0)は白ベース＋文字のまま固定を保ち、読む余韻をつくってからピン解除
-    var veil = clamp(p / 0.5).toFixed(2);   // 小数2桁で十分。書き込み回数を減らす
-    if(veil !== lastVeil){
-      block.style.setProperty('--veil', veil);
-      lastVeil = veil;
-    }
-    block.classList.toggle('text-in', p >= 0.45);
+  // 画面に入っている時だけ自動再生（負荷とデータ節約）
+  if('IntersectionObserver' in window){
+    new IntersectionObserver(function(es){
+      es.forEach(function(e){ e.isIntersecting ? start() : stop(); });
+    }, { threshold: 0.3 }).observe(track);
+  } else {
+    start();
   }
-  window.__onScroll(update);
+  document.addEventListener('visibilitychange', function(){ document.hidden ? stop() : start(); });
 })();
 
 /* FV動画の自動再生を確実にする（属性autoplayがブロックされる環境向けのフォールバック） */
