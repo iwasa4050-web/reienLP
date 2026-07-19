@@ -68,8 +68,12 @@ a{color:inherit;text-decoration:none}
   max-width:var(--app-w);margin:0 auto;padding:8px 14px;
   display:flex;align-items:center;justify-content:space-between;gap:10px;
 }
-.header-logo{display:flex;align-items:center;flex-shrink:1;min-width:0}
-.header-logo img{height:30px;width:auto;display:block}
+.header-logo{display:flex;align-items:center;gap:8px;flex-shrink:1;min-width:0}
+.header-mark{height:34px;width:auto;display:block;flex-shrink:0}
+.header-name{
+  font-family:var(--serif);font-weight:700;color:var(--sky-deep);
+  font-size:.9rem;letter-spacing:.01em;line-height:1.28;white-space:nowrap;
+}
 /* 電話問い合わせボタン */
 .header-tel{
   display:inline-flex;align-items:center;gap:7px;flex-shrink:0;
@@ -83,8 +87,12 @@ a{color:inherit;text-decoration:none}
 .header-tel-txt{display:flex;flex-direction:column;line-height:1.1;text-align:left}
 .header-tel-txt small{font-size:.56rem;font-weight:600;opacity:.92;letter-spacing:.02em}
 .header-tel-txt strong{font-size:.98rem;font-weight:700;letter-spacing:.02em}
+@media(max-width:400px){
+  .header-name{font-size:.82rem}
+}
 @media(max-width:360px){
-  .header-logo img{height:26px}
+  .header-mark{height:30px}
+  .header-name{display:none} /* 極小幅ではマークのみ表示 */
   .header-tel-txt small{display:none}
   .header-tel{padding:8px 13px}
 }
@@ -461,7 +469,7 @@ main{position:relative;z-index:1}
   padding:0 3px;
 }
 /* 話せている気がする：薔薇の背景動画を白ベール越しに淡く敷く（動きなしの静止セクション） */
-.story-talk{position:relative;background:#fff}
+.story-talk{position:relative;background:#fff;padding:0} /* .story の84px余白を打ち消し、余白は talk-pin 側だけにする（隙間の二重を解消） */
 .talk-pin{
   position:relative;overflow:hidden;padding:120px 0;
   display:flex;align-items:center;justify-content:center;
@@ -469,8 +477,9 @@ main{position:relative;z-index:1}
 .story-talk .rosebg{ /* 背景動画（お参り背景） */
   position:absolute;inset:0;z-index:0;overflow:hidden;
 }
-.story-talk .talk-video{
-  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+.story-talk .talk-video,
+.story-talk .talk-photo{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;
 }
 .story-talk .rosebg::after{ /* 白い半透明ベールで動画を薄く透かし、文字の可読性を確保 */
   content:"";position:absolute;inset:0;z-index:1;
@@ -788,8 +797,9 @@ main{position:relative;z-index:1}
 <!-- 上部固定ヘッダー：ロゴ＋電話問い合わせ -->
 <header class="header">
   <div class="header-inner">
-    <a href="#" class="header-logo" aria-label="美原東ロイヤルメモリアルパーク">
-      <img src="assets/logo.png" alt="美原東ロイヤルメモリアルパーク" width="676" height="96">
+    <a href="#" class="header-logo">
+      <img class="header-mark" src="assets/logomark.png" alt="美原東ロイヤルメモリアルパーク ロゴ" width="120" height="104">
+      <span class="header-name">美原東ロイヤル<br>メモリアルパーク</span>
     </a>
     <a href="tel:0120-73-1481" class="header-tel">
       <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.1-8.7A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.7a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.4-1.1a2 2 0 0 1 2.1-.5c.9.3 1.8.5 2.7.6a2 2 0 0 1 1.7 2z"/></svg>
@@ -843,9 +853,7 @@ main{position:relative;z-index:1}
 <section class="story story-talk">
   <div class="talk-pin">
     <div class="rosebg" aria-hidden="true">
-      <video class="talk-video" autoplay muted loop playsinline preload="auto" poster="assets/fv-03.jpg">
-        <source src="assets/omairi-bg.mp4" type="video/mp4">
-      </video>
+      <img class="talk-photo" src="assets/pet-grave.jpg" alt="" loading="lazy">
     </div>
     <div class="inner">
       <h2>「話せているような気がする」</h2>
@@ -881,14 +889,11 @@ main{position:relative;z-index:1}
   <div class="inner">
     <h2>ペットのお墓で<br>必ず知ってほしい1つのこと</h2>
     <div class="bar"></div>
-    <p>当霊園では、ペットのお墓として個別納骨の樹木葬をご用意しております。</p>
-    <p>実は、樹木葬の場合は13回忌や17回忌といった期限後に合祀されるものが多いのです。</p>
-    <p class="story-note"><strong>※合祀とは</strong>／故人のご遺骨を骨壺から取り出し、一つの場所にまとめて一緒に埋葬・供養する方法です。</p>
-    <figure class="goshi-fig">
-      <img src="assets/goshi.jpg" alt="個別納骨は一柱ずつお納めするが、13回忌・17回忌などの期限後は一つの場所にまとめて供養する合祀になる、という図解" loading="lazy">
-    </figure>
+    <p>当園のペットと一緒に入れるお墓には、<span class="em">埋葬期限がありません。</span>つまり、ずっと一緒に眠れるお墓になります。</p>
+    <p>実は、多くのペットと一緒に入れる樹木葬には期限があります。</p>
+    <p>3回忌や17回忌といった期限後にご遺骨を骨壷から出し、一つの場所にまとめて一緒に埋葬・供養されるのです。</p>
     <p class="story-voices">「他の子の遺骨と混ざることに抵抗がある」<br>「家族だったから、ずっと一緒に眠り続けたい」</p>
-    <p>——そう思い、後悔のない供養を考える方に当霊園は選ばれています。当霊園の樹木葬は、<span class="em">埋葬期限を設けていないので、ずっと一緒に眠ることができます。</span></p>
+    <p>——そう思い、後悔のない供養を考える方に当霊園は選ばれています。</p>
   </div>
 </section>
 
