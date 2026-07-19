@@ -58,36 +58,40 @@ a{color:inherit;text-decoration:none}
 /* ===== ヘッダー ===== */
 .header{
   position:fixed;top:0;left:0;right:0;z-index:100;
-  background:rgba(255,255,255,.92);
-  backdrop-filter:blur(8px);
-  border-bottom:1px solid rgba(74,151,210,.15);
+  /* 明るいブルーを少しだけ透過（ほぼ青のまま、わずかに映像が透ける） */
+  background:linear-gradient(180deg,rgba(207,228,246,.88) 0%,rgba(188,216,240,.88) 100%);
+  -webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);
+  border-bottom:1px solid rgba(74,151,210,.25);
+  box-shadow:0 2px 10px rgba(30,95,150,.1);
 }
 .header-inner{
-  max-width:1160px;margin:0 auto;padding:10px 24px;
-  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  max-width:var(--app-w);margin:0 auto;padding:8px 14px;
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
 }
-.header-logo{
-  font-family:var(--serif);font-weight:700;font-size:1.05rem;color:var(--sky-deep);
-  display:flex;align-items:center;gap:8px;line-height:1.4;white-space:nowrap;
+.header-logo{display:flex;align-items:center;flex-shrink:1;min-width:0}
+.header-logo img{height:30px;width:auto;display:block}
+/* 電話問い合わせボタン */
+.header-tel{
+  display:inline-flex;align-items:center;gap:7px;flex-shrink:0;
+  padding:7px 14px;border-radius:999px;
+  background:var(--sun);color:var(--white);
+  box-shadow:0 2px 8px rgba(40,55,75,.16);
+  transition:opacity .2s,transform .2s;
 }
-@media(max-width:100000px){.header-logo span{display:none}}
-.header-logo svg{flex-shrink:0}
-.header-cta{display:flex;gap:10px}
-.header-cta a{
-  display:inline-flex;align-items:center;justify-content:center;
-  min-height:44px;padding:8px 20px;border-radius:999px;
-  font-weight:700;font-size:.88rem;transition:opacity .2s,transform .2s;
-  cursor:pointer;white-space:nowrap;
+.header-tel:hover{opacity:.9;transform:translateY(-1px)}
+.header-tel svg{flex-shrink:0}
+.header-tel-txt{display:flex;flex-direction:column;line-height:1.1;text-align:left}
+.header-tel-txt small{font-size:.56rem;font-weight:600;opacity:.92;letter-spacing:.02em}
+.header-tel-txt strong{font-size:.98rem;font-weight:700;letter-spacing:.02em}
+@media(max-width:360px){
+  .header-logo img{height:26px}
+  .header-tel-txt small{display:none}
+  .header-tel{padding:8px 13px}
 }
-.header-cta a:hover{opacity:.85;transform:translateY(-1px)}
+/* ヘッダー分の余白（固定ヘッダーがFV上端に被らないように本文を下げる） */
+main{padding-top:46px}
 .btn-outline{border:2px solid var(--sky);color:var(--sky-deep);background:var(--white)}
 .btn-fill{background:var(--sun);color:var(--white);box-shadow:0 2px 8px rgba(40,55,75,.14)}
-@media(max-width:100000px){
-  .header-logo{font-size:.85rem}
-  .header-inner{padding:8px 12px;gap:8px}
-  .header-cta .btn-outline{display:none}
-  .header-cta a{padding:6px 14px;font-size:.78rem;min-height:40px}
-}
 
 /* ===== セクション共通 ===== */
 section{position:relative;padding:90px 0}
@@ -712,7 +716,7 @@ main{position:relative;z-index:1}
 .ps.ps-anim .ps-cta{opacity:0;will-change:opacity}
 /* 画面内に入ったら1回だけ実行 */
 .ps.ps-anim.is-inview .ps-letter{animation:psLetter 1.4s cubic-bezier(.22,1,.36,1) .3s both}
-.ps.ps-anim.is-inview .ps-cta{animation:psCta .5s ease 1.9s both}
+.ps.ps-anim.is-inview .ps-cta{animation:psCta .5s ease .6s both}
 @keyframes psLetter{
   0%{opacity:0;transform:translateY(48px) scale(.97) rotate(-1deg);box-shadow:0 3px 10px rgba(20,45,75,.06)}
   55%{opacity:1}
@@ -780,6 +784,19 @@ main{position:relative;z-index:1}
 </style>
 </head>
 <body>
+
+<!-- 上部固定ヘッダー：ロゴ＋電話問い合わせ -->
+<header class="header">
+  <div class="header-inner">
+    <a href="#" class="header-logo" aria-label="美原東ロイヤルメモリアルパーク">
+      <img src="assets/logo.png" alt="美原東ロイヤルメモリアルパーク" width="676" height="96">
+    </a>
+    <a href="tel:0120-73-1481" class="header-tel">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.1-8.7A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.7a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.4-1.1a2 2 0 0 1 2.1-.5c.9.3 1.8.5 2.7.6a2 2 0 0 1 1.7 2z"/></svg>
+      <span class="header-tel-txt"><small>お電話でのお問い合わせ</small><strong>0120-73-1481</strong></span>
+    </a>
+  </div>
+</header>
 
 <main>
 <!-- ① FV／HL ※コピーは要A/Bテスト（B案：「小さな我が子と、これからも、ずっと一緒に。」） -->

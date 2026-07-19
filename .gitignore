@@ -10,3 +10,7 @@ assets/犬と女性.png
 # OS
 .DS_Store
 Thumbs.db
+
+# スクリーンショット（作業中に紛れ込むmacOSのスクショ）
+スクリーンショット*.png
+Screenshot*.png
