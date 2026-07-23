@@ -17,3 +17,16 @@ Screenshot*.png
 
 # ルート直下の加工前ソース画像（最適化済みは assets/ に配置。ディスクには残す）
 ペットお墓.png
+
+# 旧FV動画（現在はfv-main.mp4に統合。LPからは参照なし・計28MB）
+assets/fvv1.mp4
+assets/fvv2.mp4
+assets/fvv3.mp4
+assets/fvv4.mp4
+assets/fvv5.mp4
+
+# macOSの複製アーティファクト（未使用）
+assets/*\ 2.jpg
+
+# 加工前ソース（quiet-bg.jpgに変換済み。ディスクには残す）
+お墓参り.png
