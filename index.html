@@ -1223,24 +1223,7 @@ main{position:relative;z-index:1}
   </div>
 </section>
 
-<!-- ④-2 「話せているような気がする」 -->
-<!-- ④-2 「話せているような気がする」：ピン留め＋スクロール連動（動画→白ベース→文字） -->
-<section class="story story-talk">
-  <div class="talk-pin">
-    <div class="rosebg" aria-hidden="true">
-      <img class="talk-photo" src="assets/pet-grave.jpg" alt="" loading="lazy">
-    </div>
-    <div class="inner">
-      <h2>「話せているような気がする」</h2>
-      <div class="bar"></div>
-      <p>薔薇が咲き誇る霊園を抜けて、我が子のお墓の前に立つ。手を合わせると、一緒に過ごした思い出が溢れ出してきます。</p>
-      <p class="talk-line">気づけば、あの子に話しかけている</p>
-      <p>——そんな気がするという方が、たくさんおられます。ひとりぼっちにさせたくないというご家族の想いを、私たちも同じ気持ちでお預かりしています。</p>
-    </div>
-  </div>
-</section>
-
-<!-- ④-3 上と同じ内容の別デザイン版：背景画像を使わず、文字組みだけで見せる -->
+<!-- ④ 「話せているような気がする」 -->
 <section class="story story-quiet">
   <div class="inner">
     <!-- 写真は文字の背面に敷き、見出しの左上／本文の右下から少しはみ出させる -->
@@ -1421,40 +1404,7 @@ main{position:relative;z-index:1}
   </div>
 </section>
 
-<!-- ⑨ 3Dベネフィット（情景）：CV①から続く青の帯 -->
-<section class="scene">
-  <svg class="paw" style="top:14%;left:8%;transform:rotate(-12deg)" width="42" height="42" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="7" cy="7.5" rx="2" ry="2.6"/><ellipse cx="12" cy="5.8" rx="2" ry="2.6"/><ellipse cx="17" cy="7.5" rx="2" ry="2.6"/><path d="M12 10c-3.2 0-6 2.6-6 5.4 0 1.9 1.5 3.1 3.3 3.1 1 0 1.8-.4 2.7-.4s1.7.4 2.7.4c1.8 0 3.3-1.2 3.3-3.1 0-2.8-2.8-5.4-6-5.4z"/></svg>
-  <svg class="paw" style="bottom:16%;right:9%;transform:rotate(18deg)" width="52" height="52" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="7" cy="7.5" rx="2" ry="2.6"/><ellipse cx="12" cy="5.8" rx="2" ry="2.6"/><ellipse cx="17" cy="7.5" rx="2" ry="2.6"/><path d="M12 10c-3.2 0-6 2.6-6 5.4 0 1.9 1.5 3.1 3.3 3.1 1 0 1.8-.4 2.7-.4s1.7.4 2.7.4c1.8 0 3.3-1.2 3.3-3.1 0-2.8-2.8-5.4-6-5.4z"/></svg>
-  <div class="scene-inner">
-    <h2 class="scene-title">お参りに行けば<br>あの子がそこにいる。</h2>
-    <!-- 各文を段落に分け、balance で行を均す（狭い画面で1〜2文字だけ折り返す孤立行を防ぐ） -->
-    <div class="scene-verse">
-      <p class="scene-text">晴れた日に花を持って霊園へ。</p>
-      <p class="scene-text">墓前に手を合わせれば目の前に大切なあの子がいる。</p>
-      <p class="scene-text">「元気にしてた？」「みんな一緒だよ」</p>
-    </div>
-    <p class="scene-text scene-text-close">いつかご自身がその時を迎えたあとも家族全員が同じ場所に揃い続ける。それは遺されるご家族へのいちばんやさしい贈りものになります。</p>
-  </div>
-
-  <!-- 園内風景ギャラリー：4枚が途切れなく横に流れ続ける（同じ4枚を2周ぶん並べて無限ループさせる） -->
-  <div class="scene-gallery" role="group" aria-label="園内の風景写真">
-    <div class="gallery-viewport">
-      <div class="gallery-track" id="sceneGallery">
-        <figure class="gallery-slide"><img src="assets/gallery-1.jpg" alt="園内の風景" loading="lazy"></figure>
-        <figure class="gallery-slide"><img src="assets/gallery-2.jpg" alt="園内の風景" loading="lazy"></figure>
-        <figure class="gallery-slide"><img src="assets/gallery-3.jpg" alt="園内の風景" loading="lazy"></figure>
-        <figure class="gallery-slide"><img src="assets/gallery-4.jpg" alt="園内の風景" loading="lazy"></figure>
-        <!-- 以下はループを途切れさせないための複製。読み上げ対象からは外す -->
-        <figure class="gallery-slide" aria-hidden="true"><img src="assets/gallery-1.jpg" alt="" loading="lazy"></figure>
-        <figure class="gallery-slide" aria-hidden="true"><img src="assets/gallery-2.jpg" alt="" loading="lazy"></figure>
-        <figure class="gallery-slide" aria-hidden="true"><img src="assets/gallery-3.jpg" alt="" loading="lazy"></figure>
-        <figure class="gallery-slide" aria-hidden="true"><img src="assets/gallery-4.jpg" alt="" loading="lazy"></figure>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ⑨-2 上と同じ内容の別デザイン版：陽だまりのトーンで、語りかけるように左から組む -->
+<!-- ⑨ 「お参りに行けば あの子がそこにいる。」（陽だまり版） -->
 <section class="scene-warm">
   <div class="scene-warm-inner">
     <h2 class="warm-title">お参りに行けば<br><em>あの子がそこにいる。</em></h2>
