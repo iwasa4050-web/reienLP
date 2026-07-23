@@ -565,11 +565,13 @@ main{position:relative;z-index:1}
 
 /* ===== 「話せているような気がする」別デザイン版：背景画像なし・文字組みだけで見せる ===== */
 .story-quiet{
-  /* 穏やかな晴れの日：右上から差す陽の光と、淡い空色を重ねる */
+  /* 穏やかな晴れの日：右上から差す陽の光と、淡い空色を重ねる。
+     上端は前セクション(.worry)の下端色 #eaf5fc から始め、段差なく繋ぐ。
+     陽の光（黄色）は上端の継ぎ目に掛からないよう少し下げている */
   background:
-    radial-gradient(ellipse 85% 48% at 72% 4%,rgba(255,238,199,.62) 0%,rgba(255,238,199,0) 62%),
-    radial-gradient(ellipse 70% 40% at 12% 30%,rgba(255,247,231,.5) 0%,rgba(255,247,231,0) 65%),
-    linear-gradient(180deg,#f1f8ff 0%,#e9f3fc 34%,#f6fbfe 68%,#eaf5fc 100%);
+    radial-gradient(ellipse 88% 46% at 74% 26%,rgba(255,238,199,.55) 0%,rgba(255,238,199,0) 60%),
+    radial-gradient(ellipse 72% 42% at 12% 46%,rgba(255,247,231,.48) 0%,rgba(255,247,231,0) 64%),
+    linear-gradient(180deg,#eaf5fc 0%,#eef6fd 14%,#f3f7fc 42%,#f6fbfe 72%,#eaf5fc 100%);
   padding:150px 0 0; /* 左上に置く写真がセクション外へ出ないよう、上を広めに取る。下は写真を次セクションに接させるため0 */
 }
 .story-quiet .inner{max-width:660px;margin:0 auto;padding:0 24px}
