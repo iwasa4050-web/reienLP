@@ -376,10 +376,12 @@ a{color:inherit; text-decoration:none}
 .know__bg-img.is-3{animation-delay:14s}
 @keyframes knowDissolve{0%{opacity:0} 7%{opacity:1} 33.3%{opacity:1} 40%{opacity:0} 100%{opacity:0}}
 .know__bg.is-paused .know__bg-img{animation-play-state:paused}
-/* 写真の上は黒の透過のみ。上端46%／42%地点36%／下端44% */
+/* 写真の上のベールは参考LPと同じ値。上端66%／40%地点56%／下端64%。
+   色は #181113 のほぼ黒（暖色寄りの影になり、金・クリームの文字となじむ）。
+   明るい写真（桜の白い空・青空）でも白文字4.5:1を確保できる濃さ */
 .know__scrim{
   position:absolute; inset:0;
-  background:linear-gradient(180deg, rgba(0,0,0,.46) 0%, rgba(0,0,0,.36) 42%, rgba(0,0,0,.44) 100%);
+  background:linear-gradient(180deg, rgba(24,17,19,.66) 0%, rgba(24,17,19,.56) 40%, rgba(24,17,19,.64) 100%);
 }
 .know__inner{position:relative; z-index:2}
 /* 暗い地に載るので白系の文字＋黒シャドウで読ませる（白の発光は使わない） */
