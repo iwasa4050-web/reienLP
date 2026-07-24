@@ -384,6 +384,35 @@ a{color:inherit; text-decoration:none}
   background:linear-gradient(180deg, rgba(24,17,19,.66) 0%, rgba(24,17,19,.56) 40%, rgba(24,17,19,.64) 100%);
 }
 .know__inner{position:relative; z-index:2}
+/* 幕開けリピール：暗幕がスッと上へ上がって中身が現れる */
+.know__curtain{
+  position:absolute; inset:0; z-index:5; will-change:transform;
+  background:linear-gradient(180deg,#1a130f 0%,#241f1a 55%,#17110e 100%);
+  transform:translateY(0); transition:transform 2.5s cubic-bezier(.62,0,.16,1);
+}
+/* 幕の下端に走る金の線。上がっていく縁が見える */
+.know__curtain::after{
+  content:""; position:absolute; left:0; right:0; bottom:0; height:2px;
+  background:linear-gradient(90deg, transparent, var(--gold-soft), transparent); opacity:.85;
+}
+.sec--know.is-in .know__curtain{transform:translateY(-101%)}
+/* 幕が上がるのに合わせて文字がそっと立ち上がる */
+.know__inner > *{
+  opacity:0; transform:translateY(22px);
+  transition:opacity .9s ease, transform 1s cubic-bezier(.2,.7,.2,1);
+}
+.sec--know.is-in .know__inner > *{opacity:1; transform:none}
+.sec--know.is-in .kicker{transition-delay:1.5s}
+.sec--know.is-in .know__ttl{transition-delay:1.7s}
+.sec--know.is-in .know-fact{transition-delay:1.9s}
+.sec--know.is-in .know-note{transition-delay:2s}
+.sec--know.is-in .know-ours{transition-delay:2.15s}
+.sec--know.is-in .know-voices{transition-delay:2.35s}
+.sec--know.is-in .know-close{transition-delay:2.5s}
+@media (prefers-reduced-motion:reduce){
+  .know__curtain{display:none}
+  .know__inner > *{opacity:1; transform:none; transition:none}
+}
 /* 暗い地に載るので白系の文字＋黒シャドウで読ませる（白の発光は使わない） */
 .sec--know .kicker{color:var(--cream)}
 .sec--know .know__ttl,
@@ -787,21 +816,23 @@ a{color:inherit; text-decoration:none}
     <img class="know__bg-img is-3" src="assets/know-bg-3.jpg" alt="" loading="lazy">
     <div class="know__scrim"></div>
   </div>
+  <!-- 幕：画面に入ると上へ上がって中身が現れる -->
+  <div class="know__curtain" aria-hidden="true"></div>
   <div class="know__inner">
-  <p class="kicker rvl">知ってほしいこと</p>
-  <h2 class="know__ttl rvl">ペットと一緒のお墓を選ぶ前に<br>知ってほしいこと</h2>
+  <p class="kicker">知ってほしいこと</p>
+  <h2 class="know__ttl">ペットと一緒のお墓を選ぶ前に<br>知ってほしいこと</h2>
 
   <!-- 最も伝えたい一点 -->
-  <p class="know-fact rvl">実は、多くの霊園には埋葬期限があります。</p>
-  <p class="know-note rvl">※期限後はご遺骨を骨壷から出し、一つの場所にまとめて埋葬・供養されます</p>
-  <p class="know-ours rvl">当園は、埋葬期限なく<br>ずっと一緒に眠り続けられます。</p>
+  <p class="know-fact">実は、多くの霊園には埋葬期限があります。</p>
+  <p class="know-note">※期限後はご遺骨を骨壷から出し、一つの場所にまとめて埋葬・供養されます</p>
+  <p class="know-ours">当園は、埋葬期限なく<br>ずっと一緒に眠り続けられます。</p>
 
   <!-- ご家族の実感 -->
-  <blockquote class="know-voices rvl">
+  <blockquote class="know-voices">
     <p>他の子の遺骨と混ざることに抵抗がある</p>
     <p>家族だったから、ずっと一緒に眠り続けたい</p>
   </blockquote>
-  <p class="know-close rvl">——そう思い、後悔のない供養を考える方に当霊園は選ばれています。</p>
+  <p class="know-close">——そう思い、後悔のない供養を考える方に当霊園は選ばれています。</p>
   </div>
 </section>
 
@@ -1091,6 +1122,8 @@ window.__onScroll = (function(){
   document.querySelectorAll('.rvl').forEach(function(el){ io2.observe(el); });
   // 帯付きテキストは一行ずつ表示（FVのように）
   document.querySelectorAll('.comma__banner').forEach(function(el){ io2.observe(el); });
+  // 「知ってほしいこと」は幕が上がってから文字が立ち上がる
+  document.querySelectorAll('.sec--know').forEach(function(el){ io2.observe(el); });
 })();
 
 /* 写真をスクロールに対してわずかに逆行させる（奥行きを出す） */
