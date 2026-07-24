@@ -53,9 +53,13 @@ body{
 .warm-scene p,.warm-close,.warm-talk,.warm-em,
 .quiet-text,.quiet-main,.talk-line,
 .denial-mid,.denial-q,.scene-text,.replace-note,
-.cta-btn{ /* ボタンも語の途中で割れないよう均す（「見学・お問合せは/こちら」の形に） */
+.cta-btn, /* ボタンも語の途中で割れないよう均す（「見学・お問合せは/こちら」の形に） */
+/* 見出し・リード文も同様に。狭い画面で末尾1〜2文字が落ちるのを防ぐ */
+.sec-title,.cta-title,.worry-lead,.scene-title,.svc-item h3,.voice-meta{
   text-wrap:balance;
 }
+/* brの代わりに分けた各文。行ごとに balance を効かせる（brがあると効かないため） */
+.worry-lead > span,.cta-title > span{display:block;text-wrap:balance}
 /* 固定オーバーレイをスマホ幅の中央カラムに合わせる */
 .header,.fv-fixed{
   left:50%!important;right:auto!important;
@@ -122,7 +126,9 @@ section{position:relative;padding:90px 0}
 }
 /* brで区切った2行を、途中で折り返さずそのまま2行で見せる。
    狭い画面では文字を縮めて幅に収める */
-.sec-title-2line{white-space:nowrap;font-size:min(1.45rem,5.7vw)}
+/* brで区切った各行を1行のまま見せる。text-wrap:nowrap は .sec-title の
+   balance より後に指定して打ち消されないようにする */
+.sec-title-2line{white-space:nowrap;text-wrap:nowrap;font-size:min(1.45rem,5.7vw)}
 .sec-title-bar{
   width:52px;height:3px;background:var(--sky);margin:0 auto 48px;border-radius:2px;
 }
@@ -424,7 +430,9 @@ main{position:relative;z-index:1}
 }
 .story h2{
   font-family:var(--serif);font-weight:700;color:var(--sky-deep);
-  font-size:clamp(1.35rem,4.6vw,1.35rem);line-height:1.7;letter-spacing:.04em;
+  /* brで区切った各行を1行のまま見せる。狭い画面では文字を縮めて折り返さない */
+  font-size:min(1.35rem,5.5vw);line-height:1.7;letter-spacing:.04em;
+  white-space:nowrap;text-wrap:nowrap;
   text-align:center;margin-bottom:14px;
 }
 .story .bar{width:52px;height:3px;background:var(--sky);margin:0 auto 34px;border-radius:2px}
@@ -1216,7 +1224,8 @@ main{position:relative;z-index:1}
   <div class="inner">
     <h2 class="sec-title">あなたはペットと話したい<br>と思ったことはありませんか？</h2>
     <div class="sec-title-bar"></div>
-    <p class="worry-lead">「あの子と少しでも話せたら、、、」<br>叶わないような願いと感じるかもしれません。<br>けど、心のより処があるだけで、もしかすると、、、</p>
+    <!-- 各文をブロックに分け、行ごとに balance を効かせる（末尾1〜2文字の孤立を防ぐ） -->
+    <p class="worry-lead"><span>「あの子と少しでも話せたら、、、」</span><span>叶わないような願いと感じるかもしれません。</span><span>けど、心のより処があるだけで、もしかすると、、、</span></p>
     <!-- クリックするまでYouTubeを読み込まない。標準の埋め込みだと消せないタイトル表示を出さないため -->
     <div class="worry-video">
       <button type="button" class="yt-lite" data-id="aRGpXIfROuA" aria-label="動画を再生：ペットと話したいと思ったことはありますか？">
@@ -1389,7 +1398,7 @@ main{position:relative;z-index:1}
     <div class="cta-bg-veil"></div>
   </div>
   <div class="inner">
-    <h2 class="cta-title">あの子と眠れる区画を<br>まずは資料でご覧ください。</h2>
+    <h2 class="cta-title"><span>あの子と眠れる区画を</span><span>まずは資料でご覧ください。</span></h2>
     <p class="cta-lead">区画の写真・料金・園内の雰囲気がわかる資料を無料でお届けします。</p>
     <div class="cta-box">
       <div class="cta-card">
@@ -1466,7 +1475,7 @@ main{position:relative;z-index:1}
 
 <section class="cta-section second">
   <div class="inner">
-    <h2 class="cta-title">「ずっと一緒だよ」の約束を<br>ここから。</h2>
+    <h2 class="cta-title"><span>「ずっと一緒だよ」の約束を</span><span>ここから。</span></h2>
     <p class="cta-lead">
       資料請求・ご見学は無料です。<br>
       大切な家族との「これから」を安心して考えられるお手伝いをいたします。
