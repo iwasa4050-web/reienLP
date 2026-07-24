@@ -572,7 +572,11 @@ main{position:relative;z-index:1}
     radial-gradient(ellipse 88% 46% at 74% 26%,rgba(255,238,199,.55) 0%,rgba(255,238,199,0) 60%),
     radial-gradient(ellipse 72% 42% at 12% 46%,rgba(255,247,231,.48) 0%,rgba(255,247,231,0) 64%),
     linear-gradient(180deg,#eaf5fc 0%,#eef6fd 14%,#f3f7fc 42%,#f6fbfe 72%,#eaf5fc 100%);
-  padding:150px 0 0; /* 左上に置く写真がセクション外へ出ないよう、上を広めに取る。下は写真を次セクションに接させるため0 */
+  /* 左上の写真は .quiet-block から top:-212px に置くため、上余白が212px未満だと
+     セクション外へ出て .story の overflow:hidden で上端が直線に切れる。
+     余白を224pxにして切り抜きの丸みを最後まで見せる（文字と写真の位置関係は不変）。
+     下は写真を次セクションに接させるため0 */
+  padding:224px 0 0;
 }
 .story-quiet .inner{max-width:660px;margin:0 auto;padding:0 24px}
 .quiet-title{
