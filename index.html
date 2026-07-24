@@ -360,12 +360,12 @@ a{color:inherit; text-decoration:none}
 /* =========================================================================
    知ってほしいこと（埋葬期限）
    ========================================================================= */
-.sec--know{position:relative; overflow:hidden; padding:78px 18px 86px; text-align:center; background:#fff}
+.sec--know{position:relative; overflow:hidden; padding:78px 18px 86px; text-align:center; background:var(--bg-deep)}
 /* 背景写真3枚をディゾルブで切り替える。
    1枚目は容器の背景にも敷いてあるので、切り替えの合間に地が抜けることはない */
 .know__bg{
   position:absolute; inset:0; z-index:0; overflow:hidden;
-  background:#fff url(assets/know-bg-1.jpg) center/cover no-repeat;
+  background:var(--bg-deep) url(assets/know-bg-1.jpg) center/cover no-repeat;
 }
 .know__bg-img{
   position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
@@ -376,11 +376,24 @@ a{color:inherit; text-decoration:none}
 .know__bg-img.is-3{animation-delay:14s}
 @keyframes knowDissolve{0%{opacity:0} 7%{opacity:1} 33.3%{opacity:1} 40%{opacity:0} 100%{opacity:0}}
 .know__bg.is-paused .know__bg-img{animation-play-state:paused}
-/* 写真の上は白の透過のみ。文字色は変えずに読ませる（実効コントラスト：見出し4.9／本文9.7） */
-.know__scrim{position:absolute; inset:0; background:rgba(255,255,255,.88)}
+/* 写真の上は黒の透過のみ。上端46%／42%地点36%／下端44% */
+.know__scrim{
+  position:absolute; inset:0;
+  background:linear-gradient(180deg, rgba(0,0,0,.46) 0%, rgba(0,0,0,.36) 42%, rgba(0,0,0,.44) 100%);
+}
 .know__inner{position:relative; z-index:2}
-/* 金のキッカーだけは薄い地に負けるため、既存パレット内の濃い金にする */
-.sec--know .kicker{color:#8A7331}
+/* 暗い地に載るので白系の文字＋黒シャドウで読ませる（白の発光は使わない） */
+.sec--know .kicker{color:var(--cream)}
+.sec--know .know__ttl,
+.sec--know .know-fact{color:#fff; text-shadow:0 2px 4px rgba(0,0,0,.7), 0 2px 20px rgba(0,0,0,.6)}
+.sec--know .know-note{color:rgba(255,255,255,.84); text-shadow:0 1px 3px rgba(0,0,0,.8), 0 2px 14px rgba(0,0,0,.6)}
+.sec--know .know-ours{
+  color:var(--cream); border-top-color:rgba(255,255,255,.26); border-bottom-color:rgba(255,255,255,.26);
+  text-shadow:0 2px 4px rgba(0,0,0,.7), 0 2px 20px rgba(0,0,0,.6);
+}
+.sec--know .know-voices p{color:#fff; text-shadow:0 2px 4px rgba(0,0,0,.75), 0 2px 16px rgba(0,0,0,.62)}
+.sec--know .know-voices p + p{border-top-color:rgba(255,255,255,.22)}
+.sec--know .know-close{color:var(--cream); text-shadow:0 2px 4px rgba(0,0,0,.75), 0 2px 16px rgba(0,0,0,.62)}
 @media (prefers-reduced-motion:reduce){
   .know__bg-img{animation:none; opacity:0}
   .know__bg-img.is-1{opacity:1}
