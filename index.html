@@ -167,9 +167,9 @@ main{position:relative;z-index:1}
 @media(prefers-reduced-motion:reduce){
   .fv-vid{transition:none}
 }
-.hero-veil{ /* 文字の視認性を上げる半透明カラーマット */
+.hero-veil{ /* 文字の視認性を上げる半透明マット。色を混ぜず黒の透過にして映像本来の色を保つ */
   position:absolute;inset:0;
-  background:linear-gradient(180deg,rgba(21,52,82,.38) 0%,rgba(21,52,82,.44) 55%,rgba(21,52,82,.58) 100%);
+  background:linear-gradient(180deg,rgba(0,0,0,.34) 0%,rgba(0,0,0,.4) 55%,rgba(0,0,0,.54) 100%);
 }
 .hero::after{ /* 直線＋グラデーションで次ブロックの色へ徐々に変わる */
   content:"";position:absolute;left:0;right:0;bottom:0;height:200px;z-index:2;pointer-events:none;
