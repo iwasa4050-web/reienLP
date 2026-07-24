@@ -605,14 +605,14 @@ main{position:relative;z-index:1}
    .inner の左右padding(24px)を打ち消して、セクションの端から端まで広げる */
 .quiet-stage{
   position:relative;overflow:hidden;
-  margin:240px -24px 0;padding:56px 0 0;
-  /* 暖色の地。上端は前の淡い空色から、下へ向かってやわらかいクリームへ */
-  background:linear-gradient(180deg,#fdf6ea 0%,#fbeedd 46%,#f9e8d3 100%);
-}
-/* 上端を前セクションの色へ溶かし、暖色への切り替わりを段差なく見せる */
-.quiet-stage::before{
-  content:"";position:absolute;left:0;right:0;top:0;height:90px;pointer-events:none;
-  background:linear-gradient(180deg,#f6fbfe 0%,rgba(253,246,234,0) 100%);
+  margin:240px -24px 0;padding:100px 0 0;
+  /* 暖色の地。上端は「透明」から始めてセクションの背景をそのまま見せ、
+     下へ向かって暖色へ変わる。色を重ねないので継ぎ目の線が出ない */
+  background:linear-gradient(180deg,
+    rgba(253,246,234,0) 0,
+    rgba(253,246,234,1) 88px,
+    #fbeedd 48%,
+    #f9e8d3 100%);
 }
 /* 前面に出す写真。角丸と影で「置いた写真」として見せる */
 .quiet-stage-photo{
