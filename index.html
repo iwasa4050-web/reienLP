@@ -388,7 +388,7 @@ a{color:inherit; text-decoration:none}
 .know__curtain{
   position:absolute; inset:0; z-index:5; will-change:transform;
   background:linear-gradient(180deg,#1a130f 0%,#241f1a 55%,#17110e 100%);
-  transform:translateY(0); transition:transform 2.5s cubic-bezier(.62,0,.16,1);
+  transform:translateY(0); transition:transform 1.2s cubic-bezier(.62,0,.16,1);
 }
 /* 幕の下端に走る金の線。上がっていく縁が見える */
 .know__curtain::after{
@@ -399,16 +399,16 @@ a{color:inherit; text-decoration:none}
 /* 幕が上がるのに合わせて文字がそっと立ち上がる */
 .know__inner > *{
   opacity:0; transform:translateY(22px);
-  transition:opacity .9s ease, transform 1s cubic-bezier(.2,.7,.2,1);
+  transition:opacity .6s ease, transform .7s cubic-bezier(.2,.7,.2,1);
 }
 .sec--know.is-in .know__inner > *{opacity:1; transform:none}
-.sec--know.is-in .kicker{transition-delay:1.5s}
-.sec--know.is-in .know__ttl{transition-delay:1.7s}
-.sec--know.is-in .know-fact{transition-delay:1.9s}
-.sec--know.is-in .know-note{transition-delay:2s}
-.sec--know.is-in .know-ours{transition-delay:2.15s}
-.sec--know.is-in .know-voices{transition-delay:2.35s}
-.sec--know.is-in .know-close{transition-delay:2.5s}
+.sec--know.is-in .kicker{transition-delay:.66s}
+.sec--know.is-in .know__ttl{transition-delay:.78s}
+.sec--know.is-in .know-fact{transition-delay:.9s}
+.sec--know.is-in .know-note{transition-delay:.98s}
+.sec--know.is-in .know-ours{transition-delay:1.08s}
+.sec--know.is-in .know-voices{transition-delay:1.2s}
+.sec--know.is-in .know-close{transition-delay:1.3s}
 @media (prefers-reduced-motion:reduce){
   .know__curtain{display:none}
   .know__inner > *{opacity:1; transform:none; transition:none}
