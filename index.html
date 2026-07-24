@@ -596,41 +596,39 @@ main{position:relative;z-index:1}
    上の余白は、右下に置いた写真（本文ブロック下端から212px）と重ならない値にしている */
 .quiet-main{
   position:relative;text-align:center!important;
-  margin:0 auto!important;padding:76px 48px!important;
+  margin:0 auto!important;padding:44px 48px!important;
   font-family:var(--serif);font-weight:700;color:var(--sky-deep);
   font-size:clamp(1.3rem,5.6vw,1.5rem)!important;line-height:2!important;letter-spacing:.08em;
-  text-shadow:0 0 6px rgba(255,255,255,.95),0 0 14px rgba(255,255,255,.92),0 0 28px rgba(255,255,255,.8);
+  text-shadow:none; /* 暖色の地に直接乗るので光彩は不要 */
 }
-/* お墓参りの写真を主役の一文の背景に敷く。写真は外側のラッパーに持たせる */
-/* .inner の左右padding(24px)を打ち消し、写真をセクションの端から端まで広げる */
+/* 主役の一文のブロック。写真は背景に沈めず前面に置き、地は暖色にする。
+   .inner の左右padding(24px)を打ち消して、セクションの端から端まで広げる */
 .quiet-stage{
-  position:relative;isolation:isolate;overflow:hidden;
-  margin:240px -24px 0;
+  position:relative;overflow:hidden;
+  margin:240px -24px 0;padding:56px 0 0;
+  /* 暖色の地。上端は前の淡い空色から、下へ向かってやわらかいクリームへ */
+  background:linear-gradient(180deg,#fdf6ea 0%,#fbeedd 46%,#f9e8d3 100%);
 }
+/* 上端を前セクションの色へ溶かし、暖色への切り替わりを段差なく見せる */
 .quiet-stage::before{
-  content:"";position:absolute;inset:0;z-index:-1;
-  background:url("assets/quiet-bg.jpg") center/cover no-repeat;
-  opacity:.28;
-  /* 上端だけ白へ溶かす。下端は次のセクションへそのまま繋げるのでフェードさせない */
-  -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 70px,#000 100%);
-          mask-image:linear-gradient(180deg,transparent 0,#000 70px,#000 100%);
+  content:"";position:absolute;left:0;right:0;top:0;height:90px;pointer-events:none;
+  background:linear-gradient(180deg,#f6fbfe 0%,rgba(253,246,234,0) 100%);
 }
-/* 文字が乗る帯にだけ白いベールを重ね、背景写真の細かな模様を抑えて文字を読みやすくする。
-   上下端はベールを消して、写真がそのまま見えるようにする */
-.quiet-stage::after{
-  content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
-  background:linear-gradient(180deg,
-    rgba(255,255,255,0) 0%,
-    rgba(255,255,255,.45) 14%,
-    rgba(255,255,255,.45) 88%,
-    rgba(255,255,255,0) 100%);
+/* 前面に出す写真。角丸と影で「置いた写真」として見せる */
+.quiet-stage-photo{
+  position:relative;z-index:1;
+  width:min(340px,84%);margin:0 auto 40px;
+  border-radius:18px;overflow:hidden;
+  box-shadow:0 14px 34px rgba(120,86,48,.22);
 }
-/* 締めの一文も写真の上に乗るので、前面に出す。
-   写真の暗い部分に重なるため、文字色は薄いグレーではなく本文色まで濃くする */
+.quiet-stage-photo img{
+  width:100%;aspect-ratio:4/3;object-fit:cover;display:block;
+}
+/* 締めの一文。暖色の地に乗るので、白い光彩は不要 */
 .quiet-stage .quiet-text{
   position:relative;z-index:1;color:var(--ink)!important;
   margin:30px auto 0!important;padding:0 50px 70px!important;
-  text-shadow:0 0 5px rgba(255,255,255,.98),0 0 12px rgba(255,255,255,.95),0 0 24px rgba(255,255,255,.85);
+  text-shadow:none;
 }
 /* 円を少し崩した輪郭で写真を切り抜く。SVGマスクにぼかしをかけて縁をふわっと溶かす */
 .quiet-block{position:relative} /* 写真を文字の角に重ねるための基準 */
@@ -1244,6 +1242,8 @@ main{position:relative;z-index:1}
       <figure class="quiet-photo p2"><img src="assets/quiet-2.jpg" alt="" loading="lazy"></figure>
     </div>
     <div class="quiet-stage">
+      <!-- お墓参りの写真は背景に沈めず、前面にはっきり見せる -->
+      <figure class="quiet-stage-photo"><img src="assets/quiet-bg.jpg" alt="お墓の前で手を合わせるご家族" loading="lazy"></figure>
       <p class="quiet-main">気づけば、<br>あの子に話しかけている</p>
       <p class="quiet-text">——そんな気がするという方が、たくさんおられます。ひとりぼっちにさせたくないというご家族の想いを、私たちも同じ気持ちでお預かりしています。</p>
     </div>
