@@ -545,12 +545,14 @@ main{position:relative;z-index:1}
   .limit-voices.slidein-left,.limit-voices.slidein-left.is-in,
   .limit-close.slidein-left,.limit-close.slidein-left.is-in{opacity:1;transform:none;transition:none}
 }
-/* セクション全体をふわっと表示。.fadein はJSが付与する（JS無効時に消えないため） */
-.story-quiet.fadein{
+/* 中身（写真・文章）だけをふわっと表示。.fadein はJSが付与する（JS無効時に消えないため）。
+   セクション自体を透明にすると背後の固定FV動画が透けて暗く見え、
+   境目がぶつ切りに感じるため、背景は常に不透明のままにする */
+.story-quiet.fadein > .inner{
   opacity:0;transform:translateY(20px);
   transition:opacity 1.5s ease,transform 1.5s cubic-bezier(.22,1,.36,1);
 }
-.story-quiet.fadein.is-in{opacity:1;transform:none}
+.story-quiet.fadein.is-in > .inner{opacity:1;transform:none}
 /* お墓参りの写真ブロックは、そこまでスクロールしてきたタイミングで少し遅れて現れる。
    セクション全体と連動させるとブロックが画面に入る前に演出が終わってしまうため、独立させている */
 .quiet-stage.stagefade{
@@ -559,7 +561,7 @@ main{position:relative;z-index:1}
 }
 .quiet-stage.stagefade.is-in{opacity:1;transform:none}
 @media(prefers-reduced-motion:reduce){
-  .story-quiet.fadein,.story-quiet.fadein.is-in,
+  .story-quiet.fadein > .inner,.story-quiet.fadein.is-in > .inner,
   .quiet-stage.stagefade,.quiet-stage.stagefade.is-in{opacity:1;transform:none;transition:none}
 }
 
