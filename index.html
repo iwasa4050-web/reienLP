@@ -10,1528 +10,980 @@
 <meta name="description" content="愛犬・愛猫と、亡くなったあとも同じお墓で眠れる霊園。合祀されず、ずっと個別のまま。永代供養・バリアフリー対応。資料請求・見学のご予約を受付中。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Zen+Old+Mincho:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;600;700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=Cormorant+Garamond:wght@400;500&display=swap" rel="stylesheet">
 <link rel="preload" as="image" href="assets/fv-01.jpg">
 <style>
+/* =========================================================================
+   デザイントークン
+   ふちの色を混ぜない生成り＋金＋深緑の3系統。写真の上に敷くベールは黒の透過のみ。
+   ========================================================================= */
 :root{
-  --sky:#4a97d2;          /* メイン：蒼空ブルー */
-  --sky-deep:#1e5f96;     /* 濃青：見出し・強調 */
-  --sky-light:#eaf5fc;    /* 淡青：背景 */
-  --sky-pale:#f6fbff;     /* ごく淡い青 */
-  --sun:#d59456;          /* CVボタン：落ち着いたあたたかい琥珀色 */
-  --sun-deep:#c17f3d;
-  --ink:#33414d;          /* 本文 */
-  --ink-soft:#5c6b77;
-  --white:#ffffff;
-  --serif:"Zen Old Mincho","Hiragino Mincho ProN",serif;
-  --sans:"Noto Sans JP","Hiragino Kaku Gothic ProN",sans-serif;
+  --bg:#FBF6EC;            /* 地（生成り） */
+  --bg-alt:#F3EADB;        /* 地・濃 */
+  --bg-white:#FFFDF9;      /* セクション白 */
+  --bg-deep:#241F1A;       /* 暗部（動画セクションの地） */
+  --text:#3B352C;          /* 本文 */
+  --muted:#7A7264;         /* 補助文字 */
+  --gold:#9C843C;          /* 主役・CTA */
+  --gold-soft:#C7AE6E;     /* 罫線装飾・アイコン */
+  --cream:#F0D8A8;         /* 暗背景上のアクセント文字 */
+  --teal:#008484;
+  --teal-deep:#0A6E68;     /* 見出し・電話 */
+  --line:#E3D8C4;          /* 罫線 */
+  --cta:#9C843C;
+  --radius:4px;
+  --page-max:440px;        /* スマホ幅シェル */
+  /* 実際の表示幅（シェル幅で頭打ち）。
+     見出しの文字サイズをこの幅に比例させ、日本語の泣き別れを構造的に防ぐ。
+     全幅画像を常に中央へ寄せるのにも使う。JSに頼らないので常に幅へ追従する */
+  --vw:min(100vw, 440px);
+  --serif:"Shippori Mincho","Noto Serif JP","Hiragino Mincho ProN",serif;
+  --sans:"Zen Kaku Gothic New","Noto Sans JP","Hiragino Kaku Gothic ProN",sans-serif;
+  --en:"Cormorant Garamond",serif;
 }
 *{margin:0;padding:0;box-sizing:border-box}
-/* 基準サイズを上げて全体の文字を大きく（rem/clamp指定が全体に効く）。100%=16px → 112.5%=18px */
-html{scroll-behavior:smooth;scroll-padding-top:80px;background:#c9d6e2;font-size:112.5%}
-/* ===== スマホ幅固定シェル（PCでも中央にスマホ幅で表示） ===== */
-:root{--app-w:440px}
+html{scroll-behavior:smooth; scroll-padding-top:78px; background:#E7DECF}
+html,body{overflow-x:clip}
 body{
-  font-family:var(--sans);
-  color:var(--ink);
-  font-size:1rem; /* rootに追従（=18px）。全体拡大は html の font-size で調整 */
-  line-height:1.9;
-  background:var(--white);
+  font-family:var(--sans); color:var(--text); background:var(--bg);
+  font-size:16px; line-height:1.95; letter-spacing:.02em;
   -webkit-font-smoothing:antialiased;
-  max-width:var(--app-w);
-  margin:0 auto;
-  position:relative;
-  overflow-x:hidden;
-  box-shadow:0 0 50px rgba(20,50,80,.18);
-  min-height:100vh;
+  max-width:var(--page-max); margin:0 auto; position:relative;
+  box-shadow:0 0 60px rgba(60,45,20,.14);
 }
-/* 本文の改行を均し、最終行が1〜2文字だけ孤立する「泣き別れ」を防ぐ。
-   text-wrap:balance で各行の長さが揃い、読みやすくなる（未対応ブラウザは通常折り返し） */
-.story p,.philosophy-text,.svc-item p,.voice-item p,
-.cta-lead,.cta-card p,.cta-promise span,
-.limit-fact,.limit-note,.limit-ours,.limit-close,.limit-voices p,
-.warm-scene p,.warm-close,.warm-talk,.warm-em,
-.quiet-text,.quiet-main,.talk-line,
-.denial-mid,.denial-q,.scene-text,.replace-note,
-.cta-btn, /* ボタンも語の途中で割れないよう均す（「見学・お問合せは/こちら」の形に） */
-/* 見出し・リード文も同様に。狭い画面で末尾1〜2文字が落ちるのを防ぐ */
-.sec-title,.cta-title,.worry-lead,.scene-title,.svc-item h3,.voice-meta{
-  text-wrap:balance;
-}
-/* brの代わりに分けた各文。行ごとに balance を効かせる（brがあると効かないため） */
-.worry-lead > span,.cta-title > span{display:block;text-wrap:balance}
-/* 固定オーバーレイをスマホ幅の中央カラムに合わせる */
-.header,.fv-fixed{
-  left:50%!important;right:auto!important;
-  transform:translateX(-50%);
-  width:100%;max-width:var(--app-w);
-}
-img{max-width:100%;height:auto;display:block}
-a{color:inherit;text-decoration:none}
-.inner{max-width:1080px;margin:0 auto;padding:0 24px;position:relative;z-index:2}
+img{display:block; max-width:100%; height:auto}
+a{color:inherit; text-decoration:none}
 
-/* ===== ヘッダー ===== */
+/* 長い本文の折り返し。
+   word-break:auto-phrase で文節の切れ目で折り返し、「見/学」のような泣き別れを防ぐ。
+   text-wrap:pretty で最終行が1〜2文字だけ残るのを避ける（未対応ブラウザは通常折り返し）。
+   見出し・短い情緒コピーは下で nowrap + clamp(--vw) に切り替える */
+.blk__body,.blk__q,.know-fact,.know-note,.know-close,.know-voices p,
+.feature__ttl,.feature__desc,.voice__text,.offer__lead,.offer__desc,.offer__name,
+.warm__close,.push__body,.promise__text,.replace-note,.ytnote,
+.comma__body,.t-body,.t-label,.btn{
+  word-break:auto-phrase;
+  text-wrap:pretty;
+}
+
+/* =========================================================================
+   ヘッダー（FVの間は隠し、通過後に降りてくる）
+   ========================================================================= */
 .header{
-  position:fixed;top:0;left:0;right:0;z-index:100;
-  /* 明るいブルーを少しだけ透過（ほぼ青のまま）。
-     背景が88%不透明でぼかしはほぼ見えず、スクロール毎の再描画コストになるため
-     backdrop-filter は使わない */
-  background:linear-gradient(180deg,rgba(207,228,246,.9) 0%,rgba(188,216,240,.9) 100%);
-  border-bottom:1px solid rgba(74,151,210,.25);
-  box-shadow:0 2px 10px rgba(30,95,150,.1);
-}
-.header-inner{
-  max-width:var(--app-w);margin:0 auto;padding:8px 14px;
-  display:flex;align-items:center;justify-content:space-between;gap:10px;
-}
-.header-logo{display:flex;align-items:center;gap:8px;flex-shrink:1;min-width:0}
-.header-mark{height:34px;width:auto;display:block;flex-shrink:0}
-.header-name{
-  font-family:var(--serif);font-weight:700;color:var(--sky-deep);
-  font-size:.9rem;letter-spacing:.01em;line-height:1.28;white-space:nowrap;
-}
-/* 電話問い合わせボタン */
-.header-tel{
-  display:inline-flex;align-items:center;gap:7px;flex-shrink:0;
-  padding:7px 14px;border-radius:999px;
-  background:var(--sun);color:var(--white);
-  box-shadow:0 2px 8px rgba(40,55,75,.16);
-  transition:opacity .2s,transform .2s;
-}
-.header-tel:hover{opacity:.9;transform:translateY(-1px)}
-.header-tel svg{flex-shrink:0}
-.header-tel-txt{display:flex;flex-direction:column;line-height:1.1;text-align:left}
-.header-tel-txt small{font-size:.56rem;font-weight:600;opacity:.92;letter-spacing:.02em}
-.header-tel-txt strong{font-size:.98rem;font-weight:700;letter-spacing:.02em}
-@media(max-width:400px){
-  .header-name{font-size:.82rem}
-}
-@media(max-width:360px){
-  .header-mark{height:30px}
-  .header-name{display:none} /* 極小幅ではマークのみ表示 */
-  .header-tel-txt small{display:none}
-  .header-tel{padding:8px 13px}
-}
-/* ヘッダー分の余白（固定ヘッダーがFV上端に被らないように本文を下げる） */
-main{padding-top:46px}
-.btn-outline{border:2px solid var(--sky);color:var(--sky-deep);background:var(--white)}
-.btn-fill{background:var(--sun);color:var(--white);box-shadow:0 2px 8px rgba(40,55,75,.14)}
-
-/* ===== セクション共通 ===== */
-section{position:relative;padding:90px 0}
-.sec-title{
-  text-align:center;font-family:var(--serif);font-weight:700;
-  font-size:clamp(1.5rem,3.4vw,1.5rem);color:var(--sky-deep);
-  line-height:1.7;letter-spacing:.06em;margin-bottom:20px;
-}
-/* brで区切った2行を、途中で折り返さずそのまま2行で見せる。
-   狭い画面では文字を縮めて幅に収める */
-/* brで区切った各行を1行のまま見せる。text-wrap:nowrap は .sec-title の
-   balance より後に指定して打ち消されないようにする */
-.sec-title-2line{white-space:nowrap;text-wrap:nowrap;font-size:min(1.45rem,5.7vw)}
-.sec-title-bar{
-  width:52px;height:3px;background:var(--sky);margin:0 auto 48px;border-radius:2px;
-}
-.replace-note{
-  text-align:center;font-size:.78rem;color:var(--ink-soft);margin-top:20px;
-}
-
-/* ===== ① FV：写真スライドショー（ズームイン＋クロスディゾルブ） =====
-   背景は固定レイヤーにして、次のブロックへスクロールしても同じ背景が続く */
-main{position:relative;z-index:1}
-.fv-fixed{
-  position:fixed;inset:0;z-index:0;
-  overflow:hidden; /* ズームインした画像をLP幅の枠内でクリップ（左右の見切れ防止） */
-  background:linear-gradient(165deg,#aedcf5 0%,#7cbfe8 38%,#4a97d2 100%);
-}
-.hero{
-  position:relative;
-  margin-top:0;
-  min-height:100vh;
-  min-height:100svh;
-  display:flex;align-items:center;
-  background:transparent;
-  padding:0;
-  overflow:hidden;
-}
-/* 位置合わせ（left:50% + translateX(-50%)）は45行目の共通ルールに任せる。
-   ここで transform / will-change / backface-visibility を足すと、
-   中央寄せを打ち消したり iOS で固定要素の描画位置がずれるため、あえて指定しない。 */
-.hero-bg{position:absolute;inset:0}
-/* FV背景動画：重ねてディゾルブ（クロスフェード）で切り替える */
-.fv-vid{
-  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;
-  opacity:0;transition:opacity 1.4s ease;
-}
-.fv-vid.is-active{opacity:1}
-@media(prefers-reduced-motion:reduce){
-  .fv-vid{transition:none}
-}
-.hero-veil{ /* 文字の視認性を上げる半透明マット。色を混ぜず黒の透過にして映像本来の色を保つ */
-  position:absolute;inset:0;
-  background:linear-gradient(180deg,rgba(0,0,0,.34) 0%,rgba(0,0,0,.4) 55%,rgba(0,0,0,.54) 100%);
-}
-.hero::after{ /* 直線＋グラデーションで次ブロックの色へ徐々に変わる */
-  content:"";position:absolute;left:0;right:0;bottom:0;height:200px;z-index:2;pointer-events:none;
-  background:linear-gradient(180deg,
-    rgba(233,244,229,0) 0%,
-    rgba(233,244,229,.45) 55%,
-    rgba(233,244,229,.85) 100%);
-}
-@media(max-width:100000px){.hero::after{height:140px}}
-.cloud{position:absolute;fill:rgba(255,255,255,.85);animation:drift 60s linear infinite}
-.cloud.c2{animation-duration:80s;animation-delay:-30s;opacity:.6}
-.cloud.c3{animation-duration:100s;animation-delay:-55s;opacity:.45}
-@keyframes drift{
-  from{transform:translateX(-20vw)}
-  to{transform:translateX(110vw)}
-}
-@media(prefers-reduced-motion:reduce){
-  .cloud{animation:none}
-}
-.hero-inner{
-  position:relative;z-index:2;
-  max-width:1080px;margin:0 auto;padding:90px 12px 150px; /* 左右余白を詰めてメインコピーを大きく出せる幅を確保 */
-  color:var(--white);text-align:center;width:100%;
-}
-.hero-lead{
-  font-family:var(--serif);font-weight:600;
-  font-size:clamp(1.24rem,5.4vw,1.46rem);
-  line-height:1.6;letter-spacing:.08em;
-  /* 白い建物・空など明るい映像でも沈まないよう、輪郭＋落ち影＋広い影を重ねる */
-  text-shadow:
-    0 0 3px rgba(6,18,32,.9), 0 0 8px rgba(6,18,32,.7),
-    0 2px 4px rgba(6,18,32,.85), 0 4px 18px rgba(6,18,32,.6);
-  margin-top:-40px;
-  margin-bottom:34px;
-}
-.hero-catch{
-  font-family:var(--serif);font-weight:700;
-  font-size:clamp(1.78rem,7.7vw,1.95rem);
-  line-height:1.5;letter-spacing:-.01em;white-space:nowrap;
-  /* メインコピーは最も強く：輪郭を締めてから落ち影と広がりを重ねる */
-  text-shadow:
-    0 0 4px rgba(6,18,32,.95), 0 0 10px rgba(6,18,32,.8),
-    0 2px 5px rgba(6,18,32,.9), 0 6px 28px rgba(6,18,32,.65);
-  margin-bottom:26px;
-}
-.hero-subhead{
-  font-family:var(--serif);font-weight:600;
-  font-size:clamp(1.16rem,5.1vw,1.4rem);
-  line-height:1.85;letter-spacing:.06em;
-  text-shadow:
-    0 0 3px rgba(6,18,32,.9), 0 0 8px rgba(6,18,32,.7),
-    0 2px 4px rgba(6,18,32,.85), 0 4px 18px rgba(6,18,32,.6);
-  margin-top:26px;
-  margin-bottom:44px;
-}
-.hero-cta{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
-.cta-btn{
-  display:inline-flex;flex-direction:column;align-items:center;justify-content:center;
-  min-width:270px;min-height:64px;padding:14px 36px;border-radius:999px;
-  font-weight:700;font-size:1.08rem;letter-spacing:.05em;
-  transition:transform .2s,box-shadow .2s;cursor:pointer;
-}
-.cta-btn small{font-size:.72rem;font-weight:500;letter-spacing:.08em;opacity:.92}
-.cta-btn:hover{transform:translateY(-2px)}
-.cta-primary{
-  background:var(--sun);
-  color:var(--white);box-shadow:0 3px 10px rgba(40,55,75,.15);
-}
-.cta-primary:hover{background:var(--sun-deep);box-shadow:0 5px 14px rgba(40,55,75,.2)}
-.cta-secondary{
-  background:rgba(255,255,255,.95);color:var(--sky-deep);
-  box-shadow:0 6px 18px rgba(30,95,150,.3);
-}
-.paw{position:absolute;z-index:1;opacity:.25;fill:#fff}
-
-/* ===== ② 共感（痛み）：丘の緑から淡い空色へ ===== */
-.worry{ /* カラーマットを半透明にして固定背景を透かす。下端で不透明に戻して次へつなぐ */
-  background:linear-gradient(180deg,
-    rgba(233,244,229,.85) 0%,
-    rgba(242,249,244,.85) 16%,
-    rgba(246,251,255,.88) 42%,
-    #eaf5fc 100%);
-}
-.worry-lead{
-  max-width:660px;margin:-24px auto 44px;text-align:center;
-  font-size:clamp(.93rem,1.7vw,1rem);line-height:2.15;letter-spacing:.02em;color:var(--ink);
-}
-/* 2行で収める見出し：狭い幅でも各行が折り返さないよう字間と級数を詰める */
-.worry .sec-title{
-  font-size:clamp(1.15rem,5vw,1.32rem);
-  letter-spacing:.02em;white-space:nowrap;
-}
-.worry-video{
-  max-width:640px;margin:0 auto;position:relative;width:100%;aspect-ratio:16/9;
-  border-radius:20px;overflow:hidden;box-shadow:0 12px 36px rgba(20,60,95,.28);
-  background:#000;
-}
-.worry-video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
-.worry-list{
-  display:grid;grid-template-columns:repeat(3,1fr);gap:24px;
-}
-@media(max-width:100000px){.worry-list{grid-template-columns:1fr;max-width:520px;margin-left:auto;margin-right:auto}}
-.worry-item{
-  background:var(--white);border-radius:16px;padding:32px 26px;
-  box-shadow:0 4px 20px rgba(74,151,210,.1);
-  text-align:center;position:relative;
-}
-.worry-item::before{
-  content:"";position:absolute;top:0;left:26px;right:26px;height:4px;
-  background:linear-gradient(90deg,#aedcf5,var(--sky));border-radius:0 0 4px 4px;
-}
-.worry-item .icon{
-  width:64px;height:64px;margin:0 auto 18px;border-radius:50%;
-  background:var(--sky-light);display:flex;align-items:center;justify-content:center;
-}
-.worry-item .icon svg{width:32px;height:32px;stroke:var(--sky-deep)}
-.worry-item p{font-size:.98rem;line-height:1.9}
-.worry-item p strong{color:var(--sky-deep)}
-
-/* ===== ③ 諦めの否定：暗めのブロック＋煙のお墓写真を透過背景に ===== */
-.denial{
-  position:relative;overflow:hidden;
-  /* 写真が読み込まれるまでの下地（写真は全面に出るため通常は見えない） */
-  background:#2a2a2a;
-  color:var(--white);text-align:center;
-  padding-top:0;padding-bottom:0; /* オファー文を画像内に移したため下の余白は不要 */
-}
-/* 画面に入ったら、見出しと本文をふわっと表示する。
-   .fadein はJSが付与する（JS無効時に文章が出ないままにならないため）。
-   背景写真は最初から見せ、文字だけを浮かび上がらせる */
-.denial.fadein .denial-q,
-.denial.fadein .denial-mid{
-  opacity:0;transform:translateY(18px);
-  transition:opacity 1.2s ease,transform 1.2s cubic-bezier(.22,1,.36,1);
-}
-.denial.fadein .denial-mid{transition-delay:.25s}          /* 本文は見出しに少し遅れて */
-.denial.fadein .denial-mid + .denial-mid{transition-delay:.45s} /* 2つ目の段落はさらに遅れて */
-.denial.fadein.is-in .denial-q,
-.denial.fadein.is-in .denial-mid{opacity:1;transform:none}
-@media(prefers-reduced-motion:reduce){
-  .denial.fadein .denial-q,.denial.fadein .denial-mid,
-  .denial.fadein.is-in .denial-q,.denial.fadein.is-in .denial-mid{opacity:1;transform:none;transition:none}
-}
-.denial::after{ /* 下端を次の明ブロック（.story-know の上端 #f6fbff）へ溶かして境目の線を消す */
-  content:"";position:absolute;left:0;right:0;bottom:0;height:130px;z-index:1;pointer-events:none;
-  background:linear-gradient(180deg,rgba(246,251,255,0) 0%,rgba(246,251,255,.55) 55%,#f6fbff 100%);
-}
-.denial-top{ /* ブロック全体にお墓写真を背景として敷く。文章下の余白は最小限に */
-  position:relative;overflow:hidden;padding-top:90px;padding-bottom:clamp(48px,14vh,120px);
-}
-.denial-top::before{ /* 上端を直前の暖色ブロック（#f9e8d3）から溶かし、境目の線を消す */
-  content:"";position:absolute;left:0;right:0;top:0;height:76px;z-index:1;pointer-events:none;
-  background:linear-gradient(180deg,#f9e8d3 0%,rgba(249,232,211,.5) 45%,rgba(249,232,211,0) 100%);
-}
-.denial-bg{ /* 背景写真。色を混ぜないよう写真はそのまま見せる */
-  position:absolute;inset:0;z-index:0;
-  background:url('assets/denial-bg.jpg') center 40%/cover no-repeat;
-}
-.denial-bg::after{ /* 黒の透過グラデーション（中ほどを一番明るく）。色みを足さず明度だけ落とす */
-  content:"";position:absolute;inset:0;
-  background:linear-gradient(180deg,rgba(0,0,0,.46) 0%,rgba(0,0,0,.36) 42%,rgba(0,0,0,.44) 100%);
-}
-.denial-top .inner{position:relative;z-index:2}
-.denial .inner{position:relative;z-index:2}
-/* テキストリビール：文字は動かさず、左→右へマスクが開いて現れる（clip-pathワイプ） */
-.reveal{
-  clip-path:inset(-0.35em 100% -0.35em 0); /* 右を100%クリップ＝非表示（上下は影用に少し外側） */
-  transition:clip-path 1.05s cubic-bezier(.22,.61,.36,1);
-}
-.reveal.is-in{clip-path:inset(-0.35em 0% -0.35em 0)} /* 右のクリップが0%まで開いて全表示（右は％同士で補間可能） */
-/* 優しいフェードイン：下からすっと浮かび上がって表示 */
-.reveal-soft{
-  opacity:0;transform:translateY(20px);
-  transition:opacity 1.2s ease,transform 1.2s cubic-bezier(.22,1,.36,1);
-}
-.reveal-soft.is-in{opacity:1;transform:none}
-/* 「——そんな気がする…」は、上の一文に続いて時間差で現れる */
-.story-talk .talk-line ~ p.reveal-soft{transition-delay:.45s}
-@media(prefers-reduced-motion:reduce){
-  .reveal,.reveal.is-in{clip-path:none;transition:none}
-  .reveal-soft,.reveal-soft.is-in{opacity:1;transform:none;transition:none}
-}
-.denial-q{
-  font-family:var(--serif);font-weight:700;
-  font-size:clamp(1.45rem,6.4vw,1.76rem);line-height:1.75;letter-spacing:.01em;
-  margin-bottom:34px;color:#fff;
-  text-shadow:0 2px 12px rgba(0,0,0,.55);
-}
-.denial-mid{
-  font-size:clamp(1rem,1.7vw,1.1rem);line-height:2.2;
-  color:rgba(255,255,255,.94);margin:0 auto 24px;max-width:660px;text-align:left;
-  text-shadow:0 1px 10px rgba(0,0,0,.6);
-}
-.denial-mid:last-of-type{margin-bottom:0}
-/* 回答後に開くブロック：たたまれた状態からすっと開く */
-.wish-reveal[hidden]{display:none}
-.wish-reveal{
-  position:relative;z-index:2; /* .denial::after（暗→明の帯）を覆い、白ブロックを地色にする */
-  animation:wishOpen 1s cubic-bezier(.22,1,.36,1) both;
-}
-@keyframes wishOpen{
-  from{opacity:0;transform:translateY(24px)}
-  to{opacity:1;transform:none}
-}
-@media(prefers-reduced-motion:reduce){
-  .wish-reveal{animation:none}
-}
-/* 写真は廃し、白地に見出しだけを置く */
-.wish-hero{
-  position:relative;margin:0 -24px 0;
-  background:#fff;padding:56px 24px 8px;
-}
-.wish-hero .denial-wish{
-  margin:0;text-align:center;
-  color:var(--sky-deep);text-shadow:none;
-}
-/* 写真の下に続く白ブロック：オファー文を濃紺の文字で置く。
-   下端は次セクション（.story-know）の上端と同じ色になるようグラデーションで着地させ、境目の線を消す。
-   放射グラデーションの中心を境界線に重ねているので、接する行の色が両者でぴたりと一致する。 */
-.wish-offer-band{
-  position:relative;z-index:2;
-  padding:8px 0 72px;
-  background:
-    radial-gradient(ellipse 62% 46% at 50% 100%,rgba(255,243,220,.85) 0%,rgba(255,243,220,0) 70%),
-    linear-gradient(180deg,#ffffff 0%,#ffffff 38%,#f6fbff 100%);
-}
-.wish-offer{
-  max-width:660px;margin:0 auto;text-align:center;
-  font-weight:700;color:var(--ink);
-  font-size:clamp(.95rem,3.4vw,1.05rem);line-height:2.1;letter-spacing:.02em;
-}
-.wish-offer .em-wish{
-  color:var(--sky-deep);font-weight:700;
-  background:linear-gradient(transparent 58%,#ffe08a 58%);padding:0 3px;
-}
-.denial-wish{
-  font-family:var(--serif);font-weight:600;
-  font-size:clamp(1.05rem,5.2vw,1.35rem);line-height:1.7;letter-spacing:0;
-  color:#fff;margin:44px 0 34px;text-shadow:0 2px 16px rgba(8,18,30,.95);
-}
-.denial-a{
-  font-family:var(--serif);font-weight:700;
-  font-size:clamp(1.4rem,3.2vw,1.4rem);line-height:1.85;letter-spacing:.06em;
-  text-shadow:0 2px 16px rgba(120,200,255,.45);
-}
-.denial-a .light{
-  background:linear-gradient(transparent 68%,rgba(243,155,59,.55) 68%);
-  padding:0 2px;
-}
-@media(max-width:100000px){.denial-mid{text-align:left}}
-
-/* ===== ④ 物語ブロック（知ってほしいこと／話せている気がする） ===== */
-.story{position:relative;overflow:hidden;padding:84px 0}
-.story-know{
-  background:
-    radial-gradient(ellipse 62% 46% at 50% 0%,rgba(255,243,220,.85) 0%,rgba(255,243,220,0) 70%),
-    linear-gradient(180deg,#f6fbff 0%,#ffffff 70%);
-}
-/* 写真が開いた状態では、直前が白ブロック（.wish-offer-band）になるため
-   暗→明の切り替え帯は不要。閉じている時は .denial::after が境目を処理する。 */
-.story-know .inner{position:relative;z-index:2}
-.story-label{
-  text-align:center;color:var(--sky);font-weight:700;
-  letter-spacing:.16em;font-size:.78rem;margin-bottom:12px;
-}
-.story h2{
-  font-family:var(--serif);font-weight:700;color:var(--sky-deep);
-  /* brで区切った各行を1行のまま見せる。狭い画面では文字を縮めて折り返さない */
-  font-size:min(1.35rem,5.5vw);line-height:1.7;letter-spacing:.04em;
-  white-space:nowrap;text-wrap:nowrap;
-  text-align:center;margin-bottom:14px;
-}
-.story .bar{width:52px;height:3px;background:var(--sky);margin:0 auto 34px;border-radius:2px}
-.story p{
-  max-width:660px;margin:0 auto 20px;text-align:left;
-  font-size:clamp(1rem,1.7vw,1.08rem);line-height:2.15;color:var(--ink);
-}
-.story p:last-child{margin-bottom:0}
-.story b{color:var(--sky-deep)}
-.story .em{background:linear-gradient(transparent 60%,#ffe6a8 60%);font-weight:700;padding:0 2px}
-/* 注記：埋もれない程度に見出しだけ立て、本文と地続きに置く */
-.story-note{
-  max-width:660px;margin:-4px auto 24px;
-  padding:0 2px;font-size:.88rem;line-height:1.95;color:var(--ink-soft);
-}
-.story-note strong{color:var(--sky-deep);font-weight:700}
-/* 2つの声を小見出しとして強調（2行） */
-.story-know .story-voices{
-  max-width:660px;margin:0 auto 20px;text-align:center;
-  font-family:var(--serif);font-weight:700;color:var(--sky-deep);
-  font-size:clamp(.78rem,3.3vw,.96rem);line-height:2;letter-spacing:0;
-  white-space:nowrap; /* 各文を1行に収め、必ず2行構成にする */
-}
-/* 個別納骨→合祀の図解 */
-.goshi-fig{
-  max-width:660px;margin:6px auto 26px;
-}
-.goshi-fig img{
-  width:100%;height:auto;display:block;
-}
-/* ブロック内で最も強調したい一文：マーカーを厚く・文字も一段大きく */
-.story-know .em{
-  background:linear-gradient(transparent 52%,#ffe08a 52%);
-  font-weight:700;font-size:1.06em;color:var(--ink);
-  padding:0 3px;
-}
-
-/* ===== 「埋葬期限がない」を伝えるブロック ===== */
-.limit-hero{
-  max-width:660px;margin:0 auto 40px;padding:0 2px;
-  text-align:center;
-}
-/* 他園の事実 → 注記 → 当園（マーカーで強調）の順に読ませる */
-.limit-fact{
-  font-size:1.08rem!important;line-height:2!important;color:var(--ink);
-  margin:0 0 8px!important;text-align:center!important;
-}
-.limit-note{
-  font-size:.87rem!important;line-height:1.9!important;color:var(--ink-soft)!important;
-  margin:0 0 30px!important;text-align:center!important;
-}
-.limit-ours{
-  font-family:var(--serif);font-weight:700;line-height:2!important;
-  font-size:clamp(1.1rem,4.6vw,1.24rem)!important;
-  margin:0!important;text-align:center!important;
-}
-/* ③ ご家族の声：囲みは持たせず、引用符と字面だけで立てる */
-.limit-voices{
-  max-width:660px;margin:0 auto 26px;padding:0 2px;
-}
-.limit-voices p{
-  position:relative;margin:0!important;padding:0 0 0 26px;text-align:left!important;
-  font-family:var(--serif);font-weight:700;color:var(--sky-deep);
-  font-size:clamp(1.02rem,4.2vw,1.14rem)!important;line-height:1.75!important;letter-spacing:.02em;
-}
-.limit-voices p + p{margin-top:18px!important}
-.limit-voices p::before{ /* 引用符 */
-  content:"“";position:absolute;left:0;top:-2px;
-  font-family:var(--serif);font-size:1.9rem;line-height:1;color:rgba(74,151,210,.5);
-}
-.limit-close{max-width:660px;margin:0 auto!important}
-/* 締めの一文のあたりに置く写真。円を少し崩した輪郭で切り抜き、縁をぼかして背景に溶かす。
-   文字の背面に回して重ねる */
-.limit-photo{
-  position:relative;z-index:0;
-  width:min(300px,74%);aspect-ratio:3/4;  /* 縦長。マスクの円が要素比に伸びて縦楕円になる */
-  margin:-300px 0 0 auto;  /* 右上へ寄せる（右端合わせ＋上へ持ち上げる） */
-  transform:translateX(16px);
-}
-/* 画面に入ったら写真もふわっと現す。.fadephoto はJSが付与する（JS無効時に消えないため）。
-   位置指定に transform を使っているので、フェードは opacity だけで行う */
-.limit-photo.fadephoto{
-  opacity:0;
-  transition:opacity 1.3s ease .25s;
-}
-.limit-photo.fadephoto.is-in{opacity:1}
-@media(prefers-reduced-motion:reduce){
-  .limit-photo.fadephoto,.limit-photo.fadephoto.is-in{opacity:1;transition:none}
-}
-/* 写真より前面に文字を置き、白い光彩で浮かせて読めるようにする */
-.limit-voices,
-.limit-close{
-  position:relative;z-index:1;
-  text-shadow:0 0 6px rgba(255,255,255,.96),0 0 14px rgba(255,255,255,.92),0 0 26px rgba(255,255,255,.8);
-}
-.limit-photo img{
-  width:100%;height:100%;object-fit:cover;display:block;
-  opacity:.55; /* 文字と重なるので薄く敷く */
-  -webkit-mask-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><defs><filter id='b' x='-15%25' y='-15%25' width='130%25' height='130%25'><feGaussianBlur stdDeviation='9'/></filter></defs><path filter='url(%23b)' fill='white' d='M60,10 L140,10 C174,10 190,28 190,60 L190,140 C190,172 174,190 140,190 L60,190 C26,190 10,172 10,140 L10,60 C10,28 26,10 60,10 Z'/></svg>");
-          mask-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><defs><filter id='b' x='-15%25' y='-15%25' width='130%25' height='130%25'><feGaussianBlur stdDeviation='9'/></filter></defs><path filter='url(%23b)' fill='white' d='M60,10 L140,10 C174,10 190,28 190,60 L190,140 C190,172 174,190 140,190 L60,190 C26,190 10,172 10,140 L10,60 C10,28 26,10 60,10 Z'/></svg>");
-  -webkit-mask-size:100% 100%;mask-size:100% 100%;
-  -webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;
-}
-/* 声と締めの一文は、画面に入ったら左から滑り込ませる。
-   .slidein-left はJSが付与する（JS無効時に文章が出ないままにならないため）。
-   締めの一文は声より少し遅れて入る */
-.limit-voices.slidein-left,
-.limit-close.slidein-left{
-  opacity:0;transform:translateX(-46px);
-  transition:opacity 1s ease,transform 1.1s cubic-bezier(.22,1,.36,1);
-}
-.limit-close.slidein-left{transition-delay:.22s}
-.limit-voices.slidein-left.is-in,
-.limit-close.slidein-left.is-in{opacity:1;transform:none}
-@media(prefers-reduced-motion:reduce){
-  .limit-voices.slidein-left,.limit-voices.slidein-left.is-in,
-  .limit-close.slidein-left,.limit-close.slidein-left.is-in{opacity:1;transform:none;transition:none}
-}
-/* 中身（写真・文章）だけをふわっと表示。.fadein はJSが付与する（JS無効時に消えないため）。
-   セクション自体を透明にすると背後の固定FV動画が透けて暗く見え、
-   境目がぶつ切りに感じるため、背景は常に不透明のままにする */
-.story-quiet.fadein > .inner{
-  opacity:0;transform:translateY(20px);
-  transition:opacity 1.5s ease,transform 1.5s cubic-bezier(.22,1,.36,1);
-}
-.story-quiet.fadein.is-in > .inner{opacity:1;transform:none}
-/* お墓参りの写真ブロックは、そこまでスクロールしてきたタイミングで少し遅れて現れる。
-   セクション全体と連動させるとブロックが画面に入る前に演出が終わってしまうため、独立させている */
-.quiet-stage.stagefade{
-  opacity:0;transform:translateY(28px);
-  transition:opacity 1.05s ease .2s,transform 1.05s cubic-bezier(.22,1,.36,1) .2s;
-}
-.quiet-stage.stagefade.is-in{opacity:1;transform:none}
-@media(prefers-reduced-motion:reduce){
-  .story-quiet.fadein > .inner,.story-quiet.fadein.is-in > .inner,
-  .quiet-stage.stagefade,.quiet-stage.stagefade.is-in{opacity:1;transform:none;transition:none}
-}
-
-/* ===== 「話せているような気がする」別デザイン版：背景画像なし・文字組みだけで見せる ===== */
-.story-quiet{
-  /* 穏やかな晴れの日：右上から差す陽の光と、淡い空色を重ねる。
-     上端は前セクション(.worry)の下端色 #eaf5fc から始め、段差なく繋ぐ。
-     陽の光（黄色）は上端の継ぎ目に掛からないよう少し下げている */
-  background:
-    radial-gradient(ellipse 88% 46% at 74% 26%,rgba(255,238,199,.55) 0%,rgba(255,238,199,0) 60%),
-    radial-gradient(ellipse 72% 42% at 12% 46%,rgba(255,247,231,.48) 0%,rgba(255,247,231,0) 64%),
-    linear-gradient(180deg,#eaf5fc 0%,#eef6fd 14%,#f3f7fc 42%,#f6fbfe 72%,#eaf5fc 100%);
-  /* 左上の写真は .quiet-block から top:-212px に置くため、上余白が212px未満だと
-     セクション外へ出て .story の overflow:hidden で上端が直線に切れる。
-     余白を224pxにして切り抜きの丸みを最後まで見せる（文字と写真の位置関係は不変）。
-     下は写真を次セクションに接させるため0 */
-  padding:224px 0 0;
-}
-.story-quiet .inner{max-width:660px;margin:0 auto;padding:0 24px}
-.quiet-title{
-  font-family:var(--serif);font-weight:700;color:var(--sky-deep);
-  font-size:clamp(1.5rem,6.4vw,1.72rem)!important;line-height:1.9!important;letter-spacing:.1em;
-  text-align:center!important;margin:0 0 40px!important;
-}
-.quiet-text{
-  max-width:none!important;text-align:center!important;
-  /* 背景の写真に重なるため、薄いグレーではなく本文色まで濃くして読みやすさを確保する */
-  font-size:1rem!important;line-height:2.3!important;color:var(--ink)!important;
-  margin:0 auto!important;
-}
-/* 主役の一文。上下に大きな余白を取って、ここだけ時間が止まるように見せる。
-   上の余白は、右下に置いた写真（本文ブロック下端から212px）と重ならない値にしている */
-.quiet-main{
-  position:relative;text-align:center!important;
-  margin:0 auto!important;padding:44px 48px!important;
-  font-family:var(--serif);font-weight:700;color:var(--sky-deep);
-  font-size:clamp(1.3rem,5.6vw,1.5rem)!important;line-height:2!important;letter-spacing:.08em;
-  text-shadow:none; /* 暖色の地に直接乗るので光彩は不要 */
-}
-/* 主役の一文のブロック。写真は背景に沈めず前面に置き、地は暖色にする。
-   .inner の左右padding(24px)を打ち消して、セクションの端から端まで広げる */
-.quiet-stage{
-  position:relative;overflow:hidden;
-  margin:240px -24px 0;padding:100px 0 0;
-  /* 暖色の地。上端は「透明」から始めてセクションの背景をそのまま見せ、
-     下へ向かって暖色へ変わる。色を重ねないので継ぎ目の線が出ない */
-  background:linear-gradient(180deg,
-    rgba(253,246,234,0) 0,
-    rgba(253,246,234,1) 88px,
-    #fbeedd 48%,
-    #f9e8d3 100%);
-}
-/* 前面に出す写真。角丸と影で「置いた写真」として見せる */
-.quiet-stage-photo{
-  position:relative;z-index:1;
-  width:min(420px,94%);margin:0 auto 40px;
-  border-radius:18px;overflow:hidden;
-  box-shadow:0 14px 34px rgba(120,86,48,.22);
-}
-.quiet-stage-photo img{
-  width:100%;aspect-ratio:4/3;object-fit:cover;display:block;
-}
-/* 締めの一文。暖色の地に乗るので、白い光彩は不要 */
-.quiet-stage .quiet-text{
-  position:relative;z-index:1;color:var(--ink)!important;
-  margin:30px auto 0!important;padding:0 50px 70px!important;
-  text-shadow:none;
-}
-/* 円を少し崩した輪郭で写真を切り抜く。SVGマスクにぼかしをかけて縁をふわっと溶かす */
-.quiet-block{position:relative} /* 写真を文字の角に重ねるための基準 */
-/* 文字は写真より前面に置き、さらに白い光彩を回して背景の写真から浮かせる */
-.quiet-block > .quiet-title,
-.quiet-block > .quiet-text{
-  position:relative;z-index:1;
-  text-shadow:0 0 6px rgba(255,255,255,.95),0 0 14px rgba(255,255,255,.9),0 0 26px rgba(255,255,255,.75);
-}
-.quiet-photo{
-  position:absolute;z-index:0;width:min(310px,78%);aspect-ratio:4/5;
-  opacity:.34;pointer-events:none; /* 文字と重なるので薄く敷く */
-}
-.quiet-photo img{
-  width:100%;height:100%;object-fit:cover;display:block;
-}
-.quiet-photo.p1{left:-22px;top:-212px}      /* 見出しの左上。角に重なる */
-.quiet-photo.p2{right:-22px;bottom:-212px}  /* 本文の右下 */
-.quiet-photo.p1 img{
-  -webkit-mask-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200' preserveAspectRatio='none'><defs><filter id='b' x='-25%25' y='-25%25' width='150%25' height='150%25'><feGaussianBlur stdDeviation='5'/></filter></defs><path filter='url(%23b)' fill='white' d='M100,16 C138,16 168,34 179,68 C190,102 184,142 154,166 C124,190 76,188 48,166 C20,144 12,100 23,66 C34,32 62,16 100,16 Z'/></svg>");
-          mask-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200' preserveAspectRatio='none'><defs><filter id='b' x='-25%25' y='-25%25' width='150%25' height='150%25'><feGaussianBlur stdDeviation='5'/></filter></defs><path filter='url(%23b)' fill='white' d='M100,16 C138,16 168,34 179,68 C190,102 184,142 154,166 C124,190 76,188 48,166 C20,144 12,100 23,66 C34,32 62,16 100,16 Z'/></svg>");
-}
-.quiet-photo.p2 img{ /* 1枚目と少し違う崩し方にして、同じ形の繰り返しに見えないようにする */
-  -webkit-mask-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200' preserveAspectRatio='none'><defs><filter id='b' x='-25%25' y='-25%25' width='150%25' height='150%25'><feGaussianBlur stdDeviation='7'/></filter></defs><path filter='url(%23b)' fill='white' d='M96,26 C130,30 162,46 172,78 C182,110 174,146 146,164 C118,182 78,178 54,158 C30,138 28,98 42,68 C56,38 62,22 96,26 Z'/></svg>");
-          mask-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200' preserveAspectRatio='none'><defs><filter id='b' x='-25%25' y='-25%25' width='150%25' height='150%25'><feGaussianBlur stdDeviation='7'/></filter></defs><path filter='url(%23b)' fill='white' d='M96,26 C130,30 162,46 172,78 C182,110 174,146 146,164 C118,182 78,178 54,158 C30,138 28,98 42,68 C56,38 62,22 96,26 Z'/></svg>");
-}
-.quiet-photo img{
-  -webkit-mask-size:100% 100%;mask-size:100% 100%;
-  -webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;
-}
-
-/* 話せている気がする：薔薇の背景動画を白ベール越しに淡く敷く（動きなしの静止セクション） */
-.story-talk{position:relative;background:#fff;padding:0} /* .story の84px余白を打ち消し、余白は talk-pin 側だけにする（隙間の二重を解消） */
-.talk-pin{
-  position:relative;overflow:hidden;padding:120px 0;
-  display:flex;align-items:center;justify-content:center;
-}
-.story-talk .rosebg{ /* 背景動画（お参り背景） */
-  position:absolute;inset:0;z-index:0;overflow:hidden;
-}
-.story-talk .talk-video,
-.story-talk .talk-photo{
-  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;
-}
-.story-talk .rosebg::after{ /* 白い半透明ベールで動画を薄く透かし、文字の可読性を確保 */
-  content:"";position:absolute;inset:0;z-index:1;
-  background:linear-gradient(180deg,rgba(255,255,255,.86) 0%,rgba(255,255,255,.9) 100%);
-}
-.story-talk .inner{position:relative;z-index:2;padding:0 24px}
-/* 14文字の見出しを常に1行で見せる。画面幅が狭いときは文字を縮めて折り返さない */
-.story-talk h2{font-size:min(1.5rem,5.8vw);white-space:nowrap;letter-spacing:.01em}
-.story-talk .talk-line{ /* 独立させて余韻を持たせる一文 */
-  font-family:var(--serif);font-weight:700;color:var(--sky-deep);
-  font-size:clamp(1.12rem,4.4vw,1.24rem);line-height:1.9;letter-spacing:.04em;
-  text-align:center;margin:44px auto;
-}
-/* 幕が上がる演出：下端から上へ開いて画像と文字が現れる。
-   .curtain はJSが付与する（JS無効時は隠れたままにしないため） */
-.story-talk.curtain .rosebg,
-.story-talk.curtain .inner{
-  clip-path:inset(100% 0 0 0);
-  transition:clip-path 1.6s cubic-bezier(.22,1,.36,1);
-}
-.story-talk.curtain.is-up .rosebg{clip-path:inset(0 0 0 0)}
-.story-talk.curtain.is-up .inner{clip-path:inset(0 0 0 0);transition-delay:.25s} /* 文字は画像に少し遅れて上がる */
-
-/* ===== ⑤ 施設理念＋動画：青空の帯 ===== */
-/* 動画をセクションの境目にまたがせるため、はみ出しをクリップしない */
-.philosophy{
-  position:relative;overflow:visible;
-  background: /* 上部に光を差した青空 → 下へ向かって深い青へ */
-    radial-gradient(ellipse 90% 55% at 50% 0%,rgba(255,255,255,.26) 0%,rgba(255,255,255,0) 62%),
-    linear-gradient(180deg,#7cbde8 0%,#4f9bd4 45%,#2f74b0 100%);
-  color:var(--white);text-align:center;
-}
-/* 次ブロック(.benefit)の上端色まで徐々に変わる帯。境目の直線を消す。
-   z-index:1 で本文(.philosophy-inner は z-index:2)の背面に敷く */
-.philosophy::after{
-  content:"";position:absolute;left:0;right:0;bottom:0;height:170px;z-index:1;pointer-events:none;
-  background:linear-gradient(180deg,
-    rgba(47,116,176,0) 0%,
-    rgba(125,178,216,.45) 42%,
-    rgba(205,230,246,.9) 80%,
-    #eaf5fc 100%);
-}
-.philosophy .paw{opacity:.12}
-.philosophy-inner{position:relative;z-index:2;max-width:820px;margin:0 auto;padding:0 24px}
-.philosophy .sec-title{color:var(--white);text-shadow:0 2px 10px rgba(30,95,150,.4)}
-.philosophy .sec-title-bar{background:rgba(255,255,255,.8)}
-.philosophy-text{
-  font-size:clamp(1.02rem,1.8vw,1.13rem);line-height:2.3;letter-spacing:.05em;
-  text-shadow:0 1px 6px rgba(30,95,150,.45);margin:0 auto 44px;
-  max-width:660px;text-align:left;
-}
-.philosophy-text b{color:#fff;font-weight:700}
-.philosophy-lead{ /* 動画への導入文：中央・少し大きめ */
-  text-align:center;font-weight:700;
-  font-size:clamp(1.1rem,2.4vw,1.25rem);line-height:1.9;letter-spacing:.06em;
-  text-shadow:0 1px 6px rgba(30,95,150,.45);margin:0 auto 8px;max-width:660px;
-}
-/* 動画へ誘導する下向きアイコン：ふわっと上下に動く */
-.scroll-cue{display:flex;justify-content:center;margin:0 auto 18px;color:#fff}
-.scroll-cue svg{width:34px;height:34px;filter:drop-shadow(0 1px 4px rgba(30,95,150,.5));animation:cueBounce 1.6s ease-in-out infinite}
-@keyframes cueBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(7px)}}
-@media(prefers-reduced-motion:reduce){.scroll-cue svg{animation:none}}
-.video-frame{
-  position:relative;width:100%;aspect-ratio:16/9;border-radius:20px;overflow:hidden;
-  background:linear-gradient(150deg,#2c4a63,#1e5f96);
-  box-shadow:0 12px 36px rgba(20,60,95,.4);
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;
-}
-.video-frame .play{
-  width:84px;height:84px;border-radius:50%;
-  background:rgba(255,255,255,.92);
-  display:flex;align-items:center;justify-content:center;
-}
-.video-frame .play svg{width:30px;height:30px;fill:var(--sky-deep);margin-left:5px}
-.video-frame p{font-size:.88rem;color:rgba(255,255,255,.85);letter-spacing:.06em}
-.video-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
-/* クリックで読み込むYouTube。サムネイルは自前なので、標準埋め込みのタイトル表示が出ない */
-.yt-lite{
-  position:absolute;inset:0;width:100%;height:100%;padding:0;border:0;
-  background:#000;cursor:pointer;display:block;overflow:hidden;
-}
-.yt-lite img{width:100%;height:100%;object-fit:cover;display:block}
-.yt-play{ /* 再生ボタン */
-  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
-  width:72px;height:50px;border-radius:12px;
-  background:rgba(22,22,22,.72);
-  transition:background .2s,transform .2s;
-}
-.yt-play::after{ /* 三角 */
-  content:"";position:absolute;left:50%;top:50%;transform:translate(-42%,-50%);
-  border-style:solid;border-width:11px 0 11px 19px;
-  border-color:transparent transparent transparent #fff;
-}
-.yt-lite:hover .yt-play,
-.yt-lite:focus-visible .yt-play{background:#e02f2f;transform:translate(-50%,-50%) scale(1.06)}
-.yt-lite:focus-visible{outline:3px solid var(--sky);outline-offset:2px}
-/* 動画を下へはみ出させ、青と淡青の境目にちょうどまたがる位置に置く */
-.philosophy .video-frame{margin-bottom:-200px;z-index:3}
-
-/* ===== ⑥ 3つのサービス → ⑦ 声：ひと続きの明るい帯 ===== */
-.benefit{
-  position:relative;overflow:hidden;
-  background:linear-gradient(180deg,#eaf5fc 0%,#f6fbff 55%,#ffffff 100%);
-  padding-top:250px;   /* 上にまたがってくる動画の分だけ空ける */
-  padding-bottom:50px;
-}
-.benefit .inner{position:relative;z-index:2}
-/* 見出し・区切り線は、セクションが画面に入ったら表示。.fadein はJSが付与する */
-.benefit.fadein .sec-title,
-.benefit.fadein .sec-title-bar{
-  opacity:0;transform:translateY(22px);
-  transition:opacity 1.1s ease,transform 1.1s cubic-bezier(.22,1,.36,1);
-}
-.benefit.fadein.is-in .sec-title,
-.benefit.fadein.is-in .sec-title-bar{opacity:1;transform:none}
-/* 3つのサービスは、スクロールがその写真に追いついたところで1つずつ現れる。
-   .svcfade はJSが個別に付与し、その項目自身が画面に入ったら .is-in が付く */
-.svc-item.svcfade{
-  opacity:0;transform:translateY(24px);
-  transition:opacity 1.1s ease,transform 1.1s cubic-bezier(.22,1,.36,1);
-}
-.svc-item.svcfade.is-in{opacity:1;transform:none}
-@media(prefers-reduced-motion:reduce){
-  .benefit.fadein .sec-title,.benefit.fadein .sec-title-bar,
-  .benefit.fadein.is-in .sec-title,.benefit.fadein.is-in .sec-title-bar,
-  .svc-item.svcfade,.svc-item.svcfade.is-in{opacity:1;transform:none;transition:none}
-}
-/* 足跡の散歩道：ブロック上部から下部までS字を描いて歩く。
-   写真の上も通るため、コンテンツより前面に薄く重ね、白いにじみで下地を問わず見えるようにする */
-.benefit .paw{
-  z-index:3;fill:var(--sky);opacity:.28;
-  filter:drop-shadow(0 1px 2px rgba(255,255,255,.85));
-  pointer-events:none;
-}
-/* 3つのサービス：カードをやめ「文章 → 写真」の縦積み構成 */
-.svc-list{display:flex;flex-direction:column;gap:56px;max-width:600px;margin:0 auto}
-.svc-item{position:relative}
-.svc-head{display:flex;align-items:baseline;gap:12px;margin-bottom:12px}
-.svc-num{
-  font-family:var(--serif);font-weight:700;font-style:italic;
-  font-size:2.1rem;line-height:1;color:var(--sky);flex-shrink:0;
-}
-.svc-item h3{
-  font-family:var(--serif);color:var(--sky-deep);
-  font-size:1.16rem;line-height:1.55;
-}
-.svc-item p{font-size:1rem;line-height:2;color:var(--ink);margin-bottom:20px}
-.svc-item .note{display:block;margin-top:8px;font-size:.76rem;color:#9aa6b0}
-.svc-photo{
-  width:100%;aspect-ratio:16/10;object-fit:cover;
-  border-radius:16px;box-shadow:0 8px 24px rgba(30,95,150,.18);display:block;
-}
-
-.voice{background:var(--white);padding-top:50px}
-.voice.push{
-  background:linear-gradient(180deg,#eaf5fc 0%,#f6fbff 100%);
-  /* 直前のギャラリーが継ぎ目にまたがるので、その下に置く余白だけを取る */
-  padding-top:84px;padding-bottom:40px;
-}
-.voice-list{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
-.voice-list.single{grid-template-columns:1fr;max-width:640px;margin:0 auto}
-@media(max-width:100000px){.voice-list{grid-template-columns:1fr;max-width:560px;margin:0 auto}}
-.voice-item{
-  background:var(--white);border-radius:16px;padding:30px 28px;
-  box-shadow:0 4px 20px rgba(74,151,210,.12);
-  border:1px solid rgba(74,151,210,.12);
-}
-.voice-head{display:flex;align-items:center;gap:12px;margin-bottom:14px}
-.voice-avatar{
-  width:48px;height:48px;border-radius:50%;flex-shrink:0;
-  background:var(--sky-light);display:flex;align-items:center;justify-content:center;
-}
-.voice-avatar svg{width:26px;height:26px;fill:var(--sky)}
-.voice-meta{font-size:.85rem;color:var(--ink-soft);line-height:1.5}
-.voice-meta b{color:var(--sky-deep);font-size:.95rem}
-.voice-item p{font-size:1rem;line-height:2}
-
-/* ===== ⑧ CV① → ⑨ 情景：ひと続きの青の帯 ===== */
-.cta-section{
-  text-align:center;color:var(--white);overflow:hidden;
-}
-.cta-section .cloud{fill:rgba(255,255,255,.3)}
-.cta-section.first{
-  position:relative;overflow:hidden;
-  background:#2c4a63; /* 動画が読めない時の下地 */
-  padding-bottom:60px;
-}
-.cta-section.first .cta-bg{position:absolute;inset:0;z-index:0}
-.cta-bg-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
-.cta-bg-veil{ /* 動画を半透明の青ベールで覆い、白文字の可読性を確保 */
-  position:absolute;inset:0;
-  background:linear-gradient(178deg,rgba(120,190,232,.70) 0%,rgba(61,134,194,.82) 100%);
-}
-.cta-section.first .inner{position:relative;z-index:1}
-.cta-section.second{
-  /* 縦グラデーション。下端を次ブロックと同じ色(#eef7fc)まで、広い幅でゆるやかに薄めて境目を消す */
-  background:linear-gradient(180deg,#9fd4f2 0%,#5aa5da 26%,#5aa5da 44%,#8fc4e8 66%,#c3e0f2 84%,#eef7fc 100%);
-}
-.cta-title{
-  font-family:var(--serif);font-weight:700;
-  font-size:clamp(1.5rem,3.4vw,1.5rem);line-height:1.8;letter-spacing:.07em;
-  margin-bottom:18px;text-shadow:0 2px 10px rgba(30,95,150,.4);
-}
-.cta-lead{
-  font-size:clamp(1rem,1.7vw,1.11rem);line-height:2.2;margin-bottom:42px;
-  text-shadow:0 1px 6px rgba(30,95,150,.45);
-}
-.cta-box{
-  display:grid;grid-template-columns:repeat(2,1fr);gap:22px;max-width:820px;margin:0 auto;
-}
-@media(max-width:100000px){.cta-box{grid-template-columns:1fr;max-width:420px}}
-/* 申し込みカードは「白ベース」。背景をうっすら透かしつつ、文字は濃いままにして読みやすさを保つ */
-.cta-card{
-  background:rgba(255,255,255,.86);border-radius:20px;padding:36px 28px;
-  color:var(--ink);box-shadow:0 8px 30px rgba(30,95,150,.28);
-}
-.cta-card h3{
-  font-family:var(--serif);color:var(--sky-deep);font-size:1.2rem;margin-bottom:8px;
-  display:flex;align-items:center;justify-content:center;gap:8px;
-}
-.cta-card h3 svg{flex-shrink:0}
-.cta-card p{font-size:.95rem;color:var(--ink-soft);line-height:1.9;margin-bottom:22px}
-.cta-card .cta-btn{width:100%;min-width:0}
-/* CTAの下に置く「無理な営業はしません」の約束。申し込み前の不安をここで取り除く */
-/* 申し込みカード（白ベース）と役割が違うため、こちらは淡い青ベースにして見た目を分ける。
-   地は薄めに保ち、読みやすさは文字色（濃紺・墨）のほうで確保する */
-.cta-promise{
-  max-width:420px;margin:26px auto 0;padding:18px 22px;
-  background:rgba(221,238,250,.78);border:1px solid rgba(74,151,210,.45);border-radius:16px;
-  text-align:center;
-}
-.cta-promise b{
-  display:flex;align-items:center;justify-content:center;gap:7px;
-  font-family:var(--serif);font-size:1rem;letter-spacing:.04em;margin-bottom:8px;
-  color:var(--sky-deep);
-}
-.cta-promise b svg{flex-shrink:0}
-.cta-promise span{
-  display:block;font-size:.84rem;line-height:1.9;
-  color:var(--ink);text-shadow:none;
-}
-
-.scene{
-  position:relative;overflow:visible; /* ギャラリーを次セクションへまたがせるため clip しない */
-  background:var(--white);
-  color:var(--ink);text-align:center;
-  padding-top:50px;padding-bottom:0;
-}
-.scene .paw{opacity:.12;fill:var(--sky)}
-.scene-inner{position:relative;z-index:2;max-width:760px;margin:0 auto;padding:0 24px}
-.scene-title{
-  font-family:var(--serif);font-weight:700;color:var(--sky-deep);
-  font-size:clamp(1.5rem,3.6vw,1.6rem);line-height:1.9;letter-spacing:.08em;
-  margin-bottom:28px;
-}
-.scene-text{
-  font-size:clamp(1.02rem,1.8vw,1.13rem);line-height:2.3;letter-spacing:.05em;
-  color:var(--ink);
-}
-.scene-verse .scene-text{margin:0} /* 詩のように各文を続けて見せる（段落間は詰める） */
-.scene-text-close{margin-top:1.8em} /* 分割した締めの段落の上に、以前の空行ぶんの余白 */
-/* 園内風景ギャラリー：写真が一定速度で横に流れ続ける（無限マーキー） */
-/* セクションの境目にまたがせる：下に引き下げ、次セクション側で同量の余白を確保 */
-.scene-gallery{position:relative;z-index:3;margin-top:40px;margin-bottom:-130px}
-.gallery-viewport{overflow:hidden}
-.gallery-track{
-  --slide:min(378px,86vw);              /* 1枚の幅 */
-  --gap:0px;                            /* 隙間なし。写真同士を継ぎ目なく繋げる */
-  display:flex;gap:var(--gap);width:max-content;
-  animation:galleryFlow 32s linear infinite;
+  position:fixed; top:0; left:50%; right:auto; width:100%; max-width:var(--page-max); z-index:50;
+  display:flex; align-items:center; justify-content:space-between; gap:10px;
+  padding:10px 14px;
+  background:rgba(251,246,236,.94); -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px);
+  box-shadow:0 1px 0 rgba(227,216,196,.9);
+  transform:translate(-50%,-105%); opacity:0;
+  transition:transform .45s cubic-bezier(.2,.7,.2,1), opacity .35s ease;
   will-change:transform;
 }
-.gallery-slide{flex:0 0 var(--slide);margin:0}
-.gallery-slide img{
-  width:100%;aspect-ratio:4/3;object-fit:cover;display:block;
+.header.show{transform:translate(-50%,0); opacity:1}
+.header__left{display:flex; align-items:center; gap:9px; min-width:0}
+.header__mark{height:36px; width:auto; flex:0 0 auto}
+.header__txt{display:flex; flex-direction:column; gap:2px; min-width:0}
+.header__name{
+  font-family:var(--serif); font-weight:700; line-height:1.3;
+  font-size:clamp(9.5px,calc(var(--vw,440px)*2.6/100),11.5px);
+  letter-spacing:.02em; color:var(--text); white-space:nowrap;
 }
-/* 4枚ぶん流れたところで、複製した5枚目が元の1枚目の位置に重なる＝継ぎ目なくループする */
-@keyframes galleryFlow{
-  from{transform:translateX(0)}
-  to{transform:translateX(calc(-4 * (var(--slide) + var(--gap))))}
+.header__tag{
+  font-family:var(--sans); font-weight:500; line-height:1.3;
+  font-size:clamp(7.5px,calc(var(--vw,440px)*2.05/100),9px);
+  letter-spacing:.1em; color:var(--muted); white-space:nowrap;
 }
-.gallery-track.is-paused{animation-play-state:paused;will-change:auto} /* 画面外では止め、合成レイヤーも解放 */
-.gallery-track.is-reverse{animation-direction:reverse} /* 逆向き（右へ）流す */
-/* 別デザイン版のギャラリーは、上のセクションへ半分ぶん食い込ませて継ぎ目にまたがらせる。
-   下half分は次セクション(.voice)の padding-top で受ける */
-/* 食い込ませる量＝ギャラリー高さの半分。高さは「1枚の幅×3/4」なので画面幅に追従させる */
-.scene-gallery.is-flat{
-  position:relative;z-index:3;margin-bottom:0;
-  margin-top:calc(min(378px,86vw) * -0.375);
+.header__call{
+  flex:0 0 auto; display:inline-flex; align-items:center; gap:7px;
+  background:var(--teal-deep); color:#fff;
+  font-family:var(--sans); font-weight:600; letter-spacing:.04em;
+  padding:9px 15px; border-radius:999px;
+  box-shadow:0 6px 16px rgba(10,110,104,.3);
+  transition:background .2s ease, transform .2s ease;
 }
-@media(prefers-reduced-motion:reduce){
-  .gallery-track{animation:none}
+.header__call:hover{background:var(--teal); transform:translateY(-1px)}
+.header__call svg{width:15px; height:15px; flex:0 0 auto}
+.header__call-txt{display:flex; flex-direction:column; line-height:1.15; text-align:left}
+.header__call-txt small{font-size:8.5px; font-weight:500; letter-spacing:.06em; opacity:.9}
+.header__call-txt strong{font-size:14px; font-weight:700; letter-spacing:.03em}
+@media(max-width:400px){
+  .header__tag{display:none}
+  .header__call{padding:8px 12px}
+  .header__call-txt small{display:none}
+  .header__call-txt strong{font-size:13px}
 }
 
-/* ===== ⑨-2「お参りに行けば」別デザイン版：陽だまりの色で、左から語りかけるように組む ===== */
-.scene-warm{
-  position:relative;overflow:hidden;
+/* =========================================================================
+   動画ステージ（1枚の映像の上を、FVと文章が続けて流れていく）
+   ========================================================================= */
+.video-stage{position:relative}
+.video-bg{
+  position:sticky; top:0; height:100svh; margin-bottom:-100svh;
+  z-index:0; overflow:hidden; background:var(--bg-deep);
+}
+.video-bg video{
+  position:absolute; inset:0; width:100%; height:100%;
+  object-fit:cover; object-position:center 45%;
+  opacity:0; transition:opacity 1.4s ease;
+}
+.video-bg video.is-active{opacity:1}
+/* ベールは黒の透過のみ（色を混ぜない） */
+.video-veil{
+  position:absolute; inset:0;
+  background:linear-gradient(180deg, rgba(0,0,0,.46) 0%, rgba(0,0,0,.36) 42%, rgba(0,0,0,.44) 100%);
+}
+
+/* ===== FV ===== */
+.hero{
+  position:relative; z-index:2; min-height:100svh;
+  display:flex; flex-direction:column; justify-content:center; align-items:center;
+  text-align:center; color:#fff; padding:96px 24px 90px;
+}
+.hero__label{
+  display:inline-flex; align-items:center; justify-content:center; gap:13px;
+  font-family:var(--sans); font-weight:500; font-size:12px; letter-spacing:.24em;
+  color:#fff; margin-bottom:22px; white-space:nowrap;
+  text-shadow:0 2px 10px rgba(0,0,0,.6);
+}
+.hero__label::before,.hero__label::after{content:""; width:24px; height:1px; background:var(--gold-soft)}
+.hero__catch{
+  font-family:var(--serif); font-weight:800; white-space:nowrap;
+  font-size:clamp(22px,calc(var(--vw,100vw)*7/100),32px); line-height:1.72; letter-spacing:.04em;
+  text-shadow:0 2px 4px rgba(0,0,0,.55), 0 6px 26px rgba(0,0,0,.6);
+  margin-bottom:26px;
+}
+/* 1文字ずつ立ち上げる */
+.hero__catch .ch{
+  display:inline-block; opacity:0; transform:translateY(.5em);
+  animation:chIn .8s cubic-bezier(.2,.7,.2,1) forwards;
+  animation-delay:calc(.25s + var(--i) * .07s);
+}
+@keyframes chIn{to{opacity:1; transform:none}}
+.hero__sub{
+  white-space:nowrap;
+  font-size:clamp(15px,calc(var(--vw,100vw)*4.6/100),21px); font-weight:500;
+  line-height:2.05; letter-spacing:.06em; color:#fff;
+  text-shadow:0 2px 4px rgba(0,0,0,.6), 0 4px 18px rgba(0,0,0,.6);
+}
+/* すりガラスのCTA（FVだけこの形。以降のCTAは金のピル） */
+.hero__cta{
+  position:relative; display:block; width:min(340px,92%); margin:7vh auto 0;
+  background:rgba(196,180,142,.42);
+  -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px);
+  color:#fff; text-align:center;
+  border:1px solid rgba(255,255,255,.5);
+  padding:15px 22px 17px; border-radius:999px;
+  box-shadow:0 10px 30px rgba(0,0,0,.25);
+  transition:transform .2s ease, background .25s ease, box-shadow .2s ease;
+}
+.hero__cta:hover{transform:translateY(-2px); background:rgba(196,180,142,.56); box-shadow:0 14px 36px rgba(0,0,0,.3)}
+.cta-small{
+  display:block; font-family:var(--sans); font-weight:500;
+  font-size:11px; letter-spacing:.08em; line-height:1.7; color:rgba(255,255,255,.94);
+  padding-bottom:8px; margin-bottom:9px; border-bottom:1px solid rgba(255,255,255,.35);
+}
+.cta-big{
+  display:flex; align-items:center; justify-content:center; gap:12px;
+  font-family:var(--serif); font-weight:600; font-size:19px; letter-spacing:.12em; line-height:1.3;
+}
+.cta-big .arw{font-family:var(--en); font-size:18px; line-height:1; color:rgba(255,255,255,.9)}
+.hero__scroll{
+  position:absolute; left:50%; bottom:18px; transform:translateX(-50%);
+  display:flex; flex-direction:column; align-items:center; gap:7px;
+  font-family:var(--en); font-size:10px; letter-spacing:.3em; color:#fff; opacity:.85;
+  text-shadow:0 1px 6px rgba(0,0,0,.6);
+}
+.hero__scroll .bar{width:1px; height:38px; background:linear-gradient(180deg,transparent,#fff); animation:sc 2s ease-in-out infinite}
+@keyframes sc{0%{opacity:.2;transform:scaleY(.4)}50%{opacity:1;transform:scaleY(1)}100%{opacity:.2;transform:scaleY(.4)}}
+
+/* =========================================================================
+   映像の上を流れる文章ブロック（カードで囲まない）
+   ========================================================================= */
+.flow{
+  position:relative; z-index:2;
+  padding:16vh 0 6vh;
+  background:linear-gradient(180deg,
+    rgba(251,246,236,0) 0%,
+    rgba(251,246,236,.84) 14%,
+    rgba(251,246,236,.84) 100%);
+}
+.blk{max-width:600px; margin:0 auto; padding:0 20px; text-align:center; color:var(--text)}
+.blk + .blk{margin-top:12vh}
+.blk__label{
+  display:inline-flex; align-items:center; gap:13px;
+  font-family:var(--sans); font-weight:500; font-size:12px; letter-spacing:.24em;
+  color:var(--gold); margin-bottom:18px; white-space:nowrap;
+  text-shadow:0 1px 2px rgba(251,246,236,1), 0 1px 12px rgba(251,246,236,.9);
+}
+.blk__label::before,.blk__label::after{content:""; width:26px; height:1px; background:var(--gold-soft)}
+.blk__ttl{
+  font-family:var(--serif); font-weight:700; white-space:nowrap;
+  font-size:clamp(19px,calc(var(--vw,100vw)*5.6/100),26px); line-height:1.9; letter-spacing:.04em;
+  color:var(--text); margin-bottom:14px;
+  text-shadow:0 1px 2px rgba(251,246,236,1), 0 2px 16px rgba(251,246,236,.92);
+}
+.blk__body{
+  font-size:clamp(14px,calc(var(--vw,100vw)*4.1/100),17px); font-weight:500;
+  line-height:2.25; letter-spacing:.02em; color:var(--text);
+  text-shadow:0 1px 2px rgba(251,246,236,1), 0 1px 14px rgba(251,246,236,.85);
+}
+.blk__body > span{display:block}
+.blk__body .em{color:#8A7331; font-weight:700}
+.blk__q{
+  display:block; font-family:var(--serif); font-weight:700;
+  font-size:clamp(15px,calc(var(--vw,100vw)*4.6/100),19px); line-height:2; letter-spacing:.04em;
+  color:var(--text); margin-bottom:20px;
+  text-shadow:0 1px 2px rgba(251,246,236,1), 0 2px 14px rgba(251,246,236,.9);
+}
+.vsp{display:block; height:.85em}
+
+/* 全幅写真：上下をフェードさせて矩形の切り口を出さない */
+.figure{
+  width:var(--vw,100vw); margin-left:calc(50% - var(--vw,100vw)/2);
+  margin-top:40px; margin-bottom:40px;
+}
+.figure img{
+  width:100%;
+  -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 16%,#000 84%,transparent 100%);
+          mask-image:linear-gradient(180deg,transparent 0,#000 16%,#000 84%,transparent 100%);
+}
+/* 段組み写真（左右にずらして置く） */
+.figure--pair{display:flex; gap:12px; align-items:flex-start; padding:0 20px; width:auto; margin-left:0}
+.figure--pair figure{flex:1 1 0; min-width:0; overflow:hidden; border-radius:var(--radius);
+  box-shadow:0 24px 44px -12px rgba(60,45,20,.34), 0 10px 20px -10px rgba(60,45,20,.22)}
+.figure--pair figure:first-child{margin-top:26px}
+.figure--pair img{width:100%; aspect-ratio:3/4; object-fit:cover}
+
+/* 動画（映像の上に置く小さめの枠） */
+.ytwrap{
+  max-width:560px; margin:0 auto; position:relative;
+  border-radius:var(--radius); overflow:hidden;
+  box-shadow:0 18px 44px rgba(0,0,0,.16);
+}
+.ytwrap--flow{margin-top:22px; box-shadow:0 14px 30px rgba(60,45,20,.22)}
+.yt-lite{
+  position:relative; display:block; width:100%; aspect-ratio:16/9;
+  cursor:pointer; background:#000; border:none; padding:0;
+}
+.yt-lite img{width:100%; height:100%; object-fit:cover}
+.yt-lite::after{content:""; position:absolute; inset:0; background:rgba(20,16,12,.16); transition:background .3s}
+.yt-lite:hover::after{background:rgba(20,16,12,.05)}
+.yt-play{
+  position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); z-index:2;
+  width:64px; height:64px; border-radius:50%;
+  background:rgba(255,255,255,.94); box-shadow:0 6px 22px rgba(0,0,0,.32);
+  display:flex; align-items:center; justify-content:center; transition:transform .2s ease;
+}
+.yt-lite:hover .yt-play{transform:translate(-50%,-50%) scale(1.07)}
+.yt-play::before{
+  content:""; width:0; height:0; margin-left:4px;
+  border-left:17px solid var(--teal); border-top:10px solid transparent; border-bottom:10px solid transparent;
+}
+.ytwrap--flow .yt-play{width:52px; height:52px}
+.ytwrap--flow .yt-play::before{border-left-width:14px; border-top-width:8px; border-bottom-width:8px}
+.ytnote{margin-top:14px; font-size:12.5px; letter-spacing:.06em; color:var(--muted)}
+
+/* 画面に入ったら静かに立ち上がる */
+.reveal{opacity:0; transform:translateY(26px); transition:opacity 1s ease, transform 1.1s cubic-bezier(.2,.7,.2,1)}
+.blk.in .reveal{opacity:1; transform:none}
+.blk.in .reveal:nth-child(2){transition-delay:.12s}
+.blk.in .reveal:nth-child(3){transition-delay:.24s}
+.blk.in .reveal:nth-child(4){transition-delay:.36s}
+.blk.in .reveal:nth-child(5){transition-delay:.48s}
+.rvl{opacity:0; transform:translateY(24px); transition:opacity 1s ease, transform 1.1s cubic-bezier(.2,.7,.2,1)}
+.rvl.is-in{opacity:1; transform:none}
+[data-px]{will-change:transform}
+@media (prefers-reduced-motion:reduce){
+  [data-px]{transform:none !important}
+  .reveal,.rvl{opacity:1 !important; transform:none !important; transition:none}
+  .hero__catch .ch{opacity:1; transform:none; animation:none}
+}
+
+/* =========================================================================
+   共通パーツ
+   ========================================================================= */
+.sec{position:relative; z-index:3; background:var(--bg-white); color:var(--text)}
+.kicker{
+  display:inline-flex; align-items:center; gap:13px;
+  font-family:var(--sans); font-weight:500; font-size:12px; letter-spacing:.24em;
+  color:var(--gold); margin-bottom:18px; white-space:nowrap;
+}
+.kicker::before,.kicker::after{content:""; width:26px; height:1px; background:var(--gold-soft)}
+.kicker--light{color:var(--cream)}
+.kicker--light::before,.kicker--light::after{background:var(--gold-soft)}
+
+/* 金のピル（ページ全体を通じてCTAはこの1種類） */
+.btn{
+  display:flex; align-items:center; justify-content:center; gap:10px;
+  width:min(330px,94%); margin:0 auto;
+  background:var(--cta); color:#fff;
+  font-family:var(--sans); font-weight:600; font-size:15.5px; letter-spacing:.08em;
+  padding:17px 22px; border-radius:999px;
+  box-shadow:0 12px 30px rgba(156,132,60,.35);
+  transition:background .2s ease, transform .2s ease;
+}
+.btn:hover{background:#8C7534; transform:translateY(-2px)}
+.btn .chev{font-family:var(--en); font-size:15px; line-height:1}
+.btn small{display:block; font-size:10.5px; font-weight:500; letter-spacing:.1em; opacity:.85; margin-top:3px}
+.btn--ghost{
+  background:transparent; color:var(--teal-deep);
+  border:1px solid var(--teal-deep); box-shadow:none;
+  font-family:var(--serif); font-weight:600; padding:15px 22px;
+}
+.btn--ghost:hover{background:rgba(10,110,104,.07); color:var(--teal-deep)}
+.btn + .btn{margin-top:14px}
+
+/* =========================================================================
+   「動物と一緒にお墓に入るなんて、、、」＝ 帯付きテキスト＋はみ出し写真
+   ========================================================================= */
+.comma{
+  position:relative; z-index:3; overflow:hidden; text-align:center;
+  background:linear-gradient(180deg, #F4EBD8 0%, #F7F0E4 62%, #FDFBF6 100%);
+  padding:74px 24px 90px;
+}
+.comma__inner{position:relative; z-index:1; max-width:600px; margin:0 auto}
+.comma__row{
+  display:flex; align-items:center; text-align:left; margin-bottom:46px;
+  width:var(--vw,100vw); margin-left:calc(50% - var(--vw,100vw)/2);
+}
+.comma__banner{flex:0 0 54%; position:relative; z-index:2; min-width:0}
+.comma__line{
+  display:block; width:-moz-fit-content; width:fit-content; white-space:nowrap;
+  background:linear-gradient(90deg,#313E37 0%,#46574F 55%,#5A6C62 100%); color:#F4EEE3;
+  font-family:var(--serif); font-weight:600;
+  font-size:clamp(13px,calc(var(--vw,100vw)*4.4/100),19px); line-height:2.4; letter-spacing:.02em;
+  padding:6px 10px;
+  opacity:0; transform:translateY(16px);
+  transition:opacity .85s ease, transform .95s cubic-bezier(.2,.7,.2,1);
+}
+.comma__line + .comma__line{margin-top:8px}
+.comma__banner.is-in .comma__line{opacity:1; transform:none}
+.comma__banner.is-in .comma__line:nth-child(2){transition-delay:.32s}
+.comma__rowfig{
+  flex:0 0 62%; margin-left:-16%; position:relative; z-index:1;
+  aspect-ratio:4/5; overflow:hidden; border-radius:6px 0 0 6px;
+  box-shadow:0 30px 48px -10px rgba(60,45,20,.34), 0 12px 22px -10px rgba(60,45,20,.22);
+}
+.comma__rowfig img{width:100%; height:100%; object-fit:cover; object-position:center 42%}
+.comma__body{
+  text-align:left; font-family:var(--serif); font-weight:500;
+  font-size:clamp(13px,calc(var(--vw,100vw)*3.9/100),16px); line-height:2.35;
+  letter-spacing:.02em; color:var(--text);
+}
+.comma__body + .comma__body{margin-top:20px}
+@media (prefers-reduced-motion:reduce){
+  .comma__line{opacity:1; transform:none; transition:none}
+}
+
+/* =========================================================================
+   知ってほしいこと（埋葬期限）
+   ========================================================================= */
+.sec--know{padding:78px 24px 86px; text-align:center; background:var(--bg)}
+.know__ttl{
+  font-family:var(--serif); font-weight:700; white-space:nowrap;
+  font-size:clamp(17px,calc(var(--vw,100vw)*5/100),23px); line-height:1.72; letter-spacing:.06em;
+  color:var(--teal-deep); margin-bottom:38px;
+}
+.know-fact{
+  font-family:var(--serif); font-weight:700;
+  font-size:clamp(16px,calc(var(--vw,100vw)*4.7/100),20px); line-height:1.95;
+  letter-spacing:.03em; color:var(--text); margin-bottom:12px;
+}
+.know-note{font-size:11.5px; line-height:1.9; color:var(--muted); letter-spacing:.02em; max-width:400px; margin:0 auto}
+.know-ours{
+  margin-top:30px; padding:26px 4px; border-top:1px solid var(--line); border-bottom:1px solid var(--line);
+  font-family:var(--serif); font-weight:700;
+  font-size:clamp(16px,calc(var(--vw,100vw)*4.8/100),21px); line-height:1.95; letter-spacing:.04em;
+  color:var(--teal-deep);
+}
+.know-voices{max-width:460px; margin:38px auto 0; text-align:left}
+.know-voices p{
+  position:relative; padding:16px 4px 16px 22px;
+  font-family:var(--serif); font-weight:600; font-size:15px; line-height:1.95; letter-spacing:.03em;
+  color:var(--text);
+}
+.know-voices p + p{border-top:1px solid var(--line)}
+.know-voices p::before{
+  content:""; position:absolute; left:4px; top:22px; width:1px; height:calc(100% - 44px);
+  background:var(--gold-soft);
+}
+.know-close{margin-top:28px; font-family:var(--serif); font-size:14.5px; line-height:2; color:var(--teal-deep); letter-spacing:.03em}
+.know__photo{
+  margin:44px auto 0; max-width:520px; overflow:hidden; border-radius:var(--radius);
+  box-shadow:0 26px 48px -12px rgba(60,45,20,.32), 0 10px 20px -10px rgba(60,45,20,.2);
+}
+.know__photo img{width:100%}
+
+/* =========================================================================
+   理念＋園内紹介動画
+   ========================================================================= */
+.sec--voice{padding:76px 26px 88px; text-align:center}
+.voice__ttl{
+  font-family:var(--serif); font-weight:700; white-space:nowrap;
+  font-size:clamp(18px,calc(var(--vw,100vw)*5.4/100),25px); line-height:1.74; letter-spacing:.05em;
+  color:var(--teal-deep); margin-bottom:22px;
+}
+.voice__text{
+  font-size:14.5px; line-height:2.1; color:var(--text); letter-spacing:.02em;
+  max-width:440px; margin:0 auto 30px; text-align:left;
+}
+.voice__text b{font-family:var(--serif); font-weight:700; color:var(--gold)}
+.voice__lead{font-family:var(--serif); font-weight:600; font-size:15px; letter-spacing:.06em; color:var(--teal-deep); margin-bottom:10px}
+.voice__cue{display:block; width:22px; height:22px; margin:0 auto 20px; color:var(--gold-soft); animation:cue 2.2s ease-in-out infinite}
+@keyframes cue{0%,100%{transform:translateY(0);opacity:.5}50%{transform:translateY(5px);opacity:1}}
+@media (prefers-reduced-motion:reduce){.voice__cue{animation:none}}
+
+/* =========================================================================
+   3つのサービス（文字と写真が交互に噛み合うジグザグ）
+   ========================================================================= */
+.sec--reason{padding:76px 26px 84px; text-align:center; overflow:hidden; background:var(--bg-white)}
+.reason__ttl{
+  font-family:var(--serif); font-weight:700; white-space:nowrap;
+  font-size:clamp(16px,calc(var(--vw,100vw)*4.8/100),22px); line-height:1.72; letter-spacing:.08em;
+  color:var(--teal-deep); margin-bottom:10px;
+}
+.reason__small{font-size:12px; letter-spacing:.14em; color:var(--muted); margin-bottom:12px}
+.features{max-width:660px; margin:18px auto 0}
+.feature{display:flex; align-items:center; gap:18px; margin:26px 0; text-align:left}
+.feature--rev{flex-direction:row-reverse}
+.feature__media{
+  flex:0 0 45%; height:216px; overflow:hidden; border-radius:var(--radius);
+  box-shadow:0 26px 44px -12px rgba(60,45,20,.32), 0 10px 20px -10px rgba(60,45,20,.2);
+}
+.feature__media img{width:100%; height:calc(100% + 44px); margin-top:-22px; object-fit:cover; will-change:transform}
+.feature__body{flex:1; min-width:0}
+.feature__ttl{
+  font-family:var(--serif); font-weight:700; font-size:17px; letter-spacing:.03em;
+  line-height:1.55; color:var(--text); margin-bottom:9px;
+}
+/* 番号は見出しの上に置く。見出しと同じ行に入れると幅を食い、末尾1文字が落ちるため */
+.feature__num{
+  display:block; font-family:var(--en); font-weight:500; font-size:26px; line-height:1;
+  letter-spacing:.06em; color:var(--gold); margin-bottom:7px;
+}
+.feature__desc{font-size:13.5px; line-height:1.95; color:var(--muted); letter-spacing:.02em}
+.feature__desc .note{display:block; margin-top:6px; font-size:11.5px; color:var(--muted); opacity:.9}
+
+/* =========================================================================
+   お客様の声（深緑・横に流れる）
+   ========================================================================= */
+.sec--voices{
+  position:relative; z-index:3; padding:76px 24px 90px; text-align:left; overflow:hidden;
   background:
-    radial-gradient(ellipse 70% 40% at 78% 12%,rgba(255,224,168,.55) 0%,rgba(255,224,168,0) 62%),
-    linear-gradient(180deg,#fffdf9 0%,#fff7ec 60%,#fdf2e4 100%);
-  /* 上のギャラリーが margin-bottom:-130px で食い込んでくるため、その分を上に足す。
-     下は、継ぎ目にまたがるギャラリーが文章に被らないよう広めに取る */
-  padding:190px 0 230px;
+    radial-gradient(130% 55% at 18% 0%, rgba(255,255,255,.1) 0%, rgba(255,255,255,0) 55%),
+    linear-gradient(175deg,#57685E 0%,#46574F 38%,#35443D 72%,#293632 100%);
 }
-.scene-warm-inner{max-width:660px;margin:0 auto;padding:0 30px}
-.warm-title{
-  font-family:var(--serif);font-weight:700;color:var(--sky-deep);
-  font-size:clamp(1.42rem,6vw,1.62rem);line-height:1.85;letter-spacing:.06em;
-  margin:0 0 40px;text-align:left;
+.voices-eyebrow{
+  display:flex; align-items:center; gap:14px;
+  font-family:var(--sans); font-weight:500; font-size:11.5px; letter-spacing:.28em;
+  color:rgba(255,255,255,.78);
 }
-.warm-title em{ /* 2行目だけ少し大きくして、語尾を主役にする */
-  font-style:normal;display:inline-block;margin-top:4px;
-  font-size:1.06em;
+.voices-eyebrow::after{content:""; flex:0 0 56px; height:1px; background:rgba(199,174,110,.7)}
+.voices-ttl{
+  font-family:var(--serif); font-weight:700; white-space:nowrap;
+  font-size:clamp(20px,calc(var(--vw,100vw)*6/100),27px); line-height:1.55; letter-spacing:.04em;
+  color:#F2EDE2; margin:20px 0 30px;
 }
-/* 情景の3行：左に細い線を引いて、語りの流れを示す */
-.warm-scene{
-  position:relative;padding-left:22px;margin-bottom:36px;
-  isolation:isolate; /* 背景写真を文字の後ろに置くための重なり基準 */
+.voices{
+  position:relative;
+  width:var(--vw,100vw); margin-left:calc(50% - var(--vw,100vw)/2);
+  overflow:hidden;
+  -webkit-mask-image:linear-gradient(90deg, transparent 0, #000 9%, #000 91%, transparent 100%);
+          mask-image:linear-gradient(90deg, transparent 0, #000 9%, #000 91%, transparent 100%);
 }
-.warm-scene::before{
-  content:"";position:absolute;left:0;top:6px;bottom:6px;width:2px;border-radius:1px;
-  background:linear-gradient(180deg,rgba(197,142,74,.55),rgba(197,142,74,.12));
-  z-index:1;
+.voices__track{display:flex; align-items:stretch; width:max-content; animation:voicesMarquee 46s linear infinite}
+.voices:hover .voices__track{animation-play-state:paused}
+.voices__track.is-paused{animation-play-state:paused}
+@keyframes voicesMarquee{from{transform:translateX(0)} to{transform:translateX(-50%)}}
+.testimonial{
+  flex:0 0 auto; width:272px; margin-right:16px;
+  display:flex; flex-direction:column;
+  padding:22px 20px 24px; border-radius:var(--radius);
+  background:#F4EEE3;
+  box-shadow:0 24px 48px rgba(15,22,19,.4), 0 6px 16px rgba(15,22,19,.25);
 }
-/* 霊園の風景写真を情景の文章の背後に敷き、右へ向かって背景に溶かす */
-.warm-scene::after{
-  content:"";position:absolute;z-index:-1;pointer-events:none;
-  left:-30px;right:-30px;top:-26px;bottom:-26px;
-  background:url("assets/gallery-2.jpg") center 38%/cover no-repeat;
-  opacity:.3;
-  -webkit-mask-image:linear-gradient(90deg,#000 0%,#000 30%,rgba(0,0,0,.55) 62%,transparent 96%);
-          mask-image:linear-gradient(90deg,#000 0%,#000 30%,rgba(0,0,0,.55) 62%,transparent 96%);
-}
-.warm-scene p{
-  position:relative;z-index:1; /* 背景写真より前面に置く */
-  font-size:1.02rem;line-height:1.85;color:var(--ink);margin:0 0 6px;text-align:left;
-  text-shadow:0 0 6px rgba(255,252,246,.95),0 0 14px rgba(255,252,246,.9),0 0 26px rgba(255,252,246,.75);
-}
-/* 情景の締めの一行だけ、明朝で一段大きくして印象を強める */
-.warm-scene .warm-em{
-  font-family:var(--serif);font-weight:700;color:var(--sky-deep);
-  /* 狭い画面でも1行に収まるよう、幅に追従させる */
-  font-size:clamp(1.06rem,5.4vw,1.28rem);line-height:1.9;letter-spacing:.02em;
-  margin-top:10px;
-}
-/* 語りかけの言葉：墓前のあの子の写真を背後に敷き、左へ向かって背景に溶かす
-   （上の情景ブロックは右へ溶かしているので、向きを変えて対にする） */
-.warm-talk-block{
-  position:relative;isolation:isolate;
-  margin:0 0 36px;padding:34px 24px 34px 22px;
-}
-.warm-talk-block::before{
-  content:"";position:absolute;z-index:-1;pointer-events:none;
-  left:-30px;right:-30px;top:0;bottom:0;
-  background:url("assets/pet-grave.jpg") 62% center/cover no-repeat;
-  opacity:.24; /* 墓石が暗く文字が沈むため、他の写真より薄めに敷く */
-  -webkit-mask-image:linear-gradient(90deg,transparent 4%,rgba(0,0,0,.55) 38%,#000 70%,#000 100%);
-          mask-image:linear-gradient(90deg,transparent 4%,rgba(0,0,0,.55) 38%,#000 70%,#000 100%);
-}
-.warm-talk{
-  position:relative;z-index:1;
-  font-family:var(--serif);font-weight:700;color:var(--sky-deep);
-  font-size:1.28rem!important;line-height:1.95!important;margin:0!important;text-align:left;
-  text-shadow:0 0 6px rgba(255,252,246,.96),0 0 14px rgba(255,252,246,.92),0 0 26px rgba(255,252,246,.8);
-}
-.warm-talk span{display:inline-block} /* 狭い画面では2つ目のセリフだけ改行させる */
-.warm-close{
-  font-size:1rem;line-height:2.2;color:var(--ink);text-align:left;
-  padding:0 2px;
-}
-/* 2枚の背景写真は、画面に入ったらフェードしながら横から滑り込ませる。
-   .slidein はJSが付与する（JS無効時に写真が出ないままにならないため）。
-   1枚目は左から、2枚目は右から入れて向きを対にする */
-.warm-scene.slidein::after,
-.warm-talk-block.slidein::before{
-  opacity:0;
-  transition:opacity 1.1s ease,transform 1.2s cubic-bezier(.22,1,.36,1);
-}
-.warm-scene.slidein::after{transform:translateX(-52px)}
-.warm-talk-block.slidein::before{transform:translateX(52px)}
-.warm-scene.slidein.is-in::after{opacity:.3;transform:none}
-.warm-talk-block.slidein.is-in::before{opacity:.24;transform:none}
-@media(prefers-reduced-motion:reduce){
-  .warm-scene.slidein::after,.warm-scene.slidein.is-in::after{opacity:.3;transform:none;transition:none}
-  .warm-talk-block.slidein::before,.warm-talk-block.slidein.is-in::before{opacity:.24;transform:none;transition:none}
+.t-head{display:flex; align-items:center; gap:10px; padding-bottom:13px; margin-bottom:15px; border-bottom:1px solid rgba(156,132,60,.25)}
+.t-icon{flex:0 0 auto; width:19px; height:19px; fill:var(--gold)}
+.t-label{flex:1 1 auto; min-width:0; font-family:var(--sans); font-weight:600; font-size:11.5px; letter-spacing:.08em; color:#7C6A31; line-height:1.5}
+.t-label span{display:block; font-weight:500; font-size:10.5px; color:var(--muted); letter-spacing:.04em}
+.t-stars{flex:0 0 auto; font-size:11px; letter-spacing:.1em; color:var(--gold-soft)}
+.t-body{font-family:var(--serif); font-weight:500; font-size:13.5px; line-height:1.95; letter-spacing:.02em; color:var(--text)}
+.replace-note{margin-top:26px; font-size:11px; line-height:1.8; color:rgba(255,255,255,.55); letter-spacing:.02em}
+@media (prefers-reduced-motion:reduce){
+  .voices__track{animation:none}
+  .voices{overflow-x:auto; -webkit-overflow-scrolling:touch}
 }
 
-/* ===== ⑩ 声 → ⑪ 価格 → ⑫ オファー：ひと続きの淡い帯 ===== */
-.price{background:var(--sky-pale);padding-top:40px;padding-bottom:50px}
-.price-card{
-  max-width:640px;margin:0 auto;background:var(--white);border-radius:20px;
-  padding:46px 40px;box-shadow:0 8px 28px rgba(74,151,210,.15);text-align:center;
+/* =========================================================================
+   オファー（資料請求・見学）
+   ========================================================================= */
+.offer{position:relative; z-index:3; overflow:hidden; background:var(--bg-white); text-align:center}
+.offer__inner{position:relative; z-index:2; max-width:600px; margin:0 auto; padding:80px 24px 84px}
+/* 動画背景版 */
+.offer--video{background:var(--bg-deep)}
+.offer--video video{position:absolute; inset:0; width:100%; height:100%; object-fit:cover}
+.offer__veil{position:absolute; inset:0; z-index:1; background:linear-gradient(180deg, rgba(0,0,0,.5) 0%, rgba(0,0,0,.42) 45%, rgba(0,0,0,.56) 100%)}
+.offer--video .offer__ttl,.offer--video .offer__lead,.offer--video .offer__name{color:#fff}
+.offer--video .offer__ttl{text-shadow:0 2px 4px rgba(0,0,0,.6), 0 4px 20px rgba(0,0,0,.55)}
+.offer--video .offer__lead,.offer--video .offer__desc{color:#fbf6ec; text-shadow:0 2px 4px rgba(0,0,0,.7)}
+.offer--video .offer__row + .offer__row{border-top-color:rgba(255,255,255,.24)}
+.offer--video .offer__rows{border-top-color:rgba(255,255,255,.24)}
+.offer__ttl{
+  font-family:var(--serif); font-weight:700;
+  font-size:clamp(19px,calc(var(--vw,100vw)*5.6/100),26px); line-height:1.8; letter-spacing:.04em;
+  color:var(--teal-deep); margin-bottom:16px;
 }
-@media(max-width:100000px){.price-card{padding:36px 22px}}
-.price-label{
-  display:inline-block;background:var(--sky-light);color:var(--sky-deep);
-  font-weight:700;font-size:.82rem;letter-spacing:.12em;
-  padding:5px 18px;border-radius:999px;margin-bottom:18px;
+.offer__ttl > span{display:block; white-space:nowrap}
+.offer__lead{font-size:14px; line-height:2.05; color:var(--muted); letter-spacing:.02em; max-width:400px; margin:0 auto 34px}
+.offer__rows{max-width:480px; margin:0 auto; text-align:left; border-top:1px solid var(--line)}
+.offer__row{padding:24px 4px}
+.offer__row + .offer__row{border-top:1px solid var(--line)}
+.offer__name{
+  display:flex; align-items:center; gap:9px; margin-bottom:8px;
+  font-family:var(--serif); font-weight:700; font-size:16.5px; letter-spacing:.04em; color:var(--text);
 }
-.price-main{
-  font-family:var(--serif);color:var(--sky-deep);line-height:1.3;margin-bottom:8px;
+.offer__name svg{flex:0 0 auto; width:20px; height:20px; stroke:var(--gold); fill:none; stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round}
+.offer__desc{font-size:13px; line-height:1.95; color:var(--muted); letter-spacing:.02em; margin-bottom:16px}
+/* 「無理な営業はいたしません」 */
+.promise{max-width:460px; margin:40px auto 0; padding-top:26px; border-top:1px solid var(--line); text-align:left}
+.offer--video .promise{border-top-color:rgba(255,255,255,.24)}
+.promise__ttl{
+  display:flex; align-items:center; gap:9px; margin-bottom:10px;
+  font-family:var(--serif); font-weight:700; font-size:15px; letter-spacing:.06em; color:var(--gold);
 }
-.price-main .num{font-size:clamp(2.6rem,6vw,2.6rem);font-weight:700}
-.price-main .unit{font-size:clamp(1.1rem,2.4vw,1.1rem);font-weight:700}
-.price-sub{font-size:.85rem;color:var(--ink-soft);margin-bottom:30px}
-.price-table{
-  width:100%;border-collapse:collapse;text-align:left;margin-bottom:18px;
-}
-.price-table th,.price-table td{
-  padding:14px 8px;border-bottom:1px solid var(--sky-light);
-  font-size:.93rem;vertical-align:top;
-}
-.price-table th{font-weight:700;color:var(--sky-deep);white-space:nowrap;width:11em}
-.price-table td{text-align:right;font-variant-numeric:tabular-nums;color:var(--ink)}
-.price-table td small{display:block;color:var(--ink-soft);font-size:.78rem;text-align:right}
-.price-note{font-size:.78rem;color:var(--ink-soft);text-align:left;line-height:1.8}
+.offer--video .promise__ttl{color:var(--cream)}
+.promise__ttl svg{flex:0 0 auto; width:18px; height:18px; stroke:currentColor; fill:none; stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round}
+.promise__text{font-size:12.5px; line-height:2; color:var(--muted); letter-spacing:.02em}
+.offer--video .promise__text{color:rgba(255,255,255,.86); text-shadow:0 1px 3px rgba(0,0,0,.6)}
 
-/* ===== ⑬ 追伸 ===== */
-.ps{
-  background:linear-gradient(180deg,#eef7fc 0%,#dceff9 100%);
+/* =========================================================================
+   お参りに行けば（明るい陽だまり）
+   ========================================================================= */
+.warm{position:relative; z-index:3; background:linear-gradient(180deg,#FDFBF6 0%,#F7F0E4 46%,#F4EBD8 100%); padding:80px 24px 88px; text-align:center; overflow:hidden}
+.warm__inner{max-width:600px; margin:0 auto}
+.warm__ttl{
+  font-family:var(--serif); font-weight:700; white-space:nowrap;
+  font-size:clamp(19px,calc(var(--vw,100vw)*5.8/100),27px); line-height:1.82; letter-spacing:.05em;
+  color:var(--text); margin-bottom:34px;
 }
-.ps-card{
-  max-width:600px;margin:0 auto;position:relative;
+.warm__ttl em{display:block; font-style:normal; color:var(--teal-deep)}
+.warm__scene{width:-moz-fit-content; width:fit-content; margin:0 auto; text-align:left}
+.warm__scene p{
+  display:block; width:-moz-fit-content; width:fit-content; white-space:nowrap;
+  background:linear-gradient(90deg,#313E37 0%,#46574F 55%,#5A6C62 100%); color:#F4EEE3;
+  font-family:var(--serif); font-weight:600;
+  font-size:clamp(13px,calc(var(--vw,100vw)*4.2/100),18px); line-height:2.4; letter-spacing:.02em;
+  padding:6px 12px;
 }
-.ps-letter{ /* 便箋（手書きの追伸）画像 */
-  width:100%;display:block;border-radius:10px;
-  box-shadow:0 12px 32px rgba(30,60,90,.2);
-  margin-bottom:28px;
+.warm__scene p + p{margin-top:8px}
+.warm__scene .em{background:linear-gradient(90deg,#8C7534 0%,#9C843C 55%,#B49A55 100%)}
+.warm__talk{
+  margin:44px auto 0; font-family:var(--serif); font-weight:700;
+  font-size:clamp(17px,calc(var(--vw,100vw)*5.2/100),23px); line-height:2.1; letter-spacing:.06em;
+  color:var(--teal-deep); white-space:nowrap;
 }
-.ps-card .cta-btn{width:100%;min-width:0}
-/* 追伸：封筒から便箋をそっと引き出すスクロール演出 */
-.ps-stage{position:relative;margin-bottom:28px}
-.ps-letter{margin-bottom:0}                       /* 上の基本ルールのmarginを打ち消し（ステージ側で余白を持つ） */
-.ps-stage .ps-letter{position:relative;z-index:2}
-/* 初期状態はJSが .ps-anim を付与したときのみ（無効時・reduced-motion時は通常表示） */
-.ps.ps-anim .ps-letter{opacity:0;transform:translateY(48px) scale(.97) rotate(-1deg);transform-origin:center bottom}
-.ps.ps-anim .ps-cta{opacity:0}
-/* 画面内に入ったら1回だけ実行 */
-.ps.ps-anim.is-inview .ps-letter{animation:psLetter 1.4s cubic-bezier(.22,1,.36,1) .3s both}
-.ps.ps-anim.is-inview .ps-cta{animation:psCta .5s ease .6s both}
-@keyframes psLetter{
-  0%{opacity:0;transform:translateY(48px) scale(.97) rotate(-1deg);box-shadow:0 3px 10px rgba(20,45,75,.06)}
-  55%{opacity:1}
-  82%{transform:translateY(-6px) scale(1) rotate(0deg);box-shadow:0 26px 54px rgba(20,45,75,.30)}  /* 少し行き過ぎて浮き上がる */
-  100%{opacity:1;transform:translateY(0) scale(1) rotate(0deg);box-shadow:0 18px 42px rgba(20,45,75,.22)}  /* そっと置かれる */
-}
-@keyframes psCta{
-  from{opacity:0;transform:translateY(8px)}
-  to{opacity:1;transform:translateY(0)}
-}
-@media(prefers-reduced-motion:reduce){
-  .ps.ps-anim .ps-letter,.ps.ps-anim .ps-cta{opacity:1!important;transform:none!important;animation:none!important}
+.warm__talk span{display:block}
+.warm__close{
+  max-width:440px; margin:38px auto 0; padding-top:28px; border-top:1px solid var(--line);
+  font-size:13.5px; line-height:2.1; color:var(--muted); letter-spacing:.02em;
 }
 
-/* ===== フッター ===== */
-.footer{
-  position:relative;z-index:1;overflow:hidden;
-  background:var(--sky-deep);color:rgba(255,255,255,.85);
-  padding:56px 0 32px;text-align:center;font-size:.85rem;
-}
-.footer::before{ /* 背景写真＋濃紺の半透明ベール（写真を透過させつつ白文字の可読性を確保） */
-  content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
-  background:
-    linear-gradient(rgba(26,78,124,.82) 0%,rgba(18,58,98,.9) 100%),
-    url('assets/footer-bg.jpg') center/cover no-repeat;
-}
-.footer .inner{position:relative;z-index:2}
-.footer-logo{
-  font-family:var(--serif);font-weight:700;font-size:1.1rem;color:var(--white);
-  margin-bottom:14px;
-}
-.footer-copy{font-size:.78rem;color:rgba(255,255,255,.6)}
-/* ===== アクセス（地図＋所在地） ===== */
-.access{position:relative;z-index:1;background:var(--white);padding:28px 0 0} /* section基本の90px上下余白を打ち消す。上余白はpaddingで持たせ、マージン相殺（背景動画の映り込み）を防止 */
-.access-map{
-  margin:0 20px;aspect-ratio:4/3;line-height:0;
-  border-radius:16px;overflow:hidden;box-shadow:0 8px 22px rgba(20,50,80,.14);
-}
-.access-map iframe{width:100%;height:100%;border:0;display:block}
-.access-info{
-  text-align:center;color:var(--ink);
-  padding:26px 24px 30px;font-size:.9rem;line-height:2.1;
-}
-.access-info .access-addr{font-weight:700;font-size:.98rem;margin-bottom:6px}
+/* =========================================================================
+   園内風景マーキー
+   ========================================================================= */
+.marquee{position:relative; z-index:3; background:var(--bg-alt); overflow:hidden}
+.marquee__track{display:flex; width:max-content; animation:marquee 46s linear infinite}
+.marquee:hover .marquee__track{animation-play-state:paused}
+.marquee__track.is-paused{animation-play-state:paused}
+.marquee__item{flex:0 0 auto; width:240px; height:170px; margin-right:12px; overflow:hidden; border-radius:var(--radius)}
+.marquee__item img{width:100%; height:100%; object-fit:cover}
+@keyframes marquee{from{transform:translateX(0)} to{transform:translateX(-50%)}}
+@media (prefers-reduced-motion:reduce){.marquee__track{animation:none}}
 
-/* ===== 追従CTA（モバイル） ===== */
-.footer{padding-bottom:calc(32px + env(safe-area-inset-bottom))}
-
-/* ===== トップへ戻る ===== */
-.to-top{
-  margin:0 auto 28px;
-  width:52px;height:52px;border-radius:50%;border:none;cursor:pointer;
-  background:rgba(255,255,255,.95);
-  border:2px solid var(--sky);
-  box-shadow:0 4px 14px rgba(30,95,150,.25);
-  display:flex;align-items:center;justify-content:center;
-  transition:transform .3s,box-shadow .3s;
+/* =========================================================================
+   一歩を踏み出した方の声
+   ========================================================================= */
+.sec--push{padding:76px 24px 84px; text-align:center; background:var(--bg-white)}
+.push__ttl{
+  font-family:var(--serif); font-weight:700; white-space:nowrap;
+  font-size:clamp(18px,calc(var(--vw,100vw)*5.4/100),25px); line-height:1.72; letter-spacing:.06em;
+  color:var(--teal-deep); margin-bottom:30px;
 }
-.to-top:hover{transform:translateY(-3px);box-shadow:0 7px 18px rgba(30,95,150,.35)}
-.to-top svg{width:22px;height:22px;stroke:var(--sky-deep);fill:none}
-@media(prefers-reduced-motion:reduce){
-  .to-top{transition:box-shadow .3s}
-  .to-top:hover{transform:none}
+.push__quote{max-width:480px; margin:0 auto; text-align:left; position:relative; padding-left:20px}
+.push__quote::before{content:""; position:absolute; left:0; top:6px; bottom:6px; width:1px; background:var(--gold-soft)}
+.push__meta{
+  display:flex; align-items:center; gap:10px; margin-bottom:16px;
+  font-family:var(--sans); font-weight:600; font-size:12px; letter-spacing:.08em; color:#7C6A31; line-height:1.55;
+}
+.push__meta svg{flex:0 0 auto; width:19px; height:19px; fill:var(--gold)}
+.push__meta span{display:block; font-weight:500; font-size:11px; color:var(--muted); letter-spacing:.04em}
+.push__body{font-family:var(--serif); font-weight:500; font-size:14.5px; line-height:2.1; letter-spacing:.02em; color:var(--text)}
+.sec--push .replace-note{color:var(--muted); text-align:left; max-width:480px; margin:26px auto 0}
+
+/* =========================================================================
+   追伸
+   ========================================================================= */
+.ps{position:relative; z-index:3; background:var(--bg); padding:74px 24px 88px; text-align:center}
+.ps__inner{max-width:560px; margin:0 auto}
+.ps__letter{
+  overflow:hidden; border-radius:var(--radius); margin-bottom:40px;
+  box-shadow:0 26px 52px -12px rgba(60,45,20,.3), 0 10px 22px -10px rgba(60,45,20,.2);
+}
+.ps__letter img{width:100%}
+
+/* =========================================================================
+   フッター
+   ========================================================================= */
+.footer{position:relative; z-index:3; background:var(--bg-deep); color:#fff; padding:60px 24px 34px; text-align:center}
+.footer__totop{
+  display:flex; flex-direction:column; align-items:center; gap:8px;
+  margin:0 auto 34px; background:transparent; border:none; padding:0; cursor:pointer;
+  color:rgba(255,255,255,.78); font-family:var(--en); font-size:10px; letter-spacing:.24em;
+}
+.footer__totop-circle{
+  width:42px; height:42px; border-radius:50%; border:1px solid rgba(255,255,255,.45);
+  display:flex; align-items:center; justify-content:center;
+  transition:background .25s ease, border-color .25s ease, transform .25s ease;
+}
+.footer__totop:hover .footer__totop-circle{background:rgba(255,255,255,.14); border-color:rgba(255,255,255,.75); transform:translateY(-3px)}
+.footer__totop-circle svg{width:14px; height:14px; stroke:rgba(255,255,255,.85); fill:none; stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round}
+.footer__logo{font-family:var(--serif); font-weight:700; font-size:15px; letter-spacing:.08em; color:var(--cream); margin-bottom:10px}
+.footer__copy{font-family:var(--en); font-size:10.5px; letter-spacing:.14em; color:rgba(255,255,255,.5)}
+
+@media(min-width:768px){
+  .blk__body{font-size:17px}
+  .feature{gap:26px}
+  .feature__desc{font-size:14.5px}
+  .voice__text{font-size:15.5px}
 }
 </style>
 </head>
 <body>
 
-<!-- 上部固定ヘッダー：ロゴ＋電話問い合わせ -->
-<header class="header">
-  <div class="header-inner">
-    <a href="#" class="header-logo">
-      <img class="header-mark" src="assets/logomark.png" alt="美原東ロイヤルメモリアルパーク ロゴ" width="120" height="104">
-      <span class="header-name">美原東ロイヤル<br>メモリアルパーク</span>
-    </a>
-    <a href="tel:0120-73-1481" class="header-tel">
-      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.1-8.7A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.7a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.4-1.1a2 2 0 0 1 2.1-.5c.9.3 1.8.5 2.7.6a2 2 0 0 1 1.7 2z"/></svg>
-      <span class="header-tel-txt"><small>お電話でのお問い合わせ</small><strong>0120-73-1481</strong></span>
-    </a>
-  </div>
+<!-- 上部固定ヘッダー：FVの間は隠し、通過後に降りてくる -->
+<header class="header" id="header">
+  <a href="#" class="header__left">
+    <img class="header__mark" src="assets/logomark.png" alt="美原東ロイヤルメモリアルパーク ロゴ" width="120" height="104">
+    <span class="header__txt">
+      <span class="header__tag">ペットと一緒に眠れるお墓</span>
+      <span class="header__name">美原東ロイヤルメモリアルパーク</span>
+    </span>
+  </a>
+  <a href="tel:0120-73-1481" class="header__call">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.1-8.7A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.7a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.4-1.1a2 2 0 0 1 2.1-.5c.9.3 1.8.5 2.7.6a2 2 0 0 1 1.7 2z"/></svg>
+    <span class="header__call-txt"><small>お電話でのお問い合わせ</small><strong>0120-73-1481</strong></span>
+  </a>
 </header>
 
 <main>
-<!-- ① FV／HL ※コピーは要A/Bテスト（B案：「小さな我が子と、これからも、ずっと一緒に。」） -->
-<div class="fv-fixed" aria-hidden="true">
-  <div class="hero-bg">
+
+<!-- =====================================================================
+     動画ステージ：FV と ②③ の文章が、1枚の映像の上を続けて流れる
+     ===================================================================== -->
+<div class="video-stage">
+  <div class="video-bg" aria-hidden="true">
     <!-- FV背景動画。同じ動画を2枚重ね、末尾と先頭をクロスディゾルブで繋いでループさせる -->
     <video class="fv-vid is-active" muted loop playsinline preload="auto" poster="assets/fv-01.jpg"><source src="assets/fv-main.mp4" type="video/mp4"></video>
     <video class="fv-vid" muted loop playsinline preload="auto"><source src="assets/fv-main.mp4" type="video/mp4"></video>
+    <div class="video-veil"></div>
   </div>
-  <div class="hero-veil"></div>
+
+  <!-- ① FV／HL ※コピーは要A/Bテスト（B案：「小さな我が子と、これからも、ずっと一緒に。」） -->
+  <section class="hero">
+    <p class="hero__label">ペットと一緒に眠れるお墓</p>
+    <h1 class="hero__catch">大切な小さな家族を<br>ひとりぼっちにさせない</h1>
+    <p class="hero__sub">最後までずっと一緒に眠れる<br>供養のカタチ</p>
+    <a href="https://e-mihara.jp/form_siryou/" class="hero__cta">
+      <span class="cta-small">区画の写真・料金・園内の雰囲気がわかる</span>
+      <span class="cta-big">無料で資料請求する<span class="arw">&rsaquo;</span></span>
+    </a>
+    <div class="hero__scroll" aria-hidden="true">SCROLL<span class="bar"></span></div>
+  </section>
+
+  <div class="flow">
+    <!-- ② 共感（痛み） ※文言は一次データ（お客様アンケート等）に基づき差し替え予定 -->
+    <section class="blk" id="worry">
+      <p class="blk__label reveal">はじめに</p>
+      <h2 class="blk__ttl reveal">あなたはペットと話したい<br>と思ったことはありませんか？</h2>
+      <p class="blk__body reveal">
+        <span>「あの子と少しでも話せたら、、、」</span>
+        <span>叶わないような願いと感じるかもしれません。</span>
+        <span>けど、心のより処があるだけで、もしかすると、、、</span>
+      </p>
+      <!-- クリックするまでYouTubeを読み込まない。標準の埋め込みだと消せないタイトル表示を出さないため -->
+      <div class="ytwrap ytwrap--flow reveal">
+        <button type="button" class="yt-lite" data-id="aRGpXIfROuA" aria-label="動画を再生：ペットと話したいと思ったことはありますか？">
+          <img src="assets/yt-aRGpXIfROuA.jpg" alt="" loading="lazy">
+          <span class="yt-play" aria-hidden="true"></span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ④ 「話せているような気がする」 -->
+    <section class="blk" id="quiet">
+      <h2 class="blk__ttl reveal">話せているような<br>気がする</h2>
+      <p class="blk__body reveal">我が子のお墓の前で手を合わせると、一緒に過ごした思い出が溢れ出してきます。</p>
+      <div class="figure figure--pair reveal">
+        <figure><img src="assets/quiet-1.jpg" alt="" loading="lazy" data-px="10"></figure>
+        <figure><img src="assets/quiet-2.jpg" alt="" loading="lazy" data-px="-10"></figure>
+      </div>
+      <div class="figure reveal">
+        <img src="assets/quiet-bg.jpg" alt="お墓の前で手を合わせるご家族" loading="lazy">
+      </div>
+      <p class="blk__q reveal">気づけば、<br>あの子に話しかけている</p>
+      <p class="blk__body reveal">——そんな気がするという方が、たくさんおられます。ひとりぼっちにさせたくないというご家族の想いを、私たちも同じ気持ちでお預かりしています。</p>
+    </section>
+  </div>
 </div>
 
-<section class="hero">
-  <div class="hero-inner">
-    <p class="hero-lead">ペットと一緒に眠れるお墓</p>
-    <h1 class="hero-catch">大切な小さな家族を<br>ひとりぼっちにさせない</h1>
-    <p class="hero-subhead">最後までずっと一緒に眠れる<br>供養のカタチ</p>
-  </div>
-</section>
-
-<!-- ② 共感（痛み） ※文言は一次データ（お客様アンケート等）に基づき差し替え予定 -->
-<section class="worry">
-  <div class="inner">
-    <h2 class="sec-title">あなたはペットと話したい<br>と思ったことはありませんか？</h2>
-    <div class="sec-title-bar"></div>
-    <!-- 各文をブロックに分け、行ごとに balance を効かせる（末尾1〜2文字の孤立を防ぐ） -->
-    <p class="worry-lead"><span>「あの子と少しでも話せたら、、、」</span><span>叶わないような願いと感じるかもしれません。</span><span>けど、心のより処があるだけで、もしかすると、、、</span></p>
-    <!-- クリックするまでYouTubeを読み込まない。標準の埋め込みだと消せないタイトル表示を出さないため -->
-    <div class="worry-video">
-      <button type="button" class="yt-lite" data-id="aRGpXIfROuA" aria-label="動画を再生：ペットと話したいと思ったことはありますか？">
-        <img src="assets/yt-aRGpXIfROuA.jpg" alt="" loading="lazy">
-        <span class="yt-play" aria-hidden="true"></span>
-      </button>
+<!-- ③ 諦めの否定 ＝ 帯付きテキスト＋はみ出し写真 -->
+<section class="comma">
+  <div class="comma__inner">
+    <div class="comma__row">
+      <div class="comma__banner">
+        <span class="comma__line">「動物と一緒に</span>
+        <span class="comma__line">お墓に入るなんて、、、」</span>
+      </div>
+      <div class="comma__rowfig"><img src="assets/denial-bg.jpg" alt="" loading="lazy"></div>
     </div>
-  </div>
-</section>
-
-<!-- ④ 「話せているような気がする」 -->
-<section class="story story-quiet">
-  <div class="inner">
-    <!-- 写真は文字の背面に敷き、見出しの左上／本文の右下から少しはみ出させる -->
-    <div class="quiet-block">
-      <figure class="quiet-photo p1"><img src="assets/quiet-1.jpg" alt="" loading="lazy"></figure>
-      <h2 class="quiet-title">話せているような<br>気がする</h2>
-    </div>
-    <div class="quiet-block">
-      <p class="quiet-text">我が子のお墓の前で手を合わせると、一緒に過ごした思い出が溢れ出してきます。</p>
-      <figure class="quiet-photo p2"><img src="assets/quiet-2.jpg" alt="" loading="lazy"></figure>
-    </div>
-    <div class="quiet-stage">
-      <!-- お墓参りの写真は背景に沈めず、前面にはっきり見せる -->
-      <figure class="quiet-stage-photo"><img src="assets/quiet-bg.jpg" alt="お墓の前で手を合わせるご家族" loading="lazy"></figure>
-      <p class="quiet-main">気づけば、<br>あの子に話しかけている</p>
-      <p class="quiet-text">——そんな気がするという方が、たくさんおられます。ひとりぼっちにさせたくないというご家族の想いを、私たちも同じ気持ちでお預かりしています。</p>
-    </div>
-  </div>
-</section>
-
-<!-- ③ 諦めの否定 -->
-<section class="denial">
-  <div class="denial-top">
-    <div class="denial-bg" aria-hidden="true"></div>
-    <div class="inner">
-      <p class="denial-q">「動物と一緒に<br>お墓に入るなんて、、、」</p>
-      <p class="denial-mid">
-        かつてはこのように考えられる方は少なくありませんでした。
-      </p>
-      <p class="denial-mid">
-        しかし最近では、ペットは大切な家族の一員と考えられる方も増え、一緒に眠りたいと思っている人も多くなってきています。
-      </p>
-    </div>
+    <p class="comma__body rvl">かつてはこのように考えられる方は少なくありませんでした。</p>
+    <p class="comma__body rvl">しかし最近では、ペットは大切な家族の一員と考えられる方も増え、一緒に眠りたいと思っている人も多くなってきています。</p>
   </div>
 </section>
 
 <!-- ④-1 ペットと一緒のお墓を選ぶ前に知ってほしいこと -->
-<section class="story story-know">
-  <div class="inner">
-    <h2>ペットと一緒のお墓を選ぶ前に<br>知ってほしいこと</h2>
-    <div class="bar"></div>
+<section class="sec sec--know">
+  <p class="kicker rvl">知ってほしいこと</p>
+  <h2 class="know__ttl rvl">ペットと一緒のお墓を選ぶ前に<br>知ってほしいこと</h2>
 
-    <!-- 最も伝えたい一点。数字を大きく見せて一目で伝える -->
-    <div class="limit-hero">
-      <p class="limit-fact">実は、多くの霊園には埋葬期限があります。</p>
-      <p class="limit-note">※期限後はご遺骨を骨壷から出し、一つの場所にまとめて埋葬・供養されます</p>
-      <p class="limit-ours"><span class="em">当園は、埋葬期限なくずっと一緒に眠り続けられます。</span></p>
-    </div>
+  <!-- 最も伝えたい一点 -->
+  <p class="know-fact rvl">実は、多くの霊園には埋葬期限があります。</p>
+  <p class="know-note rvl">※期限後はご遺骨を骨壷から出し、一つの場所にまとめて埋葬・供養されます</p>
+  <p class="know-ours rvl">当園は、埋葬期限なく<br>ずっと一緒に眠り続けられます。</p>
 
-    <!-- ご家族の実感。声として立てる -->
-    <blockquote class="limit-voices">
-      <p>他の子の遺骨と混ざることに<br>抵抗がある</p>
-      <p>家族だったから、<br>ずっと一緒に眠り続けたい</p>
-    </blockquote>
-    <p class="limit-close">——そう思い、後悔のない供養を考える方に当霊園は選ばれています。</p>
-    <figure class="limit-photo"><img src="assets/quiet-3.jpg" alt="" loading="lazy"></figure>
-  </div>
+  <!-- ご家族の実感 -->
+  <blockquote class="know-voices rvl">
+    <p>他の子の遺骨と混ざることに抵抗がある</p>
+    <p>家族だったから、ずっと一緒に眠り続けたい</p>
+  </blockquote>
+  <p class="know-close rvl">——そう思い、後悔のない供養を考える方に当霊園は選ばれています。</p>
+  <figure class="know__photo rvl"><img src="assets/quiet-3.jpg" alt="" loading="lazy"></figure>
 </section>
 
 <!-- ⑤ 施設理念＋動画（＝実在します） -->
-<section class="philosophy">
-  <svg class="paw" style="top:16%;left:7%;transform:rotate(-12deg)" width="42" height="42" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="7" cy="7.5" rx="2" ry="2.6"/><ellipse cx="12" cy="5.8" rx="2" ry="2.6"/><ellipse cx="17" cy="7.5" rx="2" ry="2.6"/><path d="M12 10c-3.2 0-6 2.6-6 5.4 0 1.9 1.5 3.1 3.3 3.1 1 0 1.8-.4 2.7-.4s1.7.4 2.7.4c1.8 0 3.3-1.2 3.3-3.1 0-2.8-2.8-5.4-6-5.4z"/></svg>
-  <svg class="paw" style="bottom:10%;right:8%;transform:rotate(18deg)" width="52" height="52" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="7" cy="7.5" rx="2" ry="2.6"/><ellipse cx="12" cy="5.8" rx="2" ry="2.6"/><ellipse cx="17" cy="7.5" rx="2" ry="2.6"/><path d="M12 10c-3.2 0-6 2.6-6 5.4 0 1.9 1.5 3.1 3.3 3.1 1 0 1.8-.4 2.7-.4s1.7.4 2.7.4c1.8 0 3.3-1.2 3.3-3.1 0-2.8-2.8-5.4-6-5.4z"/></svg>
-  <div class="philosophy-inner">
-    <h2 class="sec-title">ご家族さまの想いに応える<br>霊園でありたい</h2>
-    <div class="sec-title-bar"></div>
-    <p class="philosophy-text">
-      私たち<b>美原東ロイヤルメモリアルパーク</b>は、単なるお墓を建てることをお客様に提供しているわけではありません。故人やご先祖様のお墓参りを、家族みんなで楽しめる墓地にしたいと考えています。
-    </p>
-    <p class="philosophy-lead">園内の紹介動画をご覧ください。</p>
-    <div class="scroll-cue" aria-hidden="true"><!-- 動画へ視線を誘導する下向きアイコン -->
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
-    </div>
-    <!-- 施設紹介動画：クリックするまでYouTubeを読み込まない（タイトル表示を出さないため） -->
-    <div class="video-frame">
-      <button type="button" class="yt-lite" data-id="sFhog5THu0A" aria-label="動画を再生：施設紹介動画">
-        <img src="assets/yt-sFhog5THu0A.jpg" alt="" loading="lazy">
-        <span class="yt-play" aria-hidden="true"></span>
-      </button>
-    </div>
+<section class="sec sec--voice">
+  <p class="kicker rvl">私たちの想い</p>
+  <h2 class="voice__ttl rvl">ご家族さまの想いに応える<br>霊園でありたい</h2>
+  <p class="voice__text rvl">
+    私たち<b>美原東ロイヤルメモリアルパーク</b>は、単なるお墓を建てることをお客様に提供しているわけではありません。故人やご先祖様のお墓参りを、家族みんなで楽しめる墓地にしたいと考えています。
+  </p>
+  <p class="voice__lead rvl">園内の紹介動画をご覧ください。</p>
+  <svg class="voice__cue" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+  <!-- 施設紹介動画：クリックするまでYouTubeを読み込まない（タイトル表示を出さないため） -->
+  <div class="ytwrap rvl">
+    <button type="button" class="yt-lite" data-id="sFhog5THu0A" aria-label="動画を再生：施設紹介動画">
+      <img src="assets/yt-sFhog5THu0A.jpg" alt="" loading="lazy">
+      <span class="yt-play" aria-hidden="true"></span>
+    </button>
   </div>
 </section>
 
 <!-- ⑥ 心から明るく手を合わせられるための3つのサービス -->
-<section class="benefit">
-  <!-- 足跡の散歩道：二本足で上から下へ、緩やかなS字を描いて歩く（指のある側が進行方向。左右の足を交互に振る） -->
-  <svg class="paw" style="top:5%;left:17%;transform:rotate(163deg) scaleX(-1)" width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="7" cy="7.5" rx="2" ry="2.6"/><ellipse cx="12" cy="5.8" rx="2" ry="2.6"/><ellipse cx="17" cy="7.5" rx="2" ry="2.6"/><path d="M12 10c-3.2 0-6 2.6-6 5.4 0 1.9 1.5 3.1 3.3 3.1 1 0 1.8-.4 2.7-.4s1.7.4 2.7.4c1.8 0 3.3-1.2 3.3-3.1 0-2.8-2.8-5.4-6-5.4z"/></svg>
-  <svg class="paw" style="top:12%;left:29%;transform:rotate(148deg)" width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="7" cy="7.5" rx="2" ry="2.6"/><ellipse cx="12" cy="5.8" rx="2" ry="2.6"/><ellipse cx="17" cy="7.5" rx="2" ry="2.6"/><path d="M12 10c-3.2 0-6 2.6-6 5.4 0 1.9 1.5 3.1 3.3 3.1 1 0 1.8-.4 2.7-.4s1.7.4 2.7.4c1.8 0 3.3-1.2 3.3-3.1 0-2.8-2.8-5.4-6-5.4z"/></svg>
-  <svg class="paw" style="top:19%;left:35%;transform:rotate(144deg) scaleX(-1)" width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="7" cy="7.5" rx="2" ry="2.6"/><ellipse cx="12" cy="5.8" rx="2" ry="2.6"/><ellipse cx="17" cy="7.5" rx="2" ry="2.6"/><path d="M12 10c-3.2 0-6 2.6-6 5.4 0 1.9 1.5 3.1 3.3 3.1 1 0 1.8-.4 2.7-.4s1.7.4 2.7.4c1.8 0 3.3-1.2 3.3-3.1 0-2.8-2.8-5.4-6-5.4z"/></svg>
-  <svg class="paw" style="top:26%;left:55%;transform:rotate(150deg)" width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="7" cy="7.5" rx="2" ry="2.6"/><ellipse cx="12" cy="5.8" rx="2" ry="2.6"/><ellipse cx="17" cy="7.5" rx="2" ry="2.6"/><path d="M12 10c-3.2 0-6 2.6-6 5.4 0 1.9 1.5 3.1 3.3 3.1 1 0 1.8-.4 2.7-.4s1.7.4 2.7.4c1.8 0 3.3-1.2 3.3-3.1 0-2.8-2.8-5.4-6-5.4z"/></svg>
-  <svg class="paw" style="top:33%;left:60%;transform:rotate(163deg) scaleX(-1)" width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="7" cy="7.5" rx="2" ry="2.6"/><ellipse cx="12" cy="5.8" rx="2" ry="2.6"/><ellipse cx="17" cy="7.5" rx="2" ry="2.6"/><path d="M12 10c-3.2 0-6 2.6-6 5.4 0 1.9 1.5 3.1 3.3 3.1 1 0 1.8-.4 2.7-.4s1.7.4 2.7.4c1.8 0 3.3-1.2 3.3-3.1 0-2.8-2.8-5.4-6-5.4z"/></svg>
-  <svg class="paw" style="top:40%;left:72%;transform:rotate(177deg)" width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="7" cy="7.5" rx="2" ry="2.6"/><ellipse cx="12" cy="5.8" rx="2" ry="2.6"/><ellipse cx="17" cy="7.5" rx="2" ry="2.6"/><path d="M12 10c-3.2 0-6 2.6-6 5.4 0 1.9 1.5 3.1 3.3 3.1 1 0 1.8-.4 2.7-.4s1.7.4 2.7.4c1.8 0 3.3-1.2 3.3-3.1 0-2.8-2.8-5.4-6-5.4z"/></svg>
-  <svg class="paw" style="top:47%;left:67%;transform:rotate(195deg) scaleX(-1)" width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="7" cy="7.5" rx="2" ry="2.6"/><ellipse cx="12" cy="5.8" rx="2" ry="2.6"/><ellipse cx="17" cy="7.5" rx="2" ry="2.6"/><path d="M12 10c-3.2 0-6 2.6-6 5.4 0 1.9 1.5 3.1 3.3 3.1 1 0 1.8-.4 2.7-.4s1.7.4 2.7.4c1.8 0 3.3-1.2 3.3-3.1 0-2.8-2.8-5.4-6-5.4z"/></svg>
-  <svg class="paw" style="top:54%;left:68%;transform:rotate(208deg)" width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="7" cy="7.5" rx="2" ry="2.6"/><ellipse cx="12" cy="5.8" rx="2" ry="2.6"/><ellipse cx="17" cy="7.5" rx="2" ry="2.6"/><path d="M12 10c-3.2 0-6 2.6-6 5.4 0 1.9 1.5 3.1 3.3 3.1 1 0 1.8-.4 2.7-.4s1.7.4 2.7.4c1.8 0 3.3-1.2 3.3-3.1 0-2.8-2.8-5.4-6-5.4z"/></svg>
-  <svg class="paw" style="top:61%;left:52%;transform:rotate(212deg) scaleX(-1)" width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="7" cy="7.5" rx="2" ry="2.6"/><ellipse cx="12" cy="5.8" rx="2" ry="2.6"/><ellipse cx="17" cy="7.5" rx="2" ry="2.6"/><path d="M12 10c-3.2 0-6 2.6-6 5.4 0 1.9 1.5 3.1 3.3 3.1 1 0 1.8-.4 2.7-.4s1.7.4 2.7.4c1.8 0 3.3-1.2 3.3-3.1 0-2.8-2.8-5.4-6-5.4z"/></svg>
-  <svg class="paw" style="top:68%;left:46%;transform:rotate(210deg)" width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="7" cy="7.5" rx="2" ry="2.6"/><ellipse cx="12" cy="5.8" rx="2" ry="2.6"/><ellipse cx="17" cy="7.5" rx="2" ry="2.6"/><path d="M12 10c-3.2 0-6 2.6-6 5.4 0 1.9 1.5 3.1 3.3 3.1 1 0 1.8-.4 2.7-.4s1.7.4 2.7.4c1.8 0 3.3-1.2 3.3-3.1 0-2.8-2.8-5.4-6-5.4z"/></svg>
-  <svg class="paw" style="top:75%;left:29%;transform:rotate(197deg) scaleX(-1)" width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="7" cy="7.5" rx="2" ry="2.6"/><ellipse cx="12" cy="5.8" rx="2" ry="2.6"/><ellipse cx="17" cy="7.5" rx="2" ry="2.6"/><path d="M12 10c-3.2 0-6 2.6-6 5.4 0 1.9 1.5 3.1 3.3 3.1 1 0 1.8-.4 2.7-.4s1.7.4 2.7.4c1.8 0 3.3-1.2 3.3-3.1 0-2.8-2.8-5.4-6-5.4z"/></svg>
-  <svg class="paw" style="top:82%;left:29%;transform:rotate(183deg)" width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="7" cy="7.5" rx="2" ry="2.6"/><ellipse cx="12" cy="5.8" rx="2" ry="2.6"/><ellipse cx="17" cy="7.5" rx="2" ry="2.6"/><path d="M12 10c-3.2 0-6 2.6-6 5.4 0 1.9 1.5 3.1 3.3 3.1 1 0 1.8-.4 2.7-.4s1.7.4 2.7.4c1.8 0 3.3-1.2 3.3-3.1 0-2.8-2.8-5.4-6-5.4z"/></svg>
-  <svg class="paw" style="top:89%;left:22%;transform:rotate(166deg) scaleX(-1)" width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="7" cy="7.5" rx="2" ry="2.6"/><ellipse cx="12" cy="5.8" rx="2" ry="2.6"/><ellipse cx="17" cy="7.5" rx="2" ry="2.6"/><path d="M12 10c-3.2 0-6 2.6-6 5.4 0 1.9 1.5 3.1 3.3 3.1 1 0 1.8-.4 2.7-.4s1.7.4 2.7.4c1.8 0 3.3-1.2 3.3-3.1 0-2.8-2.8-5.4-6-5.4z"/></svg>
-  <svg class="paw" style="top:95%;left:32%;transform:rotate(166deg)" width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="7" cy="7.5" rx="2" ry="2.6"/><ellipse cx="12" cy="5.8" rx="2" ry="2.6"/><ellipse cx="17" cy="7.5" rx="2" ry="2.6"/><path d="M12 10c-3.2 0-6 2.6-6 5.4 0 1.9 1.5 3.1 3.3 3.1 1 0 1.8-.4 2.7-.4s1.7.4 2.7.4c1.8 0 3.3-1.2 3.3-3.1 0-2.8-2.8-5.4-6-5.4z"/></svg>
-  <div class="inner">
-    <h2 class="sec-title sec-title-2line">心から明るく手を合わせられる<br>ための3つのサービス</h2>
-    <div class="sec-title-bar"></div>
-    <div class="svc-list">
-      <div class="svc-item">
-        <div class="svc-head"><span class="svc-num">01</span><h3>花や緑が溢れる<br>四季折々の庭園空間</h3></div>
-        <p>「霊園」と聞くと気が重くなる方もいます。ここは花と緑が咲き誇り、四季で表情を変える場所。季節の自然に癒されながら、明るい気持ちでお参りいただけます。</p>
-        <img class="svc-photo" src="assets/svc-01-sakura.jpg" alt="桜が咲き誇る春の園内" loading="lazy">
+<section class="sec sec--reason">
+  <p class="kicker rvl">選ばれる理由</p>
+  <h2 class="reason__ttl rvl">心から明るく手を合わせられる<br>ための3つのサービス</h2>
+  <p class="reason__small rvl">― 花と緑に囲まれた、明るい霊園で ―</p>
+  <div class="features">
+    <div class="feature rvl">
+      <div class="feature__media"><img src="assets/svc-01-sakura.jpg" alt="桜が咲き誇る春の園内" loading="lazy" data-px="14"></div>
+      <div class="feature__body">
+        <h3 class="feature__ttl"><span class="feature__num">01</span>花や緑が溢れる<br>四季折々の庭園空間</h3>
+        <p class="feature__desc">「霊園」と聞くと気が重くなる方もいます。ここは花と緑が咲き誇り、四季で表情を変える場所。季節の自然に癒されながら、明るい気持ちでお参りいただけます。</p>
       </div>
-      <div class="svc-item">
-        <div class="svc-head"><span class="svc-num">02</span><h3>毎日の行き届いた清掃</h3></div>
-        <p>墓石を探し、枯葉の掃除から始める——そんな負担はありません。園内は毎日徹底して清掃。いつ来ても、あの子をきれいな場所でお迎えします。</p>
-        <img class="svc-photo" src="assets/svc-02.jpg" alt="スタッフによる園内の清掃" loading="lazy">
+    </div>
+    <div class="feature feature--rev rvl">
+      <div class="feature__media"><img src="assets/svc-02.jpg" alt="スタッフによる園内の清掃" loading="lazy" data-px="14"></div>
+      <div class="feature__body">
+        <h3 class="feature__ttl"><span class="feature__num">02</span>毎日の行き届いた清掃</h3>
+        <p class="feature__desc">墓石を探し、枯葉の掃除から始める——そんな負担はありません。園内は毎日徹底して清掃。いつ来ても、あの子をきれいな場所でお迎えします。</p>
       </div>
-      <div class="svc-item">
-        <div class="svc-head"><span class="svc-num">03</span><h3>無料送迎・バリアフリー対応</h3></div>
-        <p>何歳になっても通えるよう、駅からの無料送迎とバリアフリーを整えています。足腰が弱っても、家族に負担をかけずご自身で会いに行けます。<span class="note">※無料送迎は指定駅から・要予約</span></p>
-        <img class="svc-photo" src="assets/svc-03.jpg" alt="段差の少ない園内の通路" loading="lazy">
+    </div>
+    <div class="feature rvl">
+      <div class="feature__media"><img src="assets/svc-03.jpg" alt="段差の少ない園内の通路" loading="lazy" data-px="14"></div>
+      <div class="feature__body">
+        <h3 class="feature__ttl"><span class="feature__num">03</span>無料送迎・<br>バリアフリー対応</h3>
+        <p class="feature__desc">何歳になっても通えるよう、駅からの無料送迎とバリアフリーを整えています。足腰が弱っても、家族に負担をかけずご自身で会いに行けます。<span class="note">※無料送迎は指定駅から・要予約</span></p>
       </div>
     </div>
   </div>
 </section>
 
 <!-- ⑦ お客様の声①② ※実際の声に差し替え予定 -->
-<section class="voice">
-  <div class="inner">
-    <h2 class="sec-title">ペットを見送ったご家族の声</h2>
-    <div class="sec-title-bar"></div>
-    <div class="voice-list">
-      <div class="voice-item">
-        <div class="voice-head">
-          <div class="voice-avatar">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="7" cy="7.5" rx="2" ry="2.6"/><ellipse cx="12" cy="5.8" rx="2" ry="2.6"/><ellipse cx="17" cy="7.5" rx="2" ry="2.6"/><path d="M12 10c-3.2 0-6 2.6-6 5.4 0 1.9 1.5 3.1 3.3 3.1 1 0 1.8-.4 2.7-.4s1.7.4 2.7.4c1.8 0 3.3-1.2 3.3-3.1 0-2.8-2.8-5.4-6-5.4z"/></svg>
-          </div>
-          <div class="voice-meta"><b>60代・ご夫婦</b><br>愛犬を見送られて</div>
+<section class="sec--voices">
+  <p class="voices-eyebrow rvl">お客様の声</p>
+  <h2 class="voices-ttl rvl">ペットを見送ったご家族の声</h2>
+  <div class="voices">
+    <div class="voices__track">
+      <!-- 1周目 -->
+      <div class="testimonial">
+        <div class="t-head">
+          <svg class="t-icon" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="7" cy="7.5" rx="2" ry="2.6"/><ellipse cx="12" cy="5.8" rx="2" ry="2.6"/><ellipse cx="17" cy="7.5" rx="2" ry="2.6"/><path d="M12 10c-3.2 0-6 2.6-6 5.4 0 1.9 1.5 3.1 3.3 3.1 1 0 1.8-.4 2.7-.4s1.7.4 2.7.4c1.8 0 3.3-1.2 3.3-3.1 0-2.8-2.8-5.4-6-5.4z"/></svg>
+          <span class="t-label">60代・ご夫婦<span>愛犬を見送られて</span></span>
+          <span class="t-stars">★★★★★</span>
         </div>
-        <p>16年連れ添った子を見送ったあと、「この子だけ別の場所」がどうしても受け入れられませんでした。一緒に眠れるお墓があると知ったとき、夫婦で涙が出ました。今は「先に行って待っててね」と声をかけられます。</p>
+        <p class="t-body">16年連れ添った子を見送ったあと、「この子だけ別の場所」がどうしても受け入れられませんでした。一緒に眠れるお墓があると知ったとき、夫婦で涙が出ました。今は「先に行って待っててね」と声をかけられます。</p>
       </div>
-      <div class="voice-item">
-        <div class="voice-head">
-          <div class="voice-avatar">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="7" cy="7.5" rx="2" ry="2.6"/><ellipse cx="12" cy="5.8" rx="2" ry="2.6"/><ellipse cx="17" cy="7.5" rx="2" ry="2.6"/><path d="M12 10c-3.2 0-6 2.6-6 5.4 0 1.9 1.5 3.1 3.3 3.1 1 0 1.8-.4 2.7-.4s1.7.4 2.7.4c1.8 0 3.3-1.2 3.3-3.1 0-2.8-2.8-5.4-6-5.4z"/></svg>
-          </div>
-          <div class="voice-meta"><b>50代・女性</b><br>愛猫と入れる区画をご契約</div>
+      <div class="testimonial">
+        <div class="t-head">
+          <svg class="t-icon" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="7" cy="7.5" rx="2" ry="2.6"/><ellipse cx="12" cy="5.8" rx="2" ry="2.6"/><ellipse cx="17" cy="7.5" rx="2" ry="2.6"/><path d="M12 10c-3.2 0-6 2.6-6 5.4 0 1.9 1.5 3.1 3.3 3.1 1 0 1.8-.4 2.7-.4s1.7.4 2.7.4c1.8 0 3.3-1.2 3.3-3.1 0-2.8-2.8-5.4-6-5.4z"/></svg>
+          <span class="t-label">50代・女性<span>愛猫と入れる区画をご契約</span></span>
+          <span class="t-stars">★★★★★</span>
         </div>
-        <p>ペット霊園と人のお墓の二か所にお参りするのは体力的にも心にも負担でした。ここなら一度にみんなに会える。園内が明るくてお参りというより「会いに行く」感覚です。</p>
+        <p class="t-body">ペット霊園と人のお墓の二か所にお参りするのは体力的にも心にも負担でした。ここなら一度にみんなに会える。園内が明るくてお参りというより「会いに行く」感覚です。</p>
+      </div>
+      <!-- 2周目（ループを途切れさせないための複製。読み上げ対象からは外す） -->
+      <div class="testimonial" aria-hidden="true">
+        <div class="t-head">
+          <svg class="t-icon" viewBox="0 0 24 24"><ellipse cx="7" cy="7.5" rx="2" ry="2.6"/><ellipse cx="12" cy="5.8" rx="2" ry="2.6"/><ellipse cx="17" cy="7.5" rx="2" ry="2.6"/><path d="M12 10c-3.2 0-6 2.6-6 5.4 0 1.9 1.5 3.1 3.3 3.1 1 0 1.8-.4 2.7-.4s1.7.4 2.7.4c1.8 0 3.3-1.2 3.3-3.1 0-2.8-2.8-5.4-6-5.4z"/></svg>
+          <span class="t-label">60代・ご夫婦<span>愛犬を見送られて</span></span>
+          <span class="t-stars">★★★★★</span>
+        </div>
+        <p class="t-body">16年連れ添った子を見送ったあと、「この子だけ別の場所」がどうしても受け入れられませんでした。一緒に眠れるお墓があると知ったとき、夫婦で涙が出ました。今は「先に行って待っててね」と声をかけられます。</p>
+      </div>
+      <div class="testimonial" aria-hidden="true">
+        <div class="t-head">
+          <svg class="t-icon" viewBox="0 0 24 24"><ellipse cx="7" cy="7.5" rx="2" ry="2.6"/><ellipse cx="12" cy="5.8" rx="2" ry="2.6"/><ellipse cx="17" cy="7.5" rx="2" ry="2.6"/><path d="M12 10c-3.2 0-6 2.6-6 5.4 0 1.9 1.5 3.1 3.3 3.1 1 0 1.8-.4 2.7-.4s1.7.4 2.7.4c1.8 0 3.3-1.2 3.3-3.1 0-2.8-2.8-5.4-6-5.4z"/></svg>
+          <span class="t-label">50代・女性<span>愛猫と入れる区画をご契約</span></span>
+          <span class="t-stars">★★★★★</span>
+        </div>
+        <p class="t-body">ペット霊園と人のお墓の二か所にお参りするのは体力的にも心にも負担でした。ここなら一度にみんなに会える。園内が明るくてお参りというより「会いに行く」感覚です。</p>
       </div>
     </div>
-    <p class="replace-note">※掲載内容はイメージです。実際のお客様の声の取得後に差し替えてください。</p>
   </div>
+  <p class="replace-note">※掲載内容はイメージです。実際のお客様の声の取得後に差し替えてください。</p>
 </section>
 
 <!-- ⑧ CV① -->
-<section class="cta-section first">
-  <div class="cta-bg" aria-hidden="true"><!-- 背景動画（旧FV動画をここで使用） -->
-    <video class="cta-bg-video" autoplay muted loop playsinline preload="auto" poster="assets/fv-01.jpg">
-      <source src="FV-540.mp4" type="video/mp4">
-    </video>
-    <div class="cta-bg-veil"></div>
-  </div>
-  <div class="inner">
-    <h2 class="cta-title"><span>あの子と眠れる区画を</span><span>まずは資料でご覧ください。</span></h2>
-    <p class="cta-lead">区画の写真・料金・園内の雰囲気がわかる資料を無料でお届けします。</p>
-    <div class="cta-box">
-      <div class="cta-card">
-        <h3><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#4a97d2" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>資料請求（無料）</h3>
-        <p>区画・料金・園内写真を掲載したパンフレットをお届けします。3分のかんたん入力。</p>
-        <a href="https://e-mihara.jp/form_siryou/" class="cta-btn cta-primary">無料で資料請求する</a>
+<section class="offer offer--video">
+  <!-- 背景動画（旧FV動画をここで使用） -->
+  <video class="cta-bg-video" autoplay muted loop playsinline preload="auto" poster="assets/fv-01.jpg" aria-hidden="true">
+    <source src="FV-540.mp4" type="video/mp4">
+  </video>
+  <div class="offer__veil" aria-hidden="true"></div>
+  <div class="offer__inner">
+    <p class="kicker kicker--light rvl">資料請求・ご見学</p>
+    <h2 class="offer__ttl rvl"><span>あの子と眠れる区画を</span><span>まずは資料でご覧ください。</span></h2>
+    <p class="offer__lead rvl">区画の写真・料金・園内の雰囲気がわかる資料を無料でお届けします。</p>
+    <div class="offer__rows rvl">
+      <div class="offer__row">
+        <h3 class="offer__name"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>資料請求（無料）</h3>
+        <p class="offer__desc">区画・料金・園内写真を掲載したパンフレットをお届けします。3分のかんたん入力。</p>
+        <a href="https://e-mihara.jp/form_siryou/" class="btn">無料で資料請求する<span class="chev">&rsaquo;</span></a>
       </div>
-      <div class="cta-card">
-        <h3><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#4a97d2" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 8.6 8.6 0 0 1-3.5-.8L3 20l1-4.3a8.4 8.4 0 1 1 17-4.2z"/></svg>見学予約・お問合せ</h3>
-        <p>気になることは何でもどうぞ。見学のご予約もこちらから承ります。</p>
-        <a href="https://e-mihara.jp/form_yoyaku/" class="cta-btn cta-secondary" style="border:2px solid var(--sky)">見学・お問合せはこちら</a>
+      <div class="offer__row">
+        <h3 class="offer__name"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 8.6 8.6 0 0 1-3.5-.8L3 20l1-4.3a8.4 8.4 0 1 1 17-4.2z"/></svg>見学予約・お問合せ</h3>
+        <p class="offer__desc">気になることは何でもどうぞ。見学のご予約もこちらから承ります。</p>
+        <a href="https://e-mihara.jp/form_yoyaku/" class="btn btn--ghost" style="color:var(--cream);border-color:var(--cream)">見学・お問合せはこちら<span class="chev">&rsaquo;</span></a>
       </div>
     </div>
-    <p class="cta-promise">
-      <b><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5.5c0 4.2-2.9 7.9-7 8.9-4.1-1-7-4.7-7-8.9V6z"/><path d="M9 12l2 2 4-4"/></svg>無理な営業はいたしません</b>
-      <span>資料請求やご見学のあとに、しつこくお電話や訪問をすることはありません。ご家族のペースで、ゆっくりお考えください。</span>
-    </p>
+    <div class="promise rvl">
+      <p class="promise__ttl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v5.5c0 4.2-2.9 7.9-7 8.9-4.1-1-7-4.7-7-8.9V6z"/><path d="M9 12l2 2 4-4"/></svg>無理な営業はいたしません</p>
+      <p class="promise__text">資料請求やご見学のあとに、しつこくお電話や訪問をすることはありません。ご家族のペースで、ゆっくりお考えください。</p>
+    </div>
   </div>
 </section>
 
 <!-- ⑨ 「お参りに行けば あの子がそこにいる。」（陽だまり版） -->
-<section class="scene-warm">
-  <div class="scene-warm-inner">
-    <h2 class="warm-title">お参りに行けば<br><em>あの子がそこにいる。</em></h2>
-    <div class="warm-scene">
+<section class="warm">
+  <div class="warm__inner">
+    <h2 class="warm__ttl rvl">お参りに行けば<em>あの子がそこにいる。</em></h2>
+    <div class="warm__scene rvl">
       <p>晴れた日に花を持って霊園へ。</p>
       <p>墓前に手を合わせれば</p>
-      <p class="warm-em">目の前に大切なあの子がいる。</p>
+      <p class="em">目の前に大切なあの子がいる。</p>
     </div>
-    <!-- 墓前に飾られたあの子の写真を背景に、語りかけの言葉を置く -->
-    <div class="warm-talk-block">
-      <p class="warm-talk">「元気にしてた？」<span>「みんな一緒だよ」</span></p>
-    </div>
-    <p class="warm-close">いつかご自身がその時を迎えたあとも家族全員が同じ場所に揃い続ける。それは遺されるご家族へのいちばんやさしい贈りものになります。</p>
+    <p class="warm__talk rvl">「元気にしてた？」<span>「みんな一緒だよ」</span></p>
+    <p class="warm__close rvl">いつかご自身がその時を迎えたあとも家族全員が同じ場所に揃い続ける。それは遺されるご家族へのいちばんやさしい贈りものになります。</p>
   </div>
 </section>
 
-<!-- 園内風景ギャラリー（別デザイン版）：セクションの継ぎ目にまたがせる。左へ流す -->
-<div class="scene-gallery is-flat" role="group" aria-label="園内の風景写真">
-  <div class="gallery-viewport">
-    <div class="gallery-track">
-      <figure class="gallery-slide"><img src="assets/gallery-3.jpg" alt="園内の風景" loading="lazy"></figure>
-      <figure class="gallery-slide"><img src="assets/gallery-4.jpg" alt="園内の風景" loading="lazy"></figure>
-      <figure class="gallery-slide"><img src="assets/gallery-1.jpg" alt="園内の風景" loading="lazy"></figure>
-      <figure class="gallery-slide"><img src="assets/gallery-2.jpg" alt="園内の風景" loading="lazy"></figure>
-      <!-- 以下はループを途切れさせないための複製。読み上げ対象からは外す -->
-      <figure class="gallery-slide" aria-hidden="true"><img src="assets/gallery-3.jpg" alt="" loading="lazy"></figure>
-      <figure class="gallery-slide" aria-hidden="true"><img src="assets/gallery-4.jpg" alt="" loading="lazy"></figure>
-      <figure class="gallery-slide" aria-hidden="true"><img src="assets/gallery-1.jpg" alt="" loading="lazy"></figure>
-      <figure class="gallery-slide" aria-hidden="true"><img src="assets/gallery-2.jpg" alt="" loading="lazy"></figure>
-    </div>
+<!-- 園内風景ギャラリー：左へ流す -->
+<div class="marquee" role="group" aria-label="園内の風景写真">
+  <div class="marquee__track">
+    <div class="marquee__item"><img src="assets/gallery-3.jpg" alt="園内の風景" loading="lazy"></div>
+    <div class="marquee__item"><img src="assets/gallery-4.jpg" alt="園内の風景" loading="lazy"></div>
+    <div class="marquee__item"><img src="assets/gallery-1.jpg" alt="園内の風景" loading="lazy"></div>
+    <div class="marquee__item"><img src="assets/gallery-2.jpg" alt="園内の風景" loading="lazy"></div>
+    <!-- 以下はループを途切れさせないための複製。読み上げ対象からは外す -->
+    <div class="marquee__item" aria-hidden="true"><img src="assets/gallery-3.jpg" alt="" loading="lazy"></div>
+    <div class="marquee__item" aria-hidden="true"><img src="assets/gallery-4.jpg" alt="" loading="lazy"></div>
+    <div class="marquee__item" aria-hidden="true"><img src="assets/gallery-1.jpg" alt="" loading="lazy"></div>
+    <div class="marquee__item" aria-hidden="true"><img src="assets/gallery-2.jpg" alt="" loading="lazy"></div>
   </div>
 </div>
 
 <!-- ⑩ お客様の声③（決断の後押し） ※実際の声に差し替え予定 -->
-<section class="voice push">
-  <div class="inner">
-    <h2 class="sec-title">一歩を踏み出した方の声</h2>
-    <div class="sec-title-bar"></div>
-    <div class="voice-list single">
-      <div class="voice-item">
-        <div class="voice-head">
-          <div class="voice-avatar">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="7" cy="7.5" rx="2" ry="2.6"/><ellipse cx="12" cy="5.8" rx="2" ry="2.6"/><ellipse cx="17" cy="7.5" rx="2" ry="2.6"/><path d="M12 10c-3.2 0-6 2.6-6 5.4 0 1.9 1.5 3.1 3.3 3.1 1 0 1.8-.4 2.7-.4s1.7.4 2.7.4c1.8 0 3.3-1.2 3.3-3.1 0-2.8-2.8-5.4-6-5.4z"/></svg>
-          </div>
-          <div class="voice-meta"><b>70代・女性</b><br>資料請求から2週間でご契約</div>
-        </div>
-        <p>「まだ早いかな」と迷いましたが、資料を見て見学して「ここならあの子と一緒にいられる」と思えたら心がすっと軽くなりました。決めたことで、いま元気に隣にいるこの子との毎日をもっと大切にできるようになった気がします。もっと早く知りたかったです。</p>
-      </div>
-    </div>
-    <p class="replace-note">※掲載内容はイメージです。実際のお客様の声の取得後に差し替えてください。</p>
-  </div>
+<section class="sec sec--push">
+  <p class="kicker rvl">一歩を踏み出して</p>
+  <h2 class="push__ttl rvl">一歩を踏み出した方の声</h2>
+  <blockquote class="push__quote rvl">
+    <p class="push__meta">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="7" cy="7.5" rx="2" ry="2.6"/><ellipse cx="12" cy="5.8" rx="2" ry="2.6"/><ellipse cx="17" cy="7.5" rx="2" ry="2.6"/><path d="M12 10c-3.2 0-6 2.6-6 5.4 0 1.9 1.5 3.1 3.3 3.1 1 0 1.8-.4 2.7-.4s1.7.4 2.7.4c1.8 0 3.3-1.2 3.3-3.1 0-2.8-2.8-5.4-6-5.4z"/></svg>
+      70代・女性<span>資料請求から2週間でご契約</span>
+    </p>
+    <p class="push__body">「まだ早いかな」と迷いましたが、資料を見て見学して「ここならあの子と一緒にいられる」と思えたら心がすっと軽くなりました。決めたことで、いま元気に隣にいるこの子との毎日をもっと大切にできるようになった気がします。もっと早く知りたかったです。</p>
+  </blockquote>
+  <p class="replace-note rvl">※掲載内容はイメージです。実際のお客様の声の取得後に差し替えてください。</p>
 </section>
 
-<section class="cta-section second">
-  <div class="inner">
-    <h2 class="cta-title"><span>「ずっと一緒だよ」の約束を</span><span>ここから。</span></h2>
-    <p class="cta-lead">
-      資料請求・ご見学は無料です。<br>
-      大切な家族との「これから」を安心して考えられるお手伝いをいたします。
-    </p>
-    <div class="cta-box">
-      <div class="cta-card">
-        <h3><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#4a97d2" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>資料請求（無料）</h3>
-        <p>区画・料金・園内写真を掲載したパンフレットをお届けします。3分のかんたん入力。</p>
-        <a href="https://e-mihara.jp/form_siryou/" class="cta-btn cta-primary">無料で資料請求する</a>
+<!-- ⑫ CV② -->
+<section class="offer">
+  <div class="offer__inner">
+    <p class="kicker rvl">お問い合わせ</p>
+    <h2 class="offer__ttl rvl"><span>「ずっと一緒だよ」の約束を</span><span>ここから。</span></h2>
+    <p class="offer__lead rvl">資料請求・ご見学は無料です。大切な家族との「これから」を安心して考えられるお手伝いをいたします。</p>
+    <div class="offer__rows rvl">
+      <div class="offer__row">
+        <h3 class="offer__name"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>資料請求（無料）</h3>
+        <p class="offer__desc">区画・料金・園内写真を掲載したパンフレットをお届けします。3分のかんたん入力。</p>
+        <a href="https://e-mihara.jp/form_siryou/" class="btn">無料で資料請求する<span class="chev">&rsaquo;</span></a>
       </div>
-      <div class="cta-card">
-        <h3><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#4a97d2" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 8.6 8.6 0 0 1-3.5-.8L3 20l1-4.3a8.4 8.4 0 1 1 17-4.2z"/></svg>見学予約・お問合せ</h3>
-        <p>気になることは何でもどうぞ。見学のご予約もこちらから承ります。</p>
-        <a href="https://e-mihara.jp/form_yoyaku/" class="cta-btn cta-secondary" style="border:2px solid var(--sky)">見学・お問合せはこちら</a>
+      <div class="offer__row">
+        <h3 class="offer__name"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 8.6 8.6 0 0 1-3.5-.8L3 20l1-4.3a8.4 8.4 0 1 1 17-4.2z"/></svg>見学予約・お問合せ</h3>
+        <p class="offer__desc">気になることは何でもどうぞ。見学のご予約もこちらから承ります。</p>
+        <a href="https://e-mihara.jp/form_yoyaku/" class="btn btn--ghost">見学・お問合せはこちら<span class="chev">&rsaquo;</span></a>
       </div>
     </div>
-    <p class="cta-promise">
-      <b><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5.5c0 4.2-2.9 7.9-7 8.9-4.1-1-7-4.7-7-8.9V6z"/><path d="M9 12l2 2 4-4"/></svg>無理な営業はいたしません</b>
-      <span>資料請求やご見学のあとに、しつこくお電話や訪問をすることはありません。ご家族のペースで、ゆっくりお考えください。</span>
-    </p>
+    <div class="promise rvl">
+      <p class="promise__ttl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v5.5c0 4.2-2.9 7.9-7 8.9-4.1-1-7-4.7-7-8.9V6z"/><path d="M9 12l2 2 4-4"/></svg>無理な営業はいたしません</p>
+      <p class="promise__text">資料請求やご見学のあとに、しつこくお電話や訪問をすることはありません。ご家族のペースで、ゆっくりお考えください。</p>
+    </div>
   </div>
 </section>
 
 <!-- ⑬ 追伸 -->
 <section class="ps">
-  <div class="inner">
-    <div class="ps-card">
-      <div class="ps-stage">
-        <img class="ps-letter" src="assets/letter.jpg" loading="lazy"
-          alt="追伸。あの子は言葉が話せないぶん、いつも全身で寄り添ってくれました。帰り道を急いだ日も疲れて帰った夜も、玄関でしっぽを振って待っていてくれた。だからこそ、最期のその先までひとりぼっちにはさせたくない。「ずっと一緒だよ」の約束は、これから先も守ることができます。まずは資料をご覧いただき、あの子と眠れる場所を確かめてください。それが、いま隣にいるあの子との毎日をもっと安心して過ごす第一歩になるはずです。">
-      </div>
-      <a href="https://e-mihara.jp/form_siryou/" class="cta-btn cta-primary ps-cta">
-        無料で資料請求する
-        <small>― 3分でかんたん入力 ―</small>
-      </a>
-    </div>
+  <div class="ps__inner">
+    <p class="kicker rvl">追伸</p>
+    <figure class="ps__letter rvl">
+      <img src="assets/letter.jpg" loading="lazy"
+        alt="追伸。あの子は言葉が話せないぶん、いつも全身で寄り添ってくれました。帰り道を急いだ日も疲れて帰った夜も、玄関でしっぽを振って待っていてくれた。だからこそ、最期のその先までひとりぼっちにはさせたくない。「ずっと一緒だよ」の約束は、これから先も守ることができます。まずは資料をご覧いただき、あの子と眠れる場所を確かめてください。それが、いま隣にいるあの子との毎日をもっと安心して過ごす第一歩になるはずです。">
+    </figure>
+    <a href="https://e-mihara.jp/form_siryou/" class="btn rvl">
+      <span>無料で資料請求する<small>― 3分でかんたん入力 ―</small></span>
+    </a>
   </div>
 </section>
 </main>
 
 <!-- フッター -->
 <footer class="footer">
-  <div class="inner">
-    <button type="button" class="to-top" id="toTop" aria-label="ページ上部へ戻る">
-      <svg viewBox="0 0 24 24" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5"/><path d="m5 12 7-7 7 7"/></svg>
-    </button>
-    <p class="footer-logo">美原東ロイヤルメモリアルパーク</p>
-    <p class="footer-copy">&copy; 2026 Sato no Nukumori. All Rights Reserved.</p>
-  </div>
+  <button type="button" class="footer__totop" id="toTop" aria-label="ページ上部へ戻る">
+    <span class="footer__totop-circle"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5"/><path d="m5 12 7-7 7 7"/></svg></span>
+    PAGE TOP
+  </button>
+  <p class="footer__logo">美原東ロイヤルメモリアルパーク</p>
+  <p class="footer__copy">&copy; 2026 Sato no Nukumori. All Rights Reserved.</p>
 </footer>
 
 <script>
@@ -1556,81 +1008,84 @@ window.__onScroll = (function(){
   return function add(fn){ jobs.push(fn); fn(); };
 })();
 
+/* FVキャッチを1文字ずつに割り、順に立ち上げる */
+(function(){
+  var el = document.querySelector('.hero__catch');
+  if(!el) return;
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var idx = 0;
+  function wrap(text, target){
+    text = text.replace(/\s+/g,'');
+    for(var i=0;i<text.length;i++){
+      var s = document.createElement('span');
+      s.className = 'ch'; s.textContent = text[i];
+      s.style.setProperty('--i', idx++);
+      target.appendChild(s);
+    }
+  }
+  var nodes = Array.prototype.slice.call(el.childNodes);
+  el.innerHTML = '';
+  nodes.forEach(function(n){
+    if(n.nodeType === 3){ wrap(n.textContent, el); }
+    else if(n.nodeName === 'BR'){ el.appendChild(document.createElement('br')); }
+    else if(n.nodeType === 1){ var c = n.cloneNode(false); wrap(n.textContent, c); el.appendChild(c); }
+  });
+})();
+
+/* ヘッダー：FVを通過したら降ろす */
+(function(){
+  var h = document.getElementById('header');
+  if(!h) return;
+  window.__onScroll(function(){
+    if(window.scrollY > window.innerHeight * 0.82) h.classList.add('show');
+    else h.classList.remove('show');
+  });
+})();
+
+/* 画面に入ったら静かに立ち上げる（1回だけ） */
+(function(){
+  if(!('IntersectionObserver' in window)) return;
+  var io = new IntersectionObserver(function(es){
+    es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold:0.16, rootMargin:'0px 0px -8% 0px' });
+  document.querySelectorAll('.blk').forEach(function(el){ io.observe(el); });
+
+  var io2 = new IntersectionObserver(function(es){
+    es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('is-in'); io2.unobserve(e.target); } });
+  }, { threshold:0.14, rootMargin:'0px 0px -6% 0px' });
+  document.querySelectorAll('.rvl').forEach(function(el){ io2.observe(el); });
+  // 帯付きテキストは一行ずつ表示（FVのように）
+  document.querySelectorAll('.comma__banner').forEach(function(el){ io2.observe(el); });
+})();
+
+/* 写真をスクロールに対してわずかに逆行させる（奥行きを出す） */
+(function(){
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var items = [].slice.call(document.querySelectorAll('[data-px]'));
+  if(!items.length) return;
+  var vh = window.innerHeight;
+  window.addEventListener('resize', function(){ vh = window.innerHeight; }, {passive:true});
+  window.__onScroll(function(){
+    var half = vh / 2;
+    items.forEach(function(el){
+      var r = el.getBoundingClientRect();
+      if(r.bottom < -80 || r.top > vh + 80) return; // 画面外は計算しない
+      var center = r.top + r.height / 2;
+      var d = (center - half) / (half + r.height / 2); // -1（上）〜 +1（下）
+      if(d < -1) d = -1; else if(d > 1) d = 1;
+      var range = parseFloat(el.getAttribute('data-px')) || 14;
+      el.style.transform = 'translate3d(0,' + (d * range).toFixed(2) + 'px,0)';
+    });
+  });
+})();
+
+/* ページ上部へ戻る */
 (function(){
   var btn = document.getElementById('toTop');
+  if(!btn) return;
   btn.addEventListener('click', function(){
     var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     window.scrollTo({top:0, behavior: reduce ? 'auto' : 'smooth'});
-  });
-})();
-
-
-/* ④-2 お参り背景動画：属性autoplayがブロックされる環境向けの再生フォールバック（ループ・無音） */
-(function(){
-  var v = document.querySelector('.talk-video');
-  if(!v) return;
-  v.muted = true; v.setAttribute('muted',''); v.playsInline = true;
-  function tryPlay(){ var p = v.play(); if(p && p.catch) p.catch(function(){}); }
-  tryPlay();
-  v.addEventListener('loadeddata', tryPlay);
-  v.addEventListener('canplay', tryPlay);
-  ['touchstart','pointerdown','click','scroll','keydown'].forEach(function(ev){
-    window.addEventListener(ev, function(){ tryPlay(); }, {once:true, passive:true, capture:true});
-  });
-  document.addEventListener('visibilitychange', function(){ if(!document.hidden) tryPlay(); });
-
-  /* 画面外では再生を止める。裏で動画を回し続けるとスクロールがカクつくため */
-  var block = document.querySelector('.story-talk');
-  if(block && 'IntersectionObserver' in window){
-    new IntersectionObserver(function(es){
-      es.forEach(function(e){ e.isIntersecting ? tryPlay() : v.pause(); });
-    }, { rootMargin:'100px' }).observe(block);
-  }
-})();
-
-/* 「話せているような気がする」：画面に入ったら幕が上がるように画像と文字を下から現す（1回だけ） */
-(function(){
-  var sec = document.querySelector('.story-talk');
-  if(!sec) return;
-  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return; // 動きなしで通常表示
-  sec.classList.add('curtain'); // 初期状態（幕が下りた状態）を適用
-  function up(){ sec.classList.add('is-up'); }
-  if('IntersectionObserver' in window){
-    var io = new IntersectionObserver(function(es){
-      es.forEach(function(e){
-        if(!e.isIntersecting) return;
-        io.disconnect(); // 1回きりの演出
-        up();
-      });
-    }, { rootMargin:'0px 0px -15% 0px' }); // 少し画面に入ってから上がり始める
-    io.observe(sec);
-  } else { up(); }
-})();
-
-/* 画面に入ったら横から滑り込ませる演出（1回だけ）。
-   ・陽だまり版「お参りに行けば」の背景写真
-   ・「知ってほしいこと」のご家族の声と締めの一文 */
-(function(){
-  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return; // 動きなしで通常表示
-  [
-    {sel:'.warm-scene',      cls:'slidein'},
-    {sel:'.warm-talk-block', cls:'slidein'},
-    {sel:'.limit-voices',    cls:'slidein-left'},
-    {sel:'.limit-close',     cls:'slidein-left'}
-  ].forEach(function(item){
-    var el = document.querySelector(item.sel);
-    if(!el) return;
-    el.classList.add(item.cls); // 初期状態（横へずらして透明）を適用
-    function show(){ el.classList.add('is-in'); }
-    if(!('IntersectionObserver' in window)){ show(); return; }
-    var io = new IntersectionObserver(function(es){
-      es.forEach(function(e){
-        if(!e.isIntersecting) return;
-        io.disconnect(); // 1回きりの演出
-        show();
-      });
-    }, { rootMargin:'0px 0px -15% 0px' });
-    io.observe(el);
   });
 })();
 
@@ -1647,71 +1102,15 @@ window.__onScroll = (function(){
       f.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
       f.referrerPolicy = 'strict-origin-when-cross-origin';
       f.allowFullscreen = true;
+      f.style.cssText = 'display:block;width:100%;aspect-ratio:16/9;border:0';
       btn.replaceWith(f);
     });
   });
 })();
 
-/* 画面に入ったらふわっとフェードインさせる（1回だけ）。
-   「ご家族の実感」は、セクション本体と下部のお墓参りの写真ブロックを別々に監視する。
-   ひとつの監視でまとめると、写真ブロックが画面に入る前に演出が終わってしまうため。 */
+/* 流れ続けるアニメーションは、画面外・タブ非表示のときは止める */
 (function(){
-  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return; // 動きなしで通常表示
-
-  function fadeInOnce(el, initialClass, rootMargin){
-    if(!el) return;
-    el.classList.add(initialClass); // 初期状態（非表示）を適用
-    function show(){ el.classList.add('is-in'); }
-    if(!('IntersectionObserver' in window)){ show(); return; }
-    var io = new IntersectionObserver(function(es){
-      es.forEach(function(e){
-        if(!e.isIntersecting) return;
-        io.disconnect(); // 1回きりの演出
-        show();
-      });
-    }, { rootMargin: rootMargin });
-    io.observe(el);
-  }
-
-  var sec = document.querySelector('.story-quiet');
-  if(sec){
-    fadeInOnce(sec, 'fadein', '0px 0px -10% 0px');
-    // 写真ブロックは、上端が画面の下から2割ほど入ったところで動き出す
-    fadeInOnce(sec.querySelector('.quiet-stage'), 'stagefade', '0px 0px -20% 0px');
-  }
-  // 「動物と一緒にお墓に入るなんて、、、」の見出しと本文
-  fadeInOnce(document.querySelector('.denial'), 'fadein', '0px 0px -15% 0px');
-  // 「知ってほしいこと」の締めの丸い写真
-  fadeInOnce(document.querySelector('.limit-photo'), 'fadephoto', '0px 0px -15% 0px');
-  // 「3つのサービス」：見出しはセクション到達で、各サービスは自身が画面に入ったときに現す
-  fadeInOnce(document.querySelector('.benefit'), 'fadein', '0px 0px -12% 0px');
-  document.querySelectorAll('.benefit .svc-item').forEach(function(item){
-    fadeInOnce(item, 'svcfade', '0px 0px -18% 0px');
-  });
-})();
-
-/* 追伸：封筒から便箋を引き出す演出を、画面内に入ったら1回だけ実行 */
-(function(){
-  var ps = document.querySelector('.ps');
-  if(!ps) return;
-  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){ ps.classList.add('ps-anim'); return; } // 動きなしで通常表示
-  ps.classList.add('ps-anim'); // 初期状態（非表示）を適用
-  var done = false;
-  function check(){
-    if(done) return;
-    var r = ps.getBoundingClientRect();
-    if(r.top < window.innerHeight * 0.8 && r.bottom > 0){
-      done = true; // 以降は先頭のreturnで抜けるだけなので負荷はない
-      ps.classList.add('is-inview');
-    }
-  }
-  window.__onScroll(check);
-})();
-
-/* 園内風景ギャラリー：流れ続けるアニメーションを、画面外・タブ非表示のときは止める。
-   ページ内に複数あるため、すべてのトラックをそれぞれ監視する */
-(function(){
-  var tracks = [].slice.call(document.querySelectorAll('.gallery-track'));
+  var tracks = [].slice.call(document.querySelectorAll('.marquee__track, .voices__track'));
   if(!tracks.length) return;
   var applyAll = [];
   tracks.forEach(function(track){
@@ -1731,12 +1130,11 @@ window.__onScroll = (function(){
    属性autoplayがブロックされる環境向けに、ユーザー操作でも再生を促す */
 (function(){
   var v = document.querySelector('.cta-bg-video');
-  var section = document.querySelector('.cta-section.first');
+  var section = document.querySelector('.offer--video');
   if(!v || !section) return;
   v.muted = true; v.setAttribute('muted',''); v.playsInline = true;
   function play(){ var p = v.play(); if(p && p.catch) p.catch(function(){}); }
   function stop(){ v.pause(); }
-  // 最初のユーザー操作で再生ロックを解除
   ['touchstart','pointerdown','click','scroll','keydown'].forEach(function(ev){
     window.addEventListener(ev, function(){ if(!section.__off) play(); }, {once:true, passive:true, capture:true});
   });
@@ -1749,18 +1147,16 @@ window.__onScroll = (function(){
 })();
 
 /* FV背景動画：表示中だけ再生する。
-   複数ある場合は一定時間ごとにディゾルブ（クロスフェード）で切り替え、末尾で先頭に戻る。
-   同じ動画を2枚並べておくと、末尾と先頭が重なってループの継ぎ目が溶ける。 */
+   同じ動画を2枚並べ、一定時間ごとにディゾルブ（クロスフェード）で切り替えることで
+   ループの継ぎ目を溶かす。切り替え間隔は動画の長さから自動で決める。 */
 (function(){
   var vids = [].slice.call(document.querySelectorAll('.fv-vid'));
-  var hero = document.querySelector('.hero');
-  if(!vids.length || !hero) return;
-  var FADE_MS = 1400;   // CSS の .fv-vid の transition と揃える
+  var stage = document.querySelector('.video-stage');
+  if(!vids.length || !stage) return;
+  var FADE_MS = 1400;   // CSS の .video-bg video の transition と揃える
   var SWAP_MS = 6000;   // 1本あたりの表示時間。動画の長さがわかれば「長さ−フェード」に合わせる
   var cur = 0, timer = null, running = false;
 
-  /* 切り替え間隔を「動画の長さ − フェード時間」にすると、
-     前の動画の終わりぎわと次の動画の頭が重なり、継ぎ目が見えなくなる */
   function tuneInterval(){
     var d = vids[0].duration;
     if(!isFinite(d) || d <= 0) return;
@@ -1774,40 +1170,22 @@ window.__onScroll = (function(){
 
   function play(v){ var p = v.play(); if(p && p.catch) p.catch(function(){}); }
 
-  /* 頭出し位置。data-start があればその秒数から再生する
-     （被写体が見えている場面から始めたい動画があるため）。
-     メタデータ未読込だと currentTime を代入できないので、読み込めてから設定する */
-  function seekToStart(v){
-    var t = parseFloat(v.dataset.start || 0) || 0;
-    function apply(){
-      if(t > 0 && isFinite(v.duration) && t >= v.duration) t = 0;
-      try{ v.currentTime = t; }catch(e){}
-    }
-    if(v.readyState >= 1) apply();
-    else v.addEventListener('loadedmetadata', apply, {once:true});
-  }
-
   function swap(){
     var prev = vids[cur];
     cur = (cur + 1) % vids.length;
     var next = vids[cur];
-    // 次の動画を読み込んで頭出し再生 → フェードイン、少し遅れて前の動画を止める
     if(next.preload !== 'auto'){ next.preload = 'auto'; next.load(); }
-    seekToStart(next);
+    try{ next.currentTime = 0; }catch(e){}
     play(next);
     next.classList.add('is-active');
     prev.classList.remove('is-active');
     setTimeout(function(){ if(!prev.classList.contains('is-active')) prev.pause(); }, 1500);
-    // さらに次の動画を先読みしておく（切り替えの引っかかり防止）
-    var after = vids[(cur + 1) % vids.length];
-    if(after.preload !== 'auto'){ after.preload = 'auto'; after.load(); }
   }
 
   function start(){
     if(running) return; running = true;
     play(vids[cur]);
-    if(vids.length < 2) return; // 1本だけなら切り替えは不要
-    // 次に出す1本を先に読み込んでおく（初回の切り替えで映像が途切れないように）
+    if(vids.length < 2) return;
     var next = vids[(cur + 1) % vids.length];
     if(next.preload !== 'auto'){ next.preload = 'auto'; next.load(); }
     timer = setInterval(swap, SWAP_MS);
@@ -1817,22 +1195,16 @@ window.__onScroll = (function(){
     if(timer){ clearInterval(timer); timer = null; }
     vids.forEach(function(v){ v.pause(); });
   }
-  // 自動再生ブロック対策：最初のユーザー操作でも再生を促す
   ['touchstart','pointerdown','click','scroll','keydown'].forEach(function(ev){
     window.addEventListener(ev, function(){ if(running) play(vids[cur]); }, {once:true, passive:true, capture:true});
   });
-  // FVが画面に入っている間だけ再生（スクロールで抜けたら停止して負荷を抑える）。
-  // さらに、固定背景(.fv-fixed)自体を画面外では隠し、スクロール中の合成・再描画を止める
-  var fvFixed = document.querySelector('.fv-fixed');
+  // 動画ステージが画面に入っている間だけ再生（抜けたら停止して負荷を抑える）
   if('IntersectionObserver' in window){
     new IntersectionObserver(function(es){
-      es.forEach(function(e){
-        if(e.isIntersecting){ start(); if(fvFixed) fvFixed.style.visibility=''; }
-        else { stop(); if(fvFixed) fvFixed.style.visibility='hidden'; }
-      });
-    }, { threshold:0.02, rootMargin:'200px 0px' }).observe(hero);
+      es.forEach(function(e){ e.isIntersecting ? start() : stop(); });
+    }, { threshold:0, rootMargin:'200px 0px' }).observe(stage);
   } else { start(); }
-  document.addEventListener('visibilitychange', function(){ if(document.hidden) stop(); else start(); });
+  document.addEventListener('visibilitychange', function(){ document.hidden ? stop() : start(); });
 })();
 </script>
 
