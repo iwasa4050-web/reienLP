@@ -292,9 +292,9 @@ main{position:relative;z-index:1}
 /* ===== ③ 諦めの否定：暗めのブロック＋煙のお墓写真を透過背景に ===== */
 .denial{
   position:relative;overflow:hidden;
-  /* 明るい空色の地。写真は暗く沈めず淡く敷き、前向きな印象にする */
-  background:linear-gradient(180deg,#f3f9fe 0%,#eef5fb 60%,#f6fbff 100%);
-  color:var(--ink);text-align:center;
+  /* 写真が読み込まれるまでの下地（写真は全面に出るため通常は見えない） */
+  background:#2a2a2a;
+  color:var(--white);text-align:center;
   padding-top:0;padding-bottom:0; /* オファー文を画像内に移したため下の余白は不要 */
 }
 /* 画面に入ったら、見出しと本文をふわっと表示する。
@@ -313,17 +313,24 @@ main{position:relative;z-index:1}
   .denial.fadein .denial-q,.denial.fadein .denial-mid,
   .denial.fadein.is-in .denial-q,.denial.fadein.is-in .denial-mid{opacity:1;transform:none;transition:none}
 }
-.denial::after{ /* 下端を次の明ブロックへ溶かす。地が明るいので控えめに */
-  content:"";position:absolute;left:0;right:0;bottom:0;height:90px;z-index:1;pointer-events:none;
-  background:linear-gradient(180deg,rgba(246,251,255,0) 0%,#f6fbff 100%);
+.denial::after{ /* 下端を次の明ブロック（.story-know の上端 #f6fbff）へ溶かして境目の線を消す */
+  content:"";position:absolute;left:0;right:0;bottom:0;height:130px;z-index:1;pointer-events:none;
+  background:linear-gradient(180deg,rgba(246,251,255,0) 0%,rgba(246,251,255,.55) 55%,#f6fbff 100%);
 }
 .denial-top{ /* ブロック全体にお墓写真を背景として敷く。文章下の余白は最小限に */
   position:relative;overflow:hidden;padding-top:90px;padding-bottom:clamp(48px,14vh,120px);
 }
-.denial-bg{ /* 背景写真。ブロック全面に、明るいまま淡く敷く（暗く沈めない） */
+.denial-top::before{ /* 上端を直前の暖色ブロック（#f9e8d3）から溶かし、境目の線を消す */
+  content:"";position:absolute;left:0;right:0;top:0;height:76px;z-index:1;pointer-events:none;
+  background:linear-gradient(180deg,#f9e8d3 0%,rgba(249,232,211,.5) 45%,rgba(249,232,211,0) 100%);
+}
+.denial-bg{ /* 背景写真。色を混ぜないよう写真はそのまま見せる */
   position:absolute;inset:0;z-index:0;
   background:url('assets/denial-bg.jpg') center 40%/cover no-repeat;
-  opacity:.38;
+}
+.denial-bg::after{ /* 黒の透過グラデーション（中ほどを一番明るく）。色みを足さず明度だけ落とす */
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(0,0,0,.46) 0%,rgba(0,0,0,.36) 42%,rgba(0,0,0,.44) 100%);
 }
 .denial-top .inner{position:relative;z-index:2}
 .denial .inner{position:relative;z-index:2}
@@ -348,13 +355,13 @@ main{position:relative;z-index:1}
 .denial-q{
   font-family:var(--serif);font-weight:700;
   font-size:clamp(1.45rem,6.4vw,1.76rem);line-height:1.75;letter-spacing:.01em;
-  margin-bottom:34px;color:var(--sky-deep);
-  text-shadow:0 0 10px rgba(255,255,255,.9),0 0 22px rgba(255,255,255,.7);
+  margin-bottom:34px;color:#fff;
+  text-shadow:0 2px 12px rgba(0,0,0,.55);
 }
 .denial-mid{
   font-size:clamp(1rem,1.7vw,1.1rem);line-height:2.2;
-  color:var(--ink);margin:0 auto 24px;max-width:660px;text-align:left;
-  text-shadow:0 0 8px rgba(255,255,255,.95),0 0 16px rgba(255,255,255,.8);
+  color:rgba(255,255,255,.94);margin:0 auto 24px;max-width:660px;text-align:left;
+  text-shadow:0 1px 10px rgba(0,0,0,.6);
 }
 .denial-mid:last-of-type{margin-bottom:0}
 /* 回答後に開くブロック：たたまれた状態からすっと開く */
