@@ -189,10 +189,13 @@ a{color:inherit; text-decoration:none}
 .flow{
   position:relative; z-index:2;
   padding:16vh 0 6vh;
+  /* 上端だけFV映像から溶かし、以降は不透明のクリームで塗る。
+     半透明にすると、映像が暗いフレームの時や reveal未発火時に
+     文章・埋め込み動画の背後が黒く抜けてしまうため不透明にする */
   background:linear-gradient(180deg,
     rgba(251,246,236,0) 0%,
-    rgba(251,246,236,.84) 14%,
-    rgba(251,246,236,.84) 100%);
+    rgba(251,246,236,1) 12%,
+    rgba(251,246,236,1) 100%);
 }
 .blk{max-width:600px; margin:0 auto; padding:0 16px; text-align:center; color:var(--text)}
 .blk + .blk{margin-top:12vh}
@@ -249,7 +252,7 @@ a{color:inherit; text-decoration:none}
 .ytwrap--flow{margin-top:44px; box-shadow:0 14px 30px rgba(60,45,20,.24)}
 .yt-lite{
   position:relative; display:block; width:100%; aspect-ratio:16/9;
-  cursor:pointer; background:#000; border:none; padding:0;
+  cursor:pointer; background:var(--bg-alt); border:none; padding:0;
 }
 .yt-lite img{width:100%; height:100%; object-fit:cover}
 .yt-lite::after{content:""; position:absolute; inset:0; background:rgba(20,16,12,.16); transition:background .3s}
