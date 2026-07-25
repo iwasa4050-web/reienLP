@@ -437,25 +437,34 @@ a{color:inherit; text-decoration:none}
   font-size:clamp(18px,calc(var(--vw,100vw)*5.6/100),25px); line-height:1.9; letter-spacing:.03em;
   color:var(--teal-deep);
 }
-/* ご家族の実感：大きな引用符＋点線の下線（felissimo風） */
-.know-voices{position:relative; max-width:500px; margin:52px auto 0; padding:6px 10px 20px; text-align:left}
-.know-voices::before,.know-voices::after{
-  position:absolute; z-index:0;
-  font-family:var(--en); font-weight:500; font-size:70px; line-height:1;
-  color:var(--teal-deep); opacity:.34;
+/* ご家族の実感：左にうさぎ写真（角丸・右を開ける）、右に縦書きの声 */
+.know-vquote{
+  display:flex; align-items:stretch; gap:16px;
+  max-width:520px; margin:48px auto 0; text-align:left;
 }
-.know-voices::before{content:"\201C"; left:-6px; top:-8px}
-.know-voices::after{content:"\201D"; right:-2px; bottom:-34px}
-.know-voices p{
-  position:relative; z-index:1; margin:0; padding:12px 2px;
-  font-family:var(--serif); font-weight:600; letter-spacing:.02em; color:var(--teal-deep);
-  font-size:clamp(12.5px,calc(var(--vw,100vw)*3.8/100),17.5px); line-height:1.85; white-space:nowrap;
-  /* 全幅の点線下線 */
-  border-bottom:1px dashed rgba(10,110,104,.55);
+.know-vquote__photo{
+  flex:1 1 auto; min-width:0; overflow:hidden; border-radius:14px;
+  box-shadow:0 22px 40px -14px rgba(60,45,20,.3), 0 8px 18px -8px rgba(60,45,20,.2);
 }
-.know-voices p + p{margin-top:18px}
-.know-close{margin-top:28px; font-family:var(--serif); font-weight:700; font-size:17px; line-height:2; color:var(--teal-deep); letter-spacing:.03em}
-.know-close span{display:block}
+.know-vquote__photo img{width:100%; height:100%; object-fit:cover; display:block}
+/* 縦書きの2行（右→左の順で列に並ぶ）。flexにすると縦積みになるので通常フローで */
+.know-vquote__text{
+  flex:0 0 auto; writing-mode:vertical-rl; text-orientation:mixed; padding:4px 2px;
+}
+.know-vquote__text p{
+  margin:0; font-family:var(--serif); font-weight:600; color:var(--teal-deep);
+  font-size:clamp(14px,calc(var(--vw,100vw)*4.2/100),17px); line-height:2; letter-spacing:.06em;
+}
+.know-vquote__text p + p{margin-right:4px}
+/* 締めの一文：各行に点線の下線（中央寄せ・下線は文字幅に合わせる） */
+.know-close{margin-top:34px; text-align:center}
+.know-close span{
+  display:block; width:-moz-fit-content; width:fit-content; margin:0 auto;
+  font-family:var(--serif); font-weight:700; font-size:17px; line-height:1.7;
+  letter-spacing:.03em; color:var(--teal-deep);
+  padding:6px 14px 10px; border-bottom:1px dashed rgba(10,110,104,.5);
+}
+.know-close span + span{margin-top:10px}
 /* 期限の説明の下に置く園内写真（全幅・セクションの左右余白まで埋める） */
 .know__photo{
   width:var(--vw,100vw); margin:32px 0 0; margin-left:calc(50% - var(--vw,100vw)/2);
@@ -874,13 +883,15 @@ a{color:inherit; text-decoration:none}
   <p class="know-note">※期限後はご遺骨を骨壷から出し、一つの場所にまとめて埋葬・供養されます</p>
   <figure class="know__photo"><img src="assets/know-dome.jpg" alt="バラに囲まれた園内の慰霊堂" loading="lazy"></figure>
   <p class="know-ours">当園は、埋葬期限なく<br>ずっと一緒に眠り続けられます。</p>
-  <figure class="know__photo"><img src="assets/know-rabbit.jpg" alt="お墓に佇むうさぎの像" loading="lazy"></figure>
 
-  <!-- ご家族の実感 -->
-  <blockquote class="know-voices">
-    <p>他の子の遺骨と混ざることに抵抗がある</p>
-    <p>家族だったから、ずっと一緒に眠り続けたい</p>
-  </blockquote>
+  <!-- ご家族の実感：左にうさぎ写真（角丸）、右に縦書きの声 -->
+  <div class="know-vquote">
+    <figure class="know-vquote__photo"><img src="assets/know-rabbit.jpg" alt="お墓に佇むうさぎの像" loading="lazy"></figure>
+    <div class="know-vquote__text">
+      <p>他の子の遺骨と混ざることに抵抗がある</p>
+      <p>家族だったから、ずっと一緒に眠り続けたい</p>
+    </div>
+  </div>
   <p class="know-close"><span>——そう思い</span><span>後悔のない供養を考える方に</span><span>当霊園は選ばれています。</span></p>
   </div>
 </section>
