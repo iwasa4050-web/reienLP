@@ -457,6 +457,12 @@ a{color:inherit; text-decoration:none}
   background:var(--gold-soft);
 }
 .know-close{margin-top:28px; font-family:var(--serif); font-size:17px; line-height:2; color:var(--teal-deep); letter-spacing:.03em}
+/* 期限の説明の下に置く園内写真（暗い地に浮かせる） */
+.know__photo{
+  margin:32px auto 0; max-width:520px; overflow:hidden; border-radius:var(--radius);
+  box-shadow:0 26px 50px rgba(0,0,0,.5), 0 8px 20px rgba(0,0,0,.4);
+}
+.know__photo img{width:100%; display:block}
 
 /* =========================================================================
    理念＋園内紹介動画
@@ -491,16 +497,16 @@ a{color:inherit; text-decoration:none}
 }
 .reason__small{font-size:14px; letter-spacing:.1em; color:var(--muted); margin-bottom:12px}
 .features{max-width:660px; margin:18px auto 0}
-.feature{margin:40px 0; text-align:left}
-/* 見出しは写真の上に全幅で置く。写真と本文はその下の段で左右に組む */
-.feature__row{display:flex; align-items:center; gap:16px; margin-top:14px}
-.feature--rev .feature__row{flex-direction:row-reverse}
+.feature{margin:44px 0; text-align:left}
+/* 見出し → 横長の写真 → 本文 の縦積み */
+.feature__row{margin-top:16px}
 .feature__media{
-  flex:0 0 40%; height:214px; overflow:hidden; border-radius:var(--radius);
+  width:100%; aspect-ratio:16/10; overflow:hidden; border-radius:var(--radius);
+  margin-bottom:18px;
   box-shadow:0 26px 44px -12px rgba(60,45,20,.32), 0 10px 20px -10px rgba(60,45,20,.2);
 }
 .feature__media img{width:100%; height:calc(100% + 44px); margin-top:-22px; object-fit:cover; will-change:transform}
-.feature__body{flex:1; min-width:0}
+.feature__body{min-width:0}
 .feature__ttl{
   font-family:var(--serif); font-weight:700; letter-spacing:.02em;
   font-size:clamp(19px,calc(var(--vw,100vw)*5.4/100),24px);
@@ -830,6 +836,7 @@ a{color:inherit; text-decoration:none}
   <!-- 最も伝えたい一点 -->
   <p class="know-fact">実は、多くの霊園には埋葬期限があります。</p>
   <p class="know-note">※期限後はご遺骨を骨壷から出し、一つの場所にまとめて埋葬・供養されます</p>
+  <figure class="know__photo"><img src="assets/know-dome.jpg" alt="バラに囲まれた園内の慰霊堂" loading="lazy"></figure>
   <p class="know-ours">当園は、埋葬期限なく<br>ずっと一緒に眠り続けられます。</p>
 
   <!-- ご家族の実感 -->
