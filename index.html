@@ -125,7 +125,10 @@ a{color:inherit; text-decoration:none}
 .video-stage{position:relative}
 .video-bg{
   position:sticky; top:0; height:100svh; margin-bottom:-100svh;
-  z-index:0; overflow:hidden; background:var(--bg-deep);
+  z-index:0; overflow:hidden;
+  /* 動画が描画されない時（未ロード・省電力での一時停止など）に地が黒ブロックに
+     ならないよう、FVのポスター画像を下敷きに敷く */
+  background:var(--bg-deep) url(assets/fv-01.jpg) center 45%/cover no-repeat;
 }
 .video-bg video{
   position:absolute; inset:0; width:100%; height:100%;
