@@ -469,8 +469,11 @@ a{color:inherit; text-decoration:none}
 }
 .voice__text{
   font-size:17px; line-height:2.05; color:var(--text); letter-spacing:.02em;
-  max-width:440px; margin:0 auto 30px; text-align:left;
+  max-width:440px; margin:0 auto 30px; text-align:center;
 }
+.voice__text > span{display:block}
+/* 段落の切れ目に一行分の間をあける */
+.voice__text-gap{margin-top:1.6em}
 .voice__text b{font-family:var(--serif); font-weight:700; color:var(--gold)}
 .voice__lead{font-family:var(--serif); font-weight:600; font-size:17.5px; letter-spacing:.06em; color:var(--teal-deep); margin-bottom:10px}
 .voice__cue{display:block; width:26px; height:26px; margin:0 auto 20px; color:var(--gold-soft); animation:cue 2.2s ease-in-out infinite}
@@ -614,7 +617,7 @@ a{color:inherit; text-decoration:none}
   color:var(--text); margin-bottom:34px;
 }
 .warm__ttl em{display:block; font-style:normal; color:var(--teal-deep)}
-.warm__scene{width:-moz-fit-content; width:fit-content; margin:0 auto; text-align:left}
+.warm__scene{width:-moz-fit-content; width:fit-content; margin:0 auto 0 0; text-align:left}
 .warm__scene p{
   display:block; width:-moz-fit-content; width:fit-content; white-space:nowrap;
   background:linear-gradient(90deg,#313E37 0%,#46574F 55%,#5A6C62 100%); color:#F4EEE3;
@@ -843,7 +846,12 @@ a{color:inherit; text-decoration:none}
   <p class="kicker rvl">私たちの想い</p>
   <h2 class="voice__ttl rvl">ご家族さまの想いに応える<br>霊園でありたい</h2>
   <p class="voice__text rvl">
-    私たち<b>美原東ロイヤルメモリアルパーク</b>は、単なるお墓を建てることをお客様に提供しているわけではありません。故人やご先祖様のお墓参りを、家族みんなで楽しめる墓地にしたいと考えています。
+    <span>私たち<b>美原東ロイヤルメモリアルパーク</b>は</span>
+    <span>単なるお墓を建てることを</span>
+    <span>お客様に提供しているわけではありません。</span>
+    <span class="voice__text-gap">故人やご先祖様のお墓参りを</span>
+    <span>家族みんなで楽しめる墓地に</span>
+    <span>したいと考えています。</span>
   </p>
   <p class="voice__lead rvl">園内の紹介動画をご覧ください。</p>
   <svg class="voice__cue" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
