@@ -450,7 +450,7 @@ a{color:inherit; text-decoration:none}
   box-shadow:0 22px 40px -14px rgba(60,45,20,.3), 0 8px 18px -8px rgba(60,45,20,.2);
 }
 /* うさぎ（画像右寄り）がしっかり映るよう、切り抜きを右側に寄せる */
-.know-vquote__photo img{width:100%; height:100%; object-fit:cover; object-position:72% center; display:block}
+.know-vquote__photo img{width:100%; height:100%; object-fit:cover; object-position:84% center; display:block}
 /* 縦書きの2行（右→左の順で列に並ぶ）。flexにすると縦積みになるので通常フローで */
 .know-vquote__text{
   flex:0 0 auto; writing-mode:vertical-rl; text-orientation:mixed; padding:4px 2px;
@@ -464,7 +464,8 @@ a{color:inherit; text-decoration:none}
 .know-close{margin-top:34px; text-align:center}
 .know-close span{
   display:block; width:-moz-fit-content; width:fit-content; margin:0 auto;
-  font-family:var(--serif); font-weight:700; font-size:17px; line-height:1.7;
+  font-family:var(--serif); font-weight:700; line-height:1.7;
+  font-size:clamp(18px,calc(var(--vw,100vw)*5.6/100),21px);
   letter-spacing:.03em; color:var(--teal-deep);
   padding:6px 14px 10px; border-bottom:1px dashed rgba(10,110,104,.5);
 }
@@ -734,21 +735,21 @@ a{color:inherit; text-decoration:none}
 /* =========================================================================
    フッター
    ========================================================================= */
-.footer{position:relative; z-index:3; background:var(--bg-deep); color:#fff; padding:60px 18px 34px; text-align:center}
+.footer{position:relative; z-index:3; background:var(--bg-alt); color:var(--text); padding:60px 18px 34px; text-align:center}
 .footer__totop{
   display:flex; flex-direction:column; align-items:center; gap:8px;
   margin:0 auto 34px; background:transparent; border:none; padding:0; cursor:pointer;
-  color:rgba(255,255,255,.78); font-family:var(--en); font-size:11.5px; letter-spacing:.24em;
+  color:var(--muted); font-family:var(--en); font-size:11.5px; letter-spacing:.24em;
 }
 .footer__totop-circle{
-  width:42px; height:42px; border-radius:50%; border:1px solid rgba(255,255,255,.45);
+  width:42px; height:42px; border-radius:50%; border:1px solid var(--gold-soft);
   display:flex; align-items:center; justify-content:center;
   transition:background .25s ease, border-color .25s ease, transform .25s ease;
 }
-.footer__totop:hover .footer__totop-circle{background:rgba(255,255,255,.14); border-color:rgba(255,255,255,.75); transform:translateY(-3px)}
-.footer__totop-circle svg{width:14px; height:14px; stroke:rgba(255,255,255,.85); fill:none; stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round}
-.footer__logo{font-family:var(--serif); font-weight:700; font-size:17.5px; letter-spacing:.08em; color:var(--cream); margin-bottom:10px}
-.footer__copy{font-family:var(--en); font-size:12px; letter-spacing:.14em; color:rgba(255,255,255,.5)}
+.footer__totop:hover .footer__totop-circle{background:rgba(156,132,60,.12); border-color:var(--gold); transform:translateY(-3px)}
+.footer__totop-circle svg{width:14px; height:14px; stroke:var(--gold); fill:none; stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round}
+.footer__logo{font-family:var(--serif); font-weight:700; font-size:17.5px; letter-spacing:.08em; color:var(--teal-deep); margin-bottom:10px}
+.footer__copy{font-family:var(--en); font-size:12px; letter-spacing:.14em; color:var(--muted)}
 
 @media(min-width:768px){
   .blk__body{font-size:20px}
