@@ -674,6 +674,9 @@ a{color:inherit; text-decoration:none}
 .push__meta svg{flex:0 0 auto; width:22px; height:22px; fill:var(--gold)}
 .push__meta span{display:block; font-weight:500; font-size:12.5px; color:var(--muted); letter-spacing:.04em}
 .push__body{font-family:var(--serif); font-weight:500; font-size:17px; line-height:2.05; letter-spacing:.02em; color:var(--text)}
+/* 手書きの声（紙の下地は透過済み・地に直接乗せる） */
+.push__hand{margin:4px 0 0}
+.push__hand img{width:100%; max-width:400px; display:block}
 .sec--push .replace-note{color:var(--muted); text-align:left; max-width:480px; margin:26px auto 0}
 
 /* =========================================================================
@@ -857,7 +860,9 @@ a{color:inherit; text-decoration:none}
       <svg viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="7" cy="7.5" rx="2" ry="2.6"/><ellipse cx="12" cy="5.8" rx="2" ry="2.6"/><ellipse cx="17" cy="7.5" rx="2" ry="2.6"/><path d="M12 10c-3.2 0-6 2.6-6 5.4 0 1.9 1.5 3.1 3.3 3.1 1 0 1.8-.4 2.7-.4s1.7.4 2.7.4c1.8 0 3.3-1.2 3.3-3.1 0-2.8-2.8-5.4-6-5.4z"/></svg>
       70代・女性<span>資料請求から2週間でご契約</span>
     </p>
-    <p class="push__body">「まだ早いかな」と迷いましたが、資料を見て見学して「ここならあの子と一緒にいられる」と思えたら心がすっと軽くなりました。決めたことで、いま元気に隣にいるこの子との毎日をもっと大切にできるようになった気がします。もっと早く知りたかったです。</p>
+    <figure class="push__hand">
+      <img src="assets/push-handwritten.png" alt="「まだ早いかな」と迷いましたが、資料を見て見学して「ここならあの子と一緒にいられる」と思えたら心がすっと軽くなりました。決めたことで、いま元気に隣にいるこの子との毎日をもっと大切にできるようになった気がします。もっと早く知りたかったです。" loading="lazy">
+    </figure>
   </blockquote>
   <p class="replace-note rvl">※掲載内容はイメージです。実際のお客様の声の取得後に差し替えてください。</p>
 </section>
