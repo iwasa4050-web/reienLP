@@ -448,7 +448,8 @@ a{color:inherit; text-decoration:none}
   content:""; position:absolute; left:4px; top:22px; width:1px; height:calc(100% - 44px);
   background:var(--gold-soft);
 }
-.know-close{margin-top:28px; font-family:var(--serif); font-size:17px; line-height:2; color:var(--teal-deep); letter-spacing:.03em}
+.know-close{margin-top:28px; font-family:var(--serif); font-weight:700; font-size:17px; line-height:2; color:var(--teal-deep); letter-spacing:.03em}
+.know-close span{display:block}
 /* 期限の説明の下に置く園内写真（全幅・セクションの左右余白まで埋める） */
 .know__photo{
   width:var(--vw,100vw); margin:32px 0 0; margin-left:calc(50% - var(--vw,100vw)/2);
@@ -491,10 +492,11 @@ a{color:inherit; text-decoration:none}
 .reason__small{font-size:14px; letter-spacing:.1em; color:var(--muted); margin-bottom:12px}
 .features{max-width:660px; margin:18px auto 0}
 .feature{margin:44px 0; text-align:left}
-/* 既定(01・02)：横長写真の上に本文を重ね、本文側をクリームにフェードして読ませる */
+/* 既定(01・02)：横長写真の上に本文を重ね、本文側をクリームにフェードして読ませる。
+   写真はシェル左右いっぱいまで全幅で敷く（余白を埋める） */
 .feature__row{
-  position:relative; margin-top:16px; overflow:hidden; border-radius:var(--radius);
-  box-shadow:0 26px 44px -12px rgba(60,45,20,.32), 0 10px 20px -10px rgba(60,45,20,.2);
+  position:relative; margin-top:16px; overflow:hidden;
+  width:var(--vw,100vw); margin-left:calc(50% - var(--vw,100vw)/2);
 }
 .feature__media{position:absolute; inset:0; overflow:hidden}
 /* 上下に余白を持たせ、パララックスで縁が抜けないようにする */
@@ -512,16 +514,16 @@ a{color:inherit; text-decoration:none}
   display:flex; flex-direction:column; justify-content:center; padding:22px 18px 22px 4px;
 }
 .feature--rev .feature__body{margin-left:0; margin-right:auto; padding:22px 4px 22px 18px}
-/* --wide(03)：横長写真を全幅で置き、本文をその下へ縦積み（重ねない） */
-.feature--wide .feature__row{position:static; overflow:visible; border-radius:0; box-shadow:none}
+/* --wide(03)：横長写真を全幅で置き、本文をその下へ縦積み（重ねない）。
+   写真は全幅のまま、本文だけシェルの左右余白（18px）内に収める */
+.feature--wide .feature__row{overflow:visible}
 .feature--wide .feature__row::before{display:none}
 .feature--wide .feature__media{
   position:relative; inset:auto; width:100%; height:auto; aspect-ratio:16/10; margin-bottom:18px;
-  border-radius:var(--radius);
-  box-shadow:0 26px 44px -12px rgba(60,45,20,.32), 0 10px 20px -10px rgba(60,45,20,.2);
+  border-radius:0; box-shadow:none;
 }
 .feature--wide .feature__media img{position:static; top:0; height:calc(100% + 48px); margin-top:-24px}
-.feature--wide .feature__body{position:static; width:auto; min-height:0; margin:0; padding:0; display:block}
+.feature--wide .feature__body{position:static; width:auto; min-height:0; margin:0; padding:0 18px; display:block}
 .feature__ttl{
   font-family:var(--serif); font-weight:700; letter-spacing:.02em;
   font-size:clamp(22px,calc(var(--vw,100vw)*6.4/100),29px);
@@ -655,9 +657,11 @@ a{color:inherit; text-decoration:none}
 }
 .warm__talk span{display:block}
 .warm__close{
-  max-width:440px; margin:38px auto 0; padding-top:28px; border-top:1px solid var(--line);
+  max-width:440px; margin:32px auto 0;
   font-size:16px; line-height:2.05; color:var(--muted); letter-spacing:.02em;
 }
+.warm__close span{display:block}
+.warm__close-gap{margin-top:1.5em}
 
 /* =========================================================================
    園内風景マーキー
@@ -871,7 +875,7 @@ a{color:inherit; text-decoration:none}
     <p>他の子の遺骨と混ざることに抵抗がある</p>
     <p>家族だったから、ずっと一緒に眠り続けたい</p>
   </blockquote>
-  <p class="know-close">——そう思い、後悔のない供養を考える方に当霊園は選ばれています。</p>
+  <p class="know-close"><span>——そう思い</span><span>後悔のない供養を考える方に</span><span>当霊園は選ばれています。</span></p>
   </div>
 </section>
 
@@ -1035,7 +1039,13 @@ a{color:inherit; text-decoration:none}
       <p class="em">目の前に大切なあの子がいる。</p>
     </div>
     <p class="warm__talk rvl">「元気にしてた？」<span>「みんな一緒だよ」</span></p>
-    <p class="warm__close rvl">いつかご自身がその時を迎えたあとも家族全員が同じ場所に揃い続ける。それは遺されるご家族へのいちばんやさしい贈りものになります。</p>
+    <p class="warm__close rvl">
+      <span>いつかご自身が</span>
+      <span>その時を迎えたあとも</span>
+      <span>家族全員が同じ場所に揃い続ける。</span>
+      <span class="warm__close-gap">それは遺されるご家族への</span>
+      <span>いちばんやさしい贈りものになります。</span>
+    </p>
   </div>
 </section>
 
