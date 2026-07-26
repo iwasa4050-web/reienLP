@@ -491,7 +491,7 @@ a{color:inherit; text-decoration:none}
   font-size:19px; line-height:2.05; color:var(--text); letter-spacing:.02em;
   max-width:440px; margin:0 auto 30px; text-align:center;
 }
-.voice__text > span{display:block}
+.voice__text > span{display:block; white-space:nowrap}
 /* 段落の切れ目に一行分の間をあける */
 .voice__text-gap{margin-top:1.6em}
 .voice__text b{font-family:var(--serif); font-weight:700; color:var(--gold)}
@@ -625,6 +625,7 @@ a{color:inherit; text-decoration:none}
   color:var(--teal-deep); margin-bottom:16px;
 }
 .offer__ttl > span{display:block; white-space:nowrap}
+.offer__lead > span{display:block}
 .offer__lead{font-size:20px; line-height:2; color:var(--muted); letter-spacing:.02em; max-width:440px; margin:0 auto 34px}
 .offer__rows{max-width:480px; margin:0 auto; text-align:left}
 .offer__row{padding:24px 4px}
@@ -920,9 +921,11 @@ a{color:inherit; text-decoration:none}
   <p class="kicker rvl">私たちの想い</p>
   <h2 class="voice__ttl rvl">ご家族さまの想いに応える<br>霊園でありたい</h2>
   <p class="voice__text rvl">
-    <span>私たち<b>美原東ロイヤルメモリアルパーク</b>は</span>
+    <span>私たち</span>
+    <span><b>美原東ロイヤルメモリアルパーク</b>は</span>
     <span>単なるお墓を建てることを</span>
-    <span>お客様に提供しているわけではありません。</span>
+    <span>お客様に提供しているわけでは</span>
+    <span>ありません。</span>
     <span class="voice__text-gap">故人やご先祖様のお墓参りを</span>
     <span>家族みんなで楽しめる墓地に</span>
     <span>したいと考えています。</span>
@@ -1088,8 +1091,13 @@ a{color:inherit; text-decoration:none}
 <section class="offer">
   <div class="offer__inner">
     <p class="kicker rvl">お問い合わせ</p>
-    <h2 class="offer__ttl rvl"><span>「ずっと一緒だよ」の約束を</span><span>ここから。</span></h2>
-    <p class="offer__lead rvl">資料請求・ご見学は無料です。大切な家族との「これから」を安心して考えられるお手伝いをいたします。</p>
+    <h2 class="offer__ttl rvl"><span>「ずっと一緒だよ」の</span><span>約束をここから。</span></h2>
+    <p class="offer__lead rvl">
+      <span>資料請求・ご見学は無料です。</span>
+      <span>大切な家族との「これから」を</span>
+      <span>安心して考えられる</span>
+      <span>お手伝いをいたします。</span>
+    </p>
     <div class="offer__rows rvl">
       <div class="offer__row">
         <h3 class="offer__name"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>資料請求（無料）</h3>
@@ -1101,10 +1109,6 @@ a{color:inherit; text-decoration:none}
         <p class="offer__desc">気になることは何でもどうぞ。見学のご予約もこちらから承ります。</p>
         <a href="https://e-mihara.jp/form_yoyaku/" class="btn btn--ghost">見学・お問合せはこちら<span class="chev">&rsaquo;</span></a>
       </div>
-    </div>
-    <div class="promise rvl">
-      <p class="promise__ttl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v5.5c0 4.2-2.9 7.9-7 8.9-4.1-1-7-4.7-7-8.9V6z"/><path d="M9 12l2 2 4-4"/></svg>無理な営業はいたしません</p>
-      <p class="promise__text">資料請求やご見学のあとに、しつこくお電話や訪問をすることはありません。ご家族のペースで、ゆっくりお考えください。</p>
     </div>
   </div>
 </section>
