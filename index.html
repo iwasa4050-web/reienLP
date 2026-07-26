@@ -560,8 +560,10 @@ a{color:inherit; text-decoration:none}
 }
 /* 番号は見出しの上に置く。見出しと同じ行に入れると幅を食い、末尾1文字が落ちるため */
 .feature__num{
-  display:block; font-family:var(--en); font-weight:500; font-size:30px; line-height:1;
-  letter-spacing:.06em; color:var(--gold); margin-bottom:7px;
+  display:block; font-family:var(--en); font-weight:600; font-size:30px; line-height:1;
+  /* Cormorantの旧式数字（0がO・1がIに見える）を、明確なライニング数字にする */
+  font-variant-numeric:lining-nums; font-feature-settings:"lnum" 1;
+  letter-spacing:.1em; color:var(--gold); margin-bottom:7px;
 }
 .feature__desc{font-size:17.5px; font-weight:500; line-height:1.95; color:var(--text); letter-spacing:.02em; word-break:normal}
 .feature__desc .note{display:block; margin-top:6px; font-size:14px; font-weight:400; color:var(--muted); opacity:.95}
@@ -807,7 +809,7 @@ a{color:inherit; text-decoration:none}
     <p class="hero__label">ペットと一緒に入れるお墓</p>
     <h1 class="hero__catch">大切な小さな家族を<br>ひとりぼっちにさせない</h1>
     <p class="hero__sub">最後までずっと一緒に眠れる<br>供養のカタチ</p>
-    <div class="hero__scroll" aria-hidden="true">SCROLL<span class="bar"></span></div>
+    <div class="hero__scroll" aria-hidden="true"><span class="bar"></span></div>
   </section>
 
   <div class="flow">
