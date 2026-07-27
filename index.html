@@ -8,6 +8,8 @@
 <meta http-equiv="Pragma" content="no-cache">
 <title>ペットと一緒に眠れるお墓｜あの子を、ひとりぼっちにさせない霊園</title>
 <meta name="description" content="愛犬・愛猫と、亡くなったあとも同じお墓で眠れる霊園。合祀されず、ずっと個別のまま。永代供養・バリアフリー対応。資料請求・見学のご予約を受付中。">
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="apple-touch-icon" href="assets/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;600;700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=Cormorant+Garamond:wght@400;500&display=swap" rel="stylesheet">
@@ -81,16 +83,15 @@ a{color:inherit; text-decoration:none}
 }
 .header.show{transform:translate(-50%,0); opacity:1}
 .header__left{display:flex; align-items:center; gap:9px; min-width:0}
-.header__mark{height:36px; width:auto; flex:0 0 auto}
 .header__txt{display:flex; flex-direction:column; gap:2px; min-width:0}
 .header__name{
   font-family:var(--serif); font-weight:700; line-height:1.3;
-  font-size:clamp(10.5px,calc(var(--vw,440px)*2.8/100),13px);
+  font-size:clamp(13px,calc(var(--vw,440px)*3.7/100),17px);
   letter-spacing:.02em; color:var(--text); white-space:nowrap;
 }
 .header__tag{
   font-family:var(--sans); font-weight:500; line-height:1.3;
-  font-size:clamp(8.5px,calc(var(--vw,440px)*2.3/100),10px);
+  font-size:clamp(9.5px,calc(var(--vw,440px)*2.7/100),11.5px);
   letter-spacing:.1em; color:var(--muted); white-space:nowrap;
 }
 .header__call{
@@ -110,9 +111,8 @@ a{color:inherit; text-decoration:none}
 @media(max-width:400px){
   .header{padding:10px}
   .header__tag{display:none}
-  .header__mark{height:30px}
   .header__left{gap:7px}
-  .header__name{font-size:10px}
+  .header__name{font-size:13px}
   .header__call{padding:8px 11px; gap:6px}
   .header__call svg{width:14px; height:14px}
   .header__call-txt small{display:none}
@@ -791,7 +791,6 @@ a{color:inherit; text-decoration:none}
 <!-- 上部固定ヘッダー：FVの間は隠し、通過後に降りてくる -->
 <header class="header" id="header">
   <a href="#" class="header__left">
-    <img class="header__mark" src="assets/logomark.png" alt="美原東ロイヤルメモリアルパーク ロゴ" width="120" height="104">
     <span class="header__txt">
       <span class="header__tag">ペットと一緒に入れるお墓</span>
       <span class="header__name">美原東ロイヤルメモリアルパーク</span>
