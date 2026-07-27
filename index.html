@@ -513,6 +513,13 @@ a{color:inherit; text-decoration:none}
 /* 段落の切れ目に一行分の間をあける */
 .voice__text-gap{margin-top:1.6em}
 .voice__text b{font-family:var(--serif); font-weight:700; color:var(--gold)}
+/* 本文の途中に差し込む園内写真（全幅・セクションの左右余白まで埋める） */
+.voice__photo{
+  width:var(--vw,100vw); margin:34px 0 34px; margin-left:calc(50% - var(--vw,100vw)/2);
+  overflow:hidden;
+  box-shadow:0 24px 44px -12px rgba(60,45,20,.32), 0 8px 18px -8px rgba(60,45,20,.22);
+}
+.voice__photo img{width:100%; display:block}
 .voice__lead{font-family:var(--serif); font-weight:600; font-size:17.5px; letter-spacing:.06em; color:var(--teal-deep); margin-bottom:10px}
 .voice__cue{display:block; width:26px; height:26px; margin:0 auto 20px; color:var(--gold-soft); animation:cue 2.2s ease-in-out infinite}
 @keyframes cue{0%,100%{transform:translateY(0);opacity:.5}50%{transform:translateY(5px);opacity:1}}
@@ -673,7 +680,7 @@ a{color:inherit; text-decoration:none}
 /* =========================================================================
    お参りに行けば（明るい陽だまり）
    ========================================================================= */
-.warm{position:relative; z-index:3; background:linear-gradient(180deg,#FDFBF6 0%,#F7F0E4 46%,#F4EBD8 100%); padding:80px 18px 88px; text-align:center; overflow:hidden}
+.warm{position:relative; z-index:3; background:linear-gradient(180deg,#FDFBF6 0%,#F7F0E4 46%,#F4EBD8 100%); padding:80px 18px 88px; text-align:left; overflow:hidden}
 .warm__inner{max-width:600px; margin:0 auto}
 .warm__ttl{
   font-family:var(--serif); font-weight:700; white-space:nowrap;
@@ -692,13 +699,13 @@ a{color:inherit; text-decoration:none}
 .warm__scene p + p{margin-top:8px}
 .warm__scene .em{background:linear-gradient(90deg,#8C7534 0%,#9C843C 55%,#B49A55 100%)}
 .warm__talk{
-  margin:44px auto 0; font-family:var(--serif); font-weight:700;
+  margin:44px 0 0; font-family:var(--serif); font-weight:700;
   font-size:clamp(19px,calc(var(--vw,100vw)*6/100),26px); line-height:2.05; letter-spacing:.05em;
   color:var(--teal-deep); white-space:nowrap;
 }
 .warm__talk span{display:block}
 .warm__close{
-  max-width:440px; margin:32px auto 0;
+  max-width:440px; margin:32px 0 0;
   font-size:18px; line-height:2.05; color:var(--muted); letter-spacing:.02em;
 }
 .warm__close span{display:block}
@@ -952,7 +959,10 @@ a{color:inherit; text-decoration:none}
     <span>単なるお墓を建てることを</span>
     <span>お客様に提供しているわけでは</span>
     <span>ありません。</span>
-    <span class="voice__text-gap">故人やご先祖様のお墓参りを</span>
+  </p>
+  <figure class="voice__photo rvl"><img src="assets/voice-omairi.jpg" alt="花に囲まれた美原東ロイヤルメモリアルパークの園内" loading="lazy"></figure>
+  <p class="voice__text rvl">
+    <span>故人やご先祖様のお墓参りを</span>
     <span>家族みんなで楽しめる墓地に</span>
     <span>したいと考えています。</span>
   </p>
