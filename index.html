@@ -14,6 +14,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;600;700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=Cormorant+Garamond:wght@400;500&display=swap" rel="stylesheet">
 <link rel="preload" as="image" href="assets/fv-01.jpg">
+<link rel="preload" as="image" href="assets/pet-grave.jpg">
 <style>
 /* =========================================================================
    デザイントークン
@@ -136,9 +137,19 @@ a{color:inherit; text-decoration:none}
   opacity:0; transition:opacity 1.4s ease;
 }
 .video-bg video.is-active{opacity:1}
-/* ベールは黒の透過のみ（色を混ぜない） */
+/* FV冒頭のお墓画像（動画の上に重ね、ズームインしてからフェードで動画へ） */
+.fv-intro{
+  position:absolute; inset:0; z-index:1;
+  width:100%; height:100%; object-fit:cover; object-position:center;
+  transform:scale(1.04); opacity:1;
+  transition:opacity 1.4s ease; will-change:transform,opacity;
+}
+.fv-intro.zoom{animation:fvIntroZoom 6.6s ease-out forwards}
+.fv-intro.hide{opacity:0}
+@keyframes fvIntroZoom{from{transform:scale(1.04)}to{transform:scale(1.16)}}
+/* ベールは黒の透過のみ（色を混ぜない）。お墓画像・動画の両方の上に敷く */
 .video-veil{
-  position:absolute; inset:0;
+  position:absolute; inset:0; z-index:2;
   background:linear-gradient(180deg, rgba(0,0,0,.46) 0%, rgba(0,0,0,.36) 42%, rgba(0,0,0,.44) 100%);
 }
 
@@ -812,6 +823,8 @@ a{color:inherit; text-decoration:none}
     <!-- FV背景動画。同じ動画を2枚重ね、末尾と先頭をクロスディゾルブで繋いでループさせる -->
     <video class="fv-vid is-active" muted loop playsinline preload="auto" poster="assets/fv-01.jpg"><source src="assets/fv-main.mp4" type="video/mp4"></video>
     <video class="fv-vid" muted loop playsinline preload="auto"><source src="assets/fv-main.mp4" type="video/mp4"></video>
+    <!-- FV冒頭：お墓画像をズームインで見せ、数秒後にペット動画へフェード（初回のみ） -->
+    <img class="fv-intro" src="assets/pet-grave.jpg" alt="" aria-hidden="true">
     <div class="video-veil"></div>
   </div>
 
@@ -1405,6 +1418,31 @@ window.__onScroll = (function(){
     }, { threshold:0, rootMargin:'200px 0px' }).observe(stage);
   } else { start(); }
   document.addEventListener('visibilitychange', function(){ document.hidden ? stop() : start(); });
+})();
+
+/* FV冒頭のお墓画像：ページ表示時に一度だけズームイン→ペット動画へフェード。
+   （抜けて戻ってきても再表示しない＝最初の一度きり） */
+(function(){
+  var intro = document.querySelector('.fv-intro');
+  var stage = document.querySelector('.video-stage');
+  if(!intro || !stage) return;
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var INTRO_MS = reduce ? 1600 : 5200;   // お墓画像を見せる時間
+  var started = false;
+  function begin(){
+    if(started) return; started = true;
+    if(!reduce) intro.classList.add('zoom');
+    setTimeout(function(){
+      intro.classList.add('hide');                 // 動画へフェード
+      setTimeout(function(){ intro.style.display = 'none'; }, 1500);
+    }, INTRO_MS);
+  }
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ begin(); io.disconnect(); } });
+    }, { threshold:0.01 });
+    io.observe(stage);
+  } else { begin(); }
 })();
 </script>
 
