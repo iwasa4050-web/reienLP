@@ -575,6 +575,8 @@ a{color:inherit; text-decoration:none}
   letter-spacing:.1em; color:var(--gold); margin-bottom:7px;
 }
 .feature__desc{font-size:17.5px; font-weight:500; line-height:1.95; color:var(--text); letter-spacing:.02em; word-break:normal}
+/* 01の本文だけ少しだけ薄く */
+.feature:not(.feature--rev):not(.feature--wide) .feature__desc{color:#5E5749}
 .feature__desc .note{display:block; margin-top:6px; font-size:14px; font-weight:700; color:var(--text); white-space:nowrap}
 
 /* =========================================================================
