@@ -1428,7 +1428,7 @@ window.__onScroll = (function(){
   var stage = document.querySelector('.video-stage');
   if(!intro || !stage) return;
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var GRAVE_MS = reduce ? 2000 : 3000;   // お墓画像を見せる時間
+  var GRAVE_MS = reduce ? 3000 : 5000;   // お墓画像を見せる時間
   var VIDEO_MS = 6400;                   // ペット動画を見せる時間
   var timer = null, active = false, phase = 'grave';
 
