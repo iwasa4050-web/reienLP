@@ -728,13 +728,27 @@ a{color:inherit; text-decoration:none}
 @keyframes marquee{from{transform:translateX(0)} to{transform:translateX(-50%)}}
 @media (prefers-reduced-motion:reduce){.marquee__track{animation:none}}
 
-/* セクション間に差し込む縦動画（お客様の声） */
-.vclip{background:var(--bg); padding:34px 18px 42px; text-align:center}
-.vclip__video{
-  display:block; width:min(340px,84%); margin:0 auto; aspect-ratio:9/16;
-  border-radius:14px; background:#000; object-fit:cover;
-  box-shadow:0 24px 44px -12px rgba(60,45,20,.32), 0 8px 18px -8px rgba(60,45,20,.22);
+/* セクション間に差し込む縦動画（お客様の声）：全幅・余白なし */
+.vclip{padding:0; background:#000}
+.vclip__frame{
+  position:relative; width:var(--vw,100vw); margin-left:calc(50% - var(--vw,100vw)/2);
+  line-height:0; background:#000;
 }
+.vclip__video{display:block; width:100%; height:auto}
+/* 左下の音声オン・オフボタン */
+.vclip__mute{
+  position:absolute; left:14px; bottom:14px; z-index:2;
+  width:46px; height:46px; padding:0; border:0; border-radius:50%;
+  background:rgba(0,0,0,.5); color:#fff; cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  -webkit-backdrop-filter:blur(2px); backdrop-filter:blur(2px);
+  transition:background .2s ease;
+}
+.vclip__mute:hover{background:rgba(0,0,0,.66)}
+.vclip__mute svg{width:23px; height:23px; fill:currentColor}
+.vclip__mute .i-on{display:none}
+.vclip__mute.is-on .i-off{display:none}
+.vclip__mute.is-on .i-on{display:block}
 
 /* =========================================================================
    一歩を踏み出した方の声
@@ -944,12 +958,18 @@ a{color:inherit; text-decoration:none}
   </div>
 </section>
 
-<!-- セクション間の縦動画（お客様の声） -->
+<!-- セクション間の縦動画（お客様の声）：全幅・無音ループ自動再生、左下ボタンで音声 -->
 <section class="vclip">
-  <video class="vclip__video" controls playsinline preload="none"
-         poster="assets/voices-video-poster.jpg" aria-label="お客様の声の動画">
-    <source src="assets/voices-video.mp4" type="video/mp4">
-  </video>
+  <div class="vclip__frame">
+    <video class="vclip__video" muted loop playsinline preload="none"
+           poster="assets/voices-video-poster.jpg" aria-label="お客様の声の動画">
+      <source src="assets/voices-video.mp4" type="video/mp4">
+    </video>
+    <button type="button" class="vclip__mute" aria-label="音声のオン・オフ" aria-pressed="false">
+      <svg class="i-off" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16 9l5 6M21 9l-5 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <svg class="i-on" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16.5 8.5a5 5 0 010 7M19 6a8.5 8.5 0 010 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+  </div>
 </section>
 
 <!-- ⑩ お客様の声③（決断の後押し） ※実際の声に差し替え予定 -->
@@ -1484,6 +1504,32 @@ window.__onScroll = (function(){
   if(stageVisible()) startCycle();
   document.addEventListener('visibilitychange', function(){
     if(document.hidden) stopCycle(); else if(stageVisible()) startCycle();
+  });
+})();
+
+/* セクション間の縦動画（お客様の声）：画面に入ったら無音ループ再生。左下ボタンで音声オン/オフ */
+(function(){
+  var sec = document.querySelector('.vclip');
+  var v = sec && sec.querySelector('.vclip__video');
+  var btn = sec && sec.querySelector('.vclip__mute');
+  if(!v || !btn) return;
+  function play(){ if(v.preload !== 'auto') v.preload = 'auto'; var p = v.play(); if(p && p.catch) p.catch(function(){}); }
+  function stop(){ v.pause(); }
+  if('IntersectionObserver' in window){
+    new IntersectionObserver(function(es){
+      es.forEach(function(e){ e.isIntersecting ? play() : stop(); });
+    }, { threshold:0.35 }).observe(sec);
+  } else { play(); }
+  document.addEventListener('visibilitychange', function(){
+    if(document.hidden){ stop(); return; }
+    var r = sec.getBoundingClientRect();
+    if(r.bottom > 0 && r.top < window.innerHeight) play();
+  });
+  btn.addEventListener('click', function(){
+    v.muted = !v.muted;
+    btn.classList.toggle('is-on', !v.muted);
+    btn.setAttribute('aria-pressed', String(!v.muted));
+    if(!v.muted){ var p = v.play(); if(p && p.catch) p.catch(function(){}); }
   });
 })();
 </script>
