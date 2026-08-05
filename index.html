@@ -728,6 +728,14 @@ a{color:inherit; text-decoration:none}
 @keyframes marquee{from{transform:translateX(0)} to{transform:translateX(-50%)}}
 @media (prefers-reduced-motion:reduce){.marquee__track{animation:none}}
 
+/* セクション間に差し込む縦動画（お客様の声） */
+.vclip{background:var(--bg); padding:34px 18px 42px; text-align:center}
+.vclip__video{
+  display:block; width:min(340px,84%); margin:0 auto; aspect-ratio:9/16;
+  border-radius:14px; background:#000; object-fit:cover;
+  box-shadow:0 24px 44px -12px rgba(60,45,20,.32), 0 8px 18px -8px rgba(60,45,20,.22);
+}
+
 /* =========================================================================
    一歩を踏み出した方の声
    ========================================================================= */
@@ -936,6 +944,14 @@ a{color:inherit; text-decoration:none}
   </div>
 </section>
 
+<!-- セクション間の縦動画（お客様の声） -->
+<section class="vclip">
+  <video class="vclip__video" controls playsinline preload="none"
+         poster="assets/voices-video-poster.jpg" aria-label="お客様の声の動画">
+    <source src="assets/voices-video.mp4" type="video/mp4">
+  </video>
+</section>
+
 <!-- ⑩ お客様の声③（決断の後押し） ※実際の声に差し替え予定 -->
 <section class="sec sec--push">
   <h2 class="push__ttl rvl">一歩を踏み出した方の声</h2>
@@ -1017,7 +1033,7 @@ a{color:inherit; text-decoration:none}
 <!-- ⑦ お客様の声①② ※実際の声に差し替え予定 -->
 <section class="sec--voices">
   <p class="voices-eyebrow rvl">お客様の声</p>
-  <h2 class="voices-ttl rvl">ペットを見送ったご家族の声</h2>
+  <h2 class="voices-ttl rvl">ペットと一緒に入れるお墓を<br>選んだご家族の声</h2>
   <div class="voices">
     <div class="voices__track">
       <!-- 1周目 -->
