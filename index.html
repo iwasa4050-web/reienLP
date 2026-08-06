@@ -729,7 +729,16 @@ a{color:inherit; text-decoration:none}
 @media (prefers-reduced-motion:reduce){.marquee__track{animation:none}}
 
 /* セクション間に差し込む縦動画（お客様の声）：全幅・余白なし */
-.vclip{padding:0; background:#000}
+.vclip{padding:0; background:#FFFDF9}
+/* 動画の上の見出し */
+.vclip__intro{padding:52px 20px 30px; text-align:center}
+.vclip__ttl{
+  font-family:var(--serif); font-weight:700;
+  font-size:clamp(21px,calc(var(--vw,100vw)*6.4/100),28px); line-height:1.6; letter-spacing:.03em;
+  color:var(--teal-deep); margin:0 0 16px;
+}
+.vclip__lead{font-family:var(--serif); font-weight:600; font-size:17px; letter-spacing:.06em; color:var(--text); margin:0 0 10px}
+.vclip__cue{display:block; width:26px; height:26px; margin:0 auto; color:var(--gold-soft); animation:cue 2.2s ease-in-out infinite}
 .vclip__frame{
   position:relative; width:var(--vw,100vw); margin-left:calc(50% - var(--vw,100vw)/2);
   line-height:0; background:#000;
@@ -1003,6 +1012,11 @@ a{color:inherit; text-decoration:none}
 
 <!-- お客様の声（縦動画）：全幅・無音ループ自動再生、右下ボタンで音声 -->
 <section class="vclip">
+  <div class="vclip__intro">
+    <h2 class="vclip__ttl rvl">実際にお参り来られた<br>ご家族様の声です</h2>
+    <p class="vclip__lead rvl">ご覧ください</p>
+    <svg class="vclip__cue rvl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+  </div>
   <div class="vclip__frame">
     <video class="vclip__video" autoplay muted loop playsinline preload="auto"
            poster="assets/voices-video-poster.jpg" aria-label="お客様の声の動画">
