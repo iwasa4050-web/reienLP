@@ -738,7 +738,7 @@ a{color:inherit; text-decoration:none}
 /* 上下の継ぎ目を、隣接セクションの色へ溶かして「ぶつ切り」を消す */
 .vclip__frame::before,.vclip__frame::after{content:""; position:absolute; left:0; right:0; z-index:1; pointer-events:none}
 .vclip__frame::before{top:0; height:64px; background:linear-gradient(180deg,#FFFDF9 0%,rgba(255,253,249,0) 100%)}
-.vclip__frame::after{bottom:0; height:104px; background:linear-gradient(0deg,#293632 0%,rgba(41,54,61,0) 100%)}
+.vclip__frame::after{bottom:0; height:104px; background:linear-gradient(0deg,#FFFDF9 0%,rgba(255,253,249,0) 100%)}
 /* 左下の音声オン・オフボタン */
 .vclip__mute{
   position:absolute; right:18px; bottom:18px; z-index:2;
@@ -1005,6 +1005,20 @@ a{color:inherit; text-decoration:none}
   </div>
 </section>
 
+<!-- お客様の声（縦動画）：全幅・無音ループ自動再生、右下ボタンで音声 -->
+<section class="vclip">
+  <div class="vclip__frame">
+    <video class="vclip__video" autoplay muted loop playsinline preload="auto"
+           poster="assets/voices-video-poster.jpg" aria-label="お客様の声の動画">
+      <source src="assets/voices-video.mp4" type="video/mp4">
+    </video>
+    <button type="button" class="vclip__mute" aria-label="音声のオン・オフ" aria-pressed="false">
+      <svg class="i-off" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16 9l5 6M21 9l-5 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <svg class="i-on" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16.5 8.5a5 5 0 010 7M19 6a8.5 8.5 0 010 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+</section>
+
 <!-- ⑥ 心から明るく手を合わせられるための3つのサービス -->
 <section class="sec sec--reason">
   <p class="kicker rvl">選ばれる理由</p>
@@ -1037,20 +1051,6 @@ a{color:inherit; text-decoration:none}
         </div>
       </div>
     </div>
-  </div>
-</section>
-
-<!-- ⑦ お客様の声（縦動画）：全幅・無音ループ自動再生、右下ボタンで音声 -->
-<section class="vclip">
-  <div class="vclip__frame">
-    <video class="vclip__video" autoplay muted loop playsinline preload="auto"
-           poster="assets/voices-video-poster.jpg" aria-label="お客様の声の動画">
-      <source src="assets/voices-video.mp4" type="video/mp4">
-    </video>
-    <button type="button" class="vclip__mute" aria-label="音声のオン・オフ" aria-pressed="false">
-      <svg class="i-off" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16 9l5 6M21 9l-5 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-      <svg class="i-on" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16.5 8.5a5 5 0 010 7M19 6a8.5 8.5 0 010 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-    </button>
   </div>
 </section>
 
